@@ -1,0 +1,132 @@
+{
+  "version": "v1-demo",
+  "updatedAt": "2026-08-24",
+  "chain": "ethereum",
+  "globalMinUsd": 100000,
+  "notes": "Built per docs/watchlist-playbook.md method. Sources: Lookonchain-published whale + owner-supplied addresses from Arkham browsing (Aug 24, 2026), each machine-verified on-chain via eth.blockscout.com (EOA, real history, active within ~30 days). Full log incl. rejections: docs/watchlist-v1-notes.md",
+  "wallets": [
+    {
+      "address": "0x268448f31594F4636D03cBB4E813b94801E47643",
+      "label": "Whale 0x2684 (ETH/WBTC dip accumulator)",
+      "winRate": 0.65,
+      "avgPositionUsd": 10000000,
+      "tags": ["accumulator", "eth", "btc", "swing"],
+      "minUsdOverride": null,
+      "evidence": [
+        "https://x.com/lookonchain/status/2082844605016613144"
+      ],
+      "addedAt": "2026-08-23",
+      "lastReview": "2026-08-24",
+      "active": true,
+      "verification": { "checkedOn": "2026-08-23", "source": "eth.blockscout.com", "isContract": false, "lastMainnetActivity": "2026-08-23T14:35:23Z", "result": "PASS" },
+      "whyQualifies": "Lookonchain-tracked whale: ~79,216 ETH at avg ~$1,777 since Jun 30 2026, position up ~$10.8M. Verified live EOA."
+    },
+    {
+      "address": "0x9B864dDE6ED1c21608b1665a0ac0fAA4F7E36e6E",
+      "label": "Owner-Arkham W2 (ETH/XAUT whale)",
+      "winRate": null,
+      "avgPositionUsd": 1600000,
+      "tags": ["whale", "eth", "gold", "defi"],
+      "minUsdOverride": null,
+      "evidence": ["owner-supplied via Arkham browse 2026-08-24 - ADD ENTITY NAME/URL"],
+      "addedAt": "2026-08-24",
+      "lastReview": "2026-08-24",
+      "active": true,
+      "verification": { "checkedOn": "2026-08-24", "source": "eth.blockscout.com", "isContract": false, "lastMainnetActivity": "2026-08-24T12:14:59Z", "result": "PASS" },
+      "whyQualifies": "866 ETH + tokenized gold (XAUT) + Pendle exposure; swaps via 1inch router. Active same-day."
+    },
+    {
+      "address": "0x28a55C4b4f9615FDE3CDAdDf6cc01FcF2E38A6b0",
+      "label": "Owner-Arkham W4 (Aave DeFi whale)",
+      "winRate": null,
+      "avgPositionUsd": 5000000,
+      "tags": ["defi", "lending", "aave", "bluechip"],
+      "minUsdOverride": null,
+      "evidence": ["owner-supplied via Arkham browse 2026-08-24 - ADD ENTITY NAME/URL"],
+      "addedAt": "2026-08-24",
+      "lastReview": "2026-08-24",
+      "active": true,
+      "verification": { "checkedOn": "2026-08-24", "source": "eth.blockscout.com", "isContract": false, "lastMainnetActivity": "2026-08-21T23:19:35Z", "result": "PASS" },
+      "whyQualifies": "Massive Aave money-market position (~109K aWETH) plus AAVE/COMP/WNXM governance bags. Large-scale DeFi operator."
+    },
+    {
+      "address": "0x6cd66DbdFe289ab83d7311B668ADA83A12447e21",
+      "label": "Arthur Hayes (attributed) - Ethena whale",
+      "winRate": null,
+      "avgPositionUsd": 15000000,
+      "tags": ["whale", "ethena", "ena", "famous", "hayes"],
+      "minUsdOverride": null,
+      "evidence": [
+        "https://www.binance.com/en-AE/square/post/357456874587890",
+        "https://arkm.com/explorer/entity/arthur-hayes"
+      ],
+      "addedAt": "2026-08-24",
+      "lastReview": "2026-08-24",
+      "active": true,
+      "verification": { "checkedOn": "2026-08-24", "source": "eth.blockscout.com", "isContract": false, "lastMainnetActivity": "2026-08-22T04:34:47Z", "result": "PASS" },
+      "whyQualifies": "One of three ETH wallets attributed to Arthur Hayes by Arkham (never denied by him). 8,013 ETH + 28.4M ENA. CAVEAT: documented ETH timing is mixed (sold low/bought high repeatedly) - track for attention/flow value, not blind copy-trade.",
+      "provenanceNote": "Attribution is analyst-consensus (Arkham label + his non-denial), not self-confirmed ownership."
+    },
+    {
+      "address": "0xa86e3d1c80a750a310b484fb9bdc470753a7506f",
+      "label": "Arthur Hayes (attributed) #2",
+      "winRate": null,
+      "avgPositionUsd": 5000000,
+      "tags": ["whale", "eth", "famous", "hayes"],
+      "minUsdOverride": null,
+      "evidence": [
+        "https://www.binance.com/en-AE/square/post/357456874587890"
+      ],
+      "addedAt": "2026-08-24",
+      "lastReview": "2026-08-24",
+      "active": true,
+      "verification": { "checkedOn": "2026-08-24", "source": "eth.blockscout.com", "isContract": false, "lastMainnetActivity": "2026-08-22T03:43:59Z", "result": "PASS" },
+      "whyQualifies": "Second attributed Hayes wallet: 2,823 ETH held, same-day active. Same attribution caveat as above."
+    },
+    {
+      "address": "0x350d49CA5442EA88049A727C9FdB2B0A1b962b93",
+      "label": "Owner-Arkham W1 (small active DeFi trader)",
+      "winRate": null,
+      "avgPositionUsd": 250000,
+      "tags": ["defi", "stables", "paxg"],
+      "minUsdOverride": null,
+      "evidence": ["owner-supplied via Arkham browse 2026-08-24 - ADD ENTITY NAME/URL"],
+      "addedAt": "2026-08-24",
+      "lastReview": "2026-08-24",
+      "active": true,
+      "verification": { "checkedOn": "2026-08-24", "source": "eth.blockscout.com", "isContract": false, "lastMainnetActivity": "2026-08-24T11:58:23Z", "result": "PASS" },
+      "whyQualifies": "Daily-active DeFi trader (Aave/stables/PAXG). Smaller size - kept because activity quality is high; may sit under $100K gate often."
+    },
+    {
+      "address": "0x1e9ec5c0f8c7150c92dfaed64be9b58ec481b23f",
+      "label": "Smart Trader 0x1e9e (Lookonchain-flagged memecoin pro)",
+      "winRate": null,
+      "avgPositionUsd": 300000,
+      "tags": ["memecoin", "smallcap", "trader"],
+      "minUsdOverride": null,
+      "evidence": [
+        "https://blockchain.news/flashnews/Lookonchain%20smart%20money%20alerts",
+        "https://x.com/lookonchain/status/1990602214117908890"
+      ],
+      "addedAt": "2026-08-24",
+      "lastReview": "2026-08-24",
+      "active": true,
+      "verification": { "checkedOn": "2026-08-24", "source": "eth.blockscout.com", "isContract": false, "lastMainnetActivity": "2026-08-10T19:51:23Z", "result": "PASS" },
+      "whyQualifies": "Lookonchain-documented multi-win record: ~$750K+ realized across APX ($174K), LAMBO ($171K), MIGGLES ($139K), KTA ($116K), AVNT ($102K), BNBHolder ($92K). Small position sizes - expect sub-$100K alerts unless minUsdOverride lowered."
+    },
+    {
+      "address": "0xb99a2c4C1C4F1fc27150681B740396F6CE1cBcF5",
+      "label": "Owner-Arkham W13 (small active trader)",
+      "winRate": null,
+      "avgPositionUsd": 250000,
+      "tags": ["trader", "lst", "lowcap"],
+      "minUsdOverride": null,
+      "evidence": ["owner-supplied via Arkham browse 2026-08-24 - ADD ENTITY NAME/URL"],
+      "addedAt": "2026-08-24",
+      "lastReview": "2026-08-24",
+      "active": true,
+      "verification": { "checkedOn": "2026-08-24", "source": "eth.blockscout.com", "isContract": false, "lastMainnetActivity": "2026-08-24T13:40:11Z", "result": "PASS" },
+      "whyQualifies": "Same-day active; weETH/LST user with some low-cap exposure. Trial entry - review after 2 weeks of alerts."
+    }
+  ]
+}

@@ -113,7 +113,15 @@
   </div>
 </div>
 
-<!-- Smart Money card: re-enabled when real links exist -->
+<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col sm:col-span-2 lg:col-span-1">
+      <span class="text-xs text-accent font-medium">TRADING · n8n · real-time push</span>
+      <h3 class="text-slate-100 font-semibold mt-2 mb-1">Smart Money Alert Bot</h3>
+      <p class="text-sm text-slate-400 flex-1">The original: signed Alchemy webhooks, trade-leg classification, $100K gate, HMAC-verified, AI one-liner with template fallback. Proven under double-failure.</p>
+      <div class="mt-4 flex gap-4 text-sm">
+        <a href="#case-smart-money" class="text-accent hover:underline">Case study</a>
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+      </div>
+    </div>
     </div>
   </div>
 </section>
@@ -237,7 +245,36 @@
 </section>
 
 <!-- 5 · Smart Money -->
-<!-- Smart Money case study: re-enabled when real links exist -->
+<!-- 5 · Smart Money -->
+<section id="case-smart-money" class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
+    <div>
+      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · the original</p>
+      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Smart Money Alert Bot</h3>
+      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Retail traders see whale moves hours late — after the alpha is gone. Most "whale bots" spam noise: airdrops, wraps, and random transfers all look like trades.</p>
+      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> Real-time Telegram alerts when 8+ hand-vetted smart-money wallets make a ≥$100K trade on Ethereum. Alchemy push webhooks (not polling), HMAC-SHA256 signature verification, leg-pairing trade classification that drops airdrops/self-transfers/stable-swaps, quote-leg valuation that prices unlisted tokens correctly, a $100K gate with 24h dedupe — and an AI one-liner grounded in fetched facts only, with a template fallback.</p>
+      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+        <li>Proven under double-failure: CoinGecko AND the LLM killed simultaneously — the alert still delivered (stale price marked ≈, template sentence)</li>
+        <li>6 classification fixtures green: buys, sells, unlisted-token buys valued via quote leg; forgeries silently rejected</li>
+        <li>Every alert ships with inline buttons: Dexscreener chart, Etherscan tx, Arkham wallet</li>
+        <li>Watchlist is curated evidence: every wallet machine-verified on-chain with public sources</li>
+      </ul>
+      <div class="flex flex-wrap gap-4 text-sm">
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts" target="_blank" rel="noopener" class="text-accent hover:underline">View project →</a>
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts/tests" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Test evidence ↗</a>
+      </div>
+    </div>
+    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
+        <span class="px-2 py-1 rounded-lg border border-line">Alchemy Webhooks</span><span class="px-2 py-1 rounded-lg border border-line">HMAC-SHA256</span>
+        <span class="px-2 py-1 rounded-lg border border-line">Trade classification</span><span class="px-2 py-1 rounded-lg border border-line">Quote-leg valuation</span>
+        <span class="px-2 py-1 rounded-lg border border-line">Telegram MarkdownV2</span><span class="px-2 py-1 rounded-lg border border-line">LLM + template fallback</span>
+        <span class="px-2 py-1 rounded-lg border border-line">$0 infra</span>
+      </div>
+    </aside>
+  </div>
+</section>
 
 <!-- SKILLS -->
 <section id="skills" class="border-t border-line">

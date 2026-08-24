@@ -1,0 +1,35 @@
+{
+  "_exportNote": "v2 exported 2026-08-24 from local n8n (id 5uir2vIah84GX23Z). Elite build: leg-pairing trade classification, quote-leg valuation (works for unlisted tokens), router allowlist anti-spam, MarkdownV2 rich alerts with inline buttons, AI one-liner (NanoBridge deepseek-v4-flash) with template fallback, demo trigger, rotated webhook path. PROVEN: 6 classification fixtures, double-failure (CoinGecko+LLM down) alert still delivered. Code bodies live in n8n (see _jsCodeRef pointers); re-export via n8n UI for full inline copies.",
+  "id": "5uir2vIah84GX23Z",
+  "name": "Smart Money Alert v1",
+  "active": true,
+  "settings": { "executionOrder": "v1", "timezone": "UTC", "saveManualExecutions": true },
+  "webhooks": {
+    "production": "/webhook/smart-money/v1/<redacted — rotate when importing>",
+    "demo": "/webhook/smart-money/demo/<redacted>  (POST {} - fires one realistic sample alert, tagged DEMO, bypasses dedupe)"
+  },
+  "pipeline": [
+    { "name": "Alchemy Webhook", "type": "webhook", "notes": "POST, rawBody on, respond 200 immediately, ROTATED secret path" },
+    { "name": "Demo Webhook", "type": "webhook", "notes": "demo trigger entry" },
+    { "name": "Config", "type": "set", "notes": "SIGNING_KEY, TELEGRAM_*, LLM_*, USE_LLM, SYMBOL_MAP, WATCHLIST(8), GLOBAL_MIN_USD" },
+    { "name": "Route Demo?", "type": "if", "notes": "Alchemy Webhook executed ? real path : demo path" },
+    { "name": "Verify Signature", "type": "code", "notes": "pure-JS SHA256+HMAC over raw body (base64 from binary.data), constant-time compare, silent drop on fail" },
+    { "name": "Parse Activities", "type": "code", "notes": "groups legs by txHash; QUOTE={ETH,WETH,USDC,USDT,DAI}; BUY=spendQuote+recvToken, SELL=spendToken+recvQuote; drops airdrops/self-transfers/stable-swaps/wraps/dust(<$1 legs); counterparty must be in 10-address router+pool allowlist" },
+    { "name": "Demo Fixture", "type": "code", "notes": "synthetic BUY 420 WETH of unlisted SHAKA, demo:true (bypasses dedupe, message tagged DEMO)" },
+    { "name": "CoinGecko Prices", "type": "http", "notes": "batched simple/price; retry 2; on error continue" },
+    { "name": "Gate Dedupe Compose", "type": "code", "notes": "values trades by quote leg (stables $1, ETH/WETH x cached price w/ stale fallback marked ~); token-price only as fallback; $100K gate (per-wallet overrides); 24h dedupe (skipped for demo); builds MarkdownV2 head/value/footer + inline buttons (Dexscreener/Etherscan/Arkham) + facts for LLM" },
+    { "name": "AI Brain", "type": "http", "notes": "OpenAI-compatible chat/completions, facts-only system prompt, 12s timeout, on error continue" },
+    { "name": "Pick Message", "type": "code", "notes": "uses AI sentence if valid (mentions token, <=400 chars) else fallback line; MarkdownV2-escapes everything" },
+    { "name": "Telegram Send", "type": "http", "notes": "sendMessage parse_mode MarkdownV2 + reply_markup buttons; retry 5 x 2s (harder than everything else)" }
+  ],
+  "_testResults": [
+    "fixture BUY (400 WETH->PEPE via UR): ALERT - $991.5k valued from WETH leg, AI sentence, 3 buttons (msg #11)",
+    "fixture SELL (PEPE->320k USDC): ALERT sent",
+    "fixture AIRDROP (recv-only): DROPPED (38ms)",
+    "fixture SELF-TRANSFER (watched->watched): DROPPED (36ms)",
+    "fixture STABLE-SWAP (USDC->USDT): DROPPED (35ms)",
+    "fixture UNLISTED-BUY (300 WETH->NEWGEM): ALERT via WETH-leg valuation",
+    "demo trigger: DEMO-tagged alert, dedupe bypassed",
+    "CHAOS TEST (CoinGecko AND LLM both broken): alert still delivered - ~$1.04M stale price + template line (msg #17)"
+  ]
+}

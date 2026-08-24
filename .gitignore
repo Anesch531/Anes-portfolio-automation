@@ -36,3 +36,6 @@ build/
 # --- large demo artifacts (link videos instead) ---
 **/demo/*.mp4
 **/demo/*.mov
+
+# --- incoming staging (may contain local-only files) ---
+_incoming/

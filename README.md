@@ -11,7 +11,7 @@ Two surfaces, one story:
 
 | # | Project | One-liner | Folder |
 |---|---|---|---|
-| 0 | Smart Money Alert bot (existing) | Push alerts on smart-money token movements | separate repo — walkthrough on request |
+| 0 | Smart Money Alert bot (original) | Real-time smart-money trade alerts: signed webhooks, trade classification, proven double-failure resilience | [projects/smart-money-alerts](projects/smart-money-alerts/) |
 | 1 | Token Research Report Bot | `/research <coin>` → multi-source report card with LLM verdict + template fallback | [projects/token-research](projects/token-research/) |
 | 2 | Lead Capture → Enriched CRM | Consent form → validate/dedupe/enrich → LLM-scored lead into Google Sheets + instant alert | [projects/lead-capture](projects/lead-capture/) |
 | 3 | Review Summarizer | Paste raw product reviews → themed digest with sentiment split + suggested reply | [projects/review-summarizer](projects/review-summarizer/) |
