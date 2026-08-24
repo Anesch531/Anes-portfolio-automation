@@ -4,14 +4,14 @@ Two surfaces, one story:
 
 | Surface | What it is | Link |
 |---|---|---|
-| **Site** | Fast dark single-page portfolio with case studies + demos | TODO_LIVE_SITE_URL |
+| **Site** | Fast dark single-page portfolio with case studies + demos | https://anesch531.github.io/Anes-portfolio-automation/ |
 | **GitHub** | This repo — the auditable proof | https://github.com/Anesch531/anes-automation-portfolio |
 
 ## Projects
 
 | # | Project | One-liner | Folder |
 |---|---|---|---|
-| 0 | Smart Money Alert bot (existing) | Push alerts on smart-money token movements | [TODO_SMART_MONEY_LINK] |
+| 0 | Smart Money Alert bot (existing) | Push alerts on smart-money token movements | separate repo — walkthrough on request |
 | 1 | Token Research Report Bot | `/research <coin>` → multi-source report card with LLM verdict + template fallback | [projects/token-research](projects/token-research/) |
 | 2 | Lead Capture → Enriched CRM | Consent form → validate/dedupe/enrich → LLM-scored lead into Google Sheets + instant alert | [projects/lead-capture](projects/lead-capture/) |
 | 3 | Review Summarizer | Paste raw product reviews → themed digest with sentiment split + suggested reply | [projects/review-summarizer](projects/review-summarizer/) |
