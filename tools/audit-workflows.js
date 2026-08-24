@@ -23,6 +23,7 @@ function audit(file) {
       if (isPost && !wantsBody) bad(name + ': POST but sendBody !== true');
       if (wantsBody && !p.specifyBody) bad(name + ': sendBody without specifyBody');
       if (p.specifyBody === 'json' && !p.jsonBody) bad(name + ': json body mode but no jsonBody');
+      if (wantsBody && !p.authentication) bad(name + ': sends a body but no auth configured (credential slot will be hidden)');
       if (!p.url) bad(name + ': no url');
       const t = (((p.options || {}).timeout));
       if (!t || t > 15000) bad(name + ': timeout missing or >15s (' + t + ')');
