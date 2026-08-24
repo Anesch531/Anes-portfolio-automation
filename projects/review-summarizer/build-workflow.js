@@ -98,9 +98,9 @@ const nodes = [
   Object.assign({}, httpBase, {
     parameters: {
       method: 'POST',
-      url: 'https://api.openai.com/v1/chat/completions',
+      url: 'https://api.nanobridge.net/chat/completions',
       specifyBody: 'json',
-      jsonBody: "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0.3, max_tokens: 300, messages: [ { role: 'system', content: 'You summarize product reviews for shop owners. Reply with STRICT JSON only — no markdown fences.' }, { role: 'user', content: $json.llmPrompt } ] }) }}",
+      jsonBody: "={{ JSON.stringify({ model: 'deepseek-v4-flash', temperature: 0.3, max_tokens: 300, messages: [ { role: 'system', content: 'You summarize product reviews for shop owners. Reply with STRICT JSON only — no markdown fences.' }, { role: 'user', content: $json.llmPrompt } ] }) }}",
       options: { timeout: 12000 },
     },
     name: 'Summarize themes with LLM', position: [900, 40], id: 'r06',

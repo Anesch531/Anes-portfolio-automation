@@ -128,9 +128,9 @@ const nodes = [
   Object.assign({}, httpBase, {
     parameters: {
       method: 'POST',
-      url: 'https://api.openai.com/v1/chat/completions',
+      url: 'https://api.nanobridge.net/chat/completions',
       specifyBody: 'json',
-      jsonBody: "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0.2, max_tokens: 80, messages: [ { role: 'system', content: 'You score inbound leads for an automation freelancer. Reply with STRICT JSON only: {\"score\": <0-100 integer>, \"reason\": \"<=20 words\"}. Higher = more likely a real paying client.' }, { role: 'user', content: $json.llmPrompt } ] }) }}",
+      jsonBody: "={{ JSON.stringify({ model: 'deepseek-v4-flash', temperature: 0.2, max_tokens: 80, messages: [ { role: 'system', content: 'You score inbound leads for an automation freelancer. Reply with STRICT JSON only: {\"score\": <0-100 integer>, \"reason\": \"<=20 words\"}. Higher = more likely a real paying client.' }, { role: 'user', content: $json.llmPrompt } ] }) }}",
       options: { timeout: 12000 },
     },
     // After import: attach Header Auth credential (Authorization: Bearer <key>). Key never lives here.

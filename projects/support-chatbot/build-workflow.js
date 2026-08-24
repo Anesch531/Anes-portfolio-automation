@@ -143,9 +143,9 @@ const nodes = [
   Object.assign({}, httpBase, {
     parameters: {
       method: 'POST',
-      url: 'https://api.openai.com/v1/chat/completions',
+      url: 'https://api.nanobridge.net/chat/completions',
       specifyBody: 'json',
-      jsonBody: "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0.5, max_tokens: 150, messages: [ { role: 'system', content: 'You are the support assistant for TODO_BUSINESS_NAME. Answer ONLY from the provided FAQ context, warm and brief, max 3 sentences. If it is not covered, say you will flag it for the team.' }, { role: 'user', content: ('Question: ' + $json.text + '\\n\\nFAQ context:\\n' + $json.context) } ] }) }}",
+      jsonBody: "={{ JSON.stringify({ model: 'deepseek-v4-flash', temperature: 0.5, max_tokens: 150, messages: [ { role: 'system', content: 'You are the support assistant for TODO_BUSINESS_NAME. Answer ONLY from the provided FAQ context, warm and brief, max 3 sentences. If it is not covered, say you will flag it for the team.' }, { role: 'user', content: ('Question: ' + $json.text + '\\n\\nFAQ context:\\n' + $json.context) } ] }) }}",
       options: { timeout: 12000 },
     },
     name: 'Ground with LLM', position: [1280, 300], id: 'c10',
