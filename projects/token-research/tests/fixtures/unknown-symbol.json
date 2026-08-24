@@ -1,0 +1,13 @@
+{
+  "name": "unknown symbol — nothing matches",
+  "input": {
+    "text": "/research ZZZZZ",
+    "isDemo": false,
+    "search": { "coins": [] },
+    "markets": [],
+    "dexPairs": [],
+    "goplus": {},
+    "news": [],
+    "llm": { "ok": true, "text": "should not be used" }
+  }
+}

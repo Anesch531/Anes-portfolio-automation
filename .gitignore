@@ -1,0 +1,38 @@
+# --- secrets ---
+.env
+.env.*
+!.env.example
+*credentials*
+*-cred.json
+secrets/
+
+# --- local workspace meta (never publish) ---
+AGENTS.md
+HANDOFF.md
+opencode.json
+.opencode/
+docs/github-setup.md
+docs/deploy.md
+
+# --- node junk ---
+node_modules/
+npm-debug.log*
+package-lock.json
+
+# --- OS junk ---
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# --- editors/build ---
+.vscode/
+.idea/
+dist/
+build/
+.vercel/
+.netlify/
+*.log
+
+# --- large demo artifacts (link videos instead) ---
+**/demo/*.mp4
+**/demo/*.mov

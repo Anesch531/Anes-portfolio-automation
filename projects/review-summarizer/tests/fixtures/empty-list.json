@@ -1,0 +1,8 @@
+{
+  "name": "empty list — nothing valid to summarize",
+  "input": {
+    "product": "AuroraDesk Pro standing desk",
+    "reviews": []
+  },
+  "llm": { "ok": false }
+}

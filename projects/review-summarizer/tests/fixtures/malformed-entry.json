@@ -1,0 +1,14 @@
+{
+  "name": "malformed entries — junk rows skipped without crashing",
+  "input": {
+    "product": "AuroraDesk Pro standing desk",
+    "reviews": [
+      { "rating": 12, "text": "impossible rating should be skipped" },
+      { "rating": 4, "text": "" },
+      { "rating": 5, "text": "Love the sturdy top and quiet motor." },
+      { "rating": 2, "text": "Shipping delay ruined the launch, support slow." },
+      { "not_a_review": true }
+    ]
+  },
+  "llm": { "ok": false }
+}

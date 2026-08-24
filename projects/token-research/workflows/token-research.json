@@ -1,0 +1,512 @@
+{
+  "name": "Token Research Report Bot",
+  "nodes": [
+    {
+      "parameters": {
+        "content": "## 🔍 Token Research Report Bot\n`/research <SYMBOL>` (Telegram) or POST `/webhook/token-research/demo` with `{\"text\":\"/demo PEPE\"}`.\nPrimary sources get retries; enrichments degrade gracefully; LLM verdict has a template fallback.",
+        "height": 240,
+        "width": 380
+      },
+      "name": "Sticky overview",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        -560,
+        -260
+      ],
+      "id": "n00"
+    },
+    {
+      "parameters": {
+        "content": "### Fallback pattern\nLLM node: no retry (cost control), onError=continue, 12s timeout.\nNext Code node validates the reply; garbage ⇒ template verdict already baked into the report ships.",
+        "height": 180,
+        "width": 340
+      },
+      "name": "Sticky fallback",
+      "type": "n8n-nodes-base.stickyNote",
+      "typeVersion": 1,
+      "position": [
+        1920,
+        -220
+      ],
+      "id": "n001"
+    },
+    {
+      "parameters": {
+        "updates": [
+          "message"
+        ],
+        "additionalFields": {}
+      },
+      "id": "n01",
+      "name": "Listen for research command",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.1,
+      "position": [
+        -80,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "token-research/demo",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "id": "n02",
+      "name": "Demo research request",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        -80,
+        300
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "// Paste of lib/logic.js parseCommand (+ origin handling). Covered by tests/run.js\nfunction parseCommand(t){const m=/^\\s*\\/(research|demo)[\\s_]+\\$?([A-Za-z0-9._-]{2,20})\\s*$/.exec(String(t||''));return m?{symbol:m[2].toUpperCase(),isDemo:m[1]==='demo'}:null;}\nconst src=$input.item.json;\nlet text='',isDemo=false,chatId=null;\nif(src.body){text=String(src.body.text||src.body.symbol||'');isDemo=true;}\nelse if(src.message){text=String(src.message.text||src.message.caption||'');chatId=(src.message.chat||{}).id||null;}\nconst p=parseCommand(text);\nif(!p)return [];\nreturn [{json:Object.assign({},p,{isDemo:isDemo||p.isDemo,chatId})}];"
+      },
+      "id": "n03",
+      "name": "Parse command",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        180
+      ]
+    },
+    {
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "url": "=https://api.coingecko.com/api/v3/search?query={{ $json.symbol }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "name": "Fetch coin search",
+      "position": [
+        380,
+        180
+      ],
+      "id": "n04",
+      "settings": {
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 5000
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Paste of lib/logic.js pickCoinId. Covered by tests/run.js\nfunction pickCoinId(search,symbol){const coins=search&&Array.isArray(search.coins)?search.coins:[];const s=String(symbol).toLowerCase();const exact=coins.find(c=>String(c.symbol||'').toLowerCase()===s);const c=exact||coins[0];return c?{id:c.id,symbol:String(c.symbol||s).toUpperCase(),name:c.name||c.id}:null;}\nconst pc=$('Parse command').item.json;\nconst coin=pickCoinId($input.item.json,pc.symbol);\nreturn [{json:{coinId:coin?coin.id:'',symbol:coin?coin.symbol:pc.symbol,isDemo:pc.isDemo,chatId:pc.chatId}}];"
+      },
+      "id": "n05",
+      "name": "Pick coin id",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        600,
+        180
+      ]
+    },
+    {
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "url": "=https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&sparkline=false&price_change_percentage=24h&ids={{ $json.coinId }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "name": "Fetch coin markets",
+      "position": [
+        820,
+        180
+      ],
+      "id": "n06",
+      "settings": {
+        "retryOnFail": true,
+        "maxTries": 3,
+        "waitBetweenTries": 5000,
+        "onError": "continueRegularOutput"
+      }
+    },
+    {
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "url": "=https://api.dexscreener.com/latest/dex/search?q={{ $('Pick coin id').item.json.symbol }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "name": "Fetch dex pairs",
+      "position": [
+        1040,
+        40
+      ],
+      "id": "n07",
+      "settings": {
+        "retryOnFail": true,
+        "maxTries": 2,
+        "waitBetweenTries": 5000,
+        "onError": "continueRegularOutput"
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Paste of lib/logic.js pickDex + CHAIN_IDS. Covered by tests/run.js\nfunction pickDex(pairs){if(!Array.isArray(pairs)||pairs.length===0)return null;const p=pairs.slice().sort((a,b)=>((b.liquidity&&b.liquidity.usd)||0)-((a.liquidity&&a.liquidity.usd)||0))[0];return {chain:p.chainId||'',chainIdNumeric:CHAIN_IDS[p.chainId]||null,dex:p.dexId||'',pairUrl:p.pairAddress?'https://dexscreener.com/'+p.chainId+'/'+p.pairAddress:'',contract:(p.baseToken&&p.baseToken.address)||null,liquidityUsd:Math.round((p.liquidity&&p.liquidity.usd)||0),volume24hUsd:Math.round((p.volume&&p.volume.h24)||0),txns24h:((p.txns&&p.txns.h24&&p.txns.h24.buys)||0)+((p.txns&&p.txns.h24&&p.txns.h24.sells)||0)};}\nconst CHAIN_IDS={ethereum:1,bsc:56,polygon_pos:137,arbitrum:42161,base:8453,avalanche:43114};\nconst raw=$input.item.json||{};\nconst dex=pickDex(raw.pairs);\nreturn [{json:{pairsRaw:Array.isArray(raw.pairs)?raw.pairs:[],contract:dex?dex.contract:null,chainIdNumeric:dex?dex.chainIdNumeric:null}}];"
+      },
+      "id": "n08",
+      "name": "Prep enrichment refs",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1260,
+        40
+      ]
+    },
+    {
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "url": "=https://api.gopluslabs.com/api/v1/token_security/{{ $('Prep enrichment refs').item.json.chainIdNumeric }}?contract_addresses={{ $('Prep enrichment refs').item.json.contract }}",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "name": "Fetch token security",
+      "position": [
+        1480,
+        40
+      ],
+      "id": "n09",
+      "settings": {
+        "retryOnFail": true,
+        "maxTries": 2,
+        "waitBetweenTries": 5000,
+        "onError": "continueRegularOutput"
+      }
+    },
+    {
+      "parameters": {
+        "url": "https://www.coindesk.com/arc/outboundfeeds/rss/",
+        "options": {
+          "timeout": 15000
+        }
+      },
+      "id": "n10",
+      "name": "Fetch crypto headlines",
+      "type": "n8n-nodes-base.rssFeedRead",
+      "typeVersion": 3,
+      "position": [
+        1040,
+        320
+      ],
+      "settings": {
+        "onError": "continueRegularOutput"
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/* ===== canonical logic from projects/token-research/lib/logic.js =====\n   synced by build-workflow.js — behavior proven by tests/run.js ===== */\n// Canonical pure logic for token-research.\n// The n8n Code nodes paste these function bodies verbatim (see README node map).\n// Zero dependencies — runs in n8n Code nodes AND plain `node tests/run.js`.\n\nconst CHAIN_IDS = {\n  ethereum: 1, bsc: 56, polygon_pos: 137, arbitrum: 42161, base: 8453, avalanche: 43114,\n};\n\n// /research PEPE | /demo SOL | optional $ prefix\nfunction parseCommand(text) {\n  const m = /^\\s*\\/(research|demo)[\\s_]+\\$?([A-Za-z0-9._-]{2,20})\\s*$/.exec(String(text || ''));\n  return m ? { symbol: m[2].toUpperCase(), isDemo: m[1] === 'demo' } : null;\n}\n\nfunction pickCoinId(search, symbol) {\n  const coins = search && Array.isArray(search.coins) ? search.coins : [];\n  const s = String(symbol).toLowerCase();\n  const exact = coins.find(c => String(c.symbol || '').toLowerCase() === s);\n  const c = exact || coins[0];\n  return c ? { id: c.id, symbol: String(c.symbol || s).toUpperCase(), name: c.name || c.id } : null;\n}\n\nfunction normMarket(m) {\n  if (!m || m.current_price == null) return null;\n  return {\n    id: m.id,\n    symbol: String(m.symbol || '').toUpperCase(),\n    name: m.name || m.id,\n    rank: m.market_cap_rank || null,\n    price: m.current_price,\n    change24h: Math.round((Number(m.price_change_percentage_24h) || 0) * 100) / 100,\n    marketCap: m.market_cap || null,\n    volume24h: m.total_volume || null,\n    ath: m.ath || null,\n    athChangePct: m.ath_change_percentage == null ? null : Math.round(m.ath_change_percentage),\n  };\n}\n\nfunction pickDex(pairs) {\n  if (!Array.isArray(pairs) || pairs.length === 0) return null;\n  const p = pairs.slice().sort((a, b) => ((b.liquidity && b.liquidity.usd) || 0) - ((a.liquidity && a.liquidity.usd) || 0))[0];\n  return {\n    chain: p.chainId || '',\n    chainIdNumeric: CHAIN_IDS[p.chainId] || null,\n    dex: p.dexId || '',\n    pairUrl: p.pairAddress ? 'https://dexscreener.com/' + p.chainId + '/' + p.pairAddress : '',\n    contract: (p.baseToken && p.baseToken.address) || null,\n    liquidityUsd: Math.round((p.liquidity && p.liquidity.usd) || 0),\n    volume24hUsd: Math.round((p.volume && p.volume.h24) || 0),\n    txns24h: ((p.txns && p.txns.h24 && p.txns.h24.buys) || 0) + ((p.txns && p.txns.h24 && p.txns.h24.sells) || 0),\n  };\n}\n\n// GoPlus result keyed by lowercase contract address\nfunction riskFlags(goplusResult, contract) {\n  const flags = [];\n  if (!goplusResult || !contract) return flags;\n  const t = goplusResult[String(contract).toLowerCase()];\n  if (!t) return flags;\n  if (t.is_honeypot === '1') flags.push('honeypot contract');\n  if (t.is_mintable === '1') flags.push('owner can mint new supply');\n  if (t.cannot_sell_all === '1') flags.push('selling restricted');\n  if (Number(t.sell_tax) > 0.15) flags.push('high sell tax ' + Math.round(Number(t.sell_tax) * 100) + '%');\n  if (Number(t.owner_percentage) > 0.05) flags.push('owner holds ' + (Number(t.owner_percentage) * 100).toFixed(1) + '% of supply');\n  return flags;\n}\n\nfunction topNews(items, coinName, symbol, limit) {\n  limit = limit || 3;\n  const words = (coinName + ' ' + symbol).toLowerCase().split(/\\W+/).filter(w => w.length > 2);\n  return (Array.isArray(items) ? items : [])\n    .filter(it => {\n      const t = String((it && it.title) || '').toLowerCase();\n      return words.some(w => t.includes(w));\n    })\n    .slice(0, limit)\n    .map(it => ({ title: String(it.title), link: it.link || '' }));\n}\n\nfunction esc(s) {\n  return String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');\n}\n\nfunction fmtMoney(n) {\n  if (n == null || isNaN(Number(n))) return '—';\n  n = Number(n);\n  const a = Math.abs(n);\n  if (a >= 1e9) return (n / 1e9).toFixed(2) + 'B';\n  if (a >= 1e6) return (n / 1e6).toFixed(2) + 'M';\n  if (a >= 1e3) return (n / 1e3).toFixed(1) + 'K';\n  if (a >= 1) return n.toFixed(2);\n  return n.toPrecision(3);\n}\n\nfunction buildLlmPrompt(ctx) {\n  const bits = [];\n  if (ctx.market) bits.push(ctx.market.name + ' (' + ctx.market.symbol + '), price $' + fmtMoney(ctx.market.price) + ', 24h change ' + ctx.market.change24h + '%, rank #' + (ctx.market.rank || '?'));\n  if (ctx.dex) bits.push('Deepest pool $' + fmtMoney(ctx.dex.liquidityUsd) + ' liquidity, $' + fmtMoney(ctx.dex.volume24hUsd) + ' 24h volume on ' + ctx.dex.chain + '/' + ctx.dex.dex);\n  if (ctx.flags.length) bits.push('Security flags: ' + ctx.flags.join('; '));\n  else bits.push('Security check: no standard scam-pattern flags');\n  if (ctx.news.length) bits.push('Headlines: ' + ctx.news.map(n => n.title).join(' | '));\n  return 'Write a cautious 2-3 sentence trader brief about this token based ONLY on these facts. No financial advice, no invented facts:\\n' + bits.join('\\n');\n}\n\n// LLM-or-template verdict (see /docs/llm-fallback-pattern.md)\nfunction summarize(ctx, llmOut) {\n  const txt = llmOut && llmOut.ok !== false && typeof llmOut.text === 'string' ? llmOut.text.trim() : '';\n  if (!ctx.market) {\n    return { mode: 'template', text: \"Live price data didn't come back from upstream just now — retry in a minute and this report fills itself in.\" };\n  }\n  if (txt.length >= 20 && txt.length <= 1200) return { mode: 'llm', text: txt };\n\n  const parts = [];\n  parts.push(ctx.market.name + ' (' + ctx.market.symbol + ') trades at $' + fmtMoney(ctx.market.price) + ' (' + (ctx.market.change24h >= 0 ? '+' : '') + ctx.market.change24h + '% / 24h).');\n  if (ctx.market.rank) parts.push('Rank #' + ctx.market.rank + ' · $' + fmtMoney(ctx.market.marketCap) + ' cap · $' + fmtMoney(ctx.market.volume24h) + ' daily volume.');\n  if (ctx.dex) parts.push('Deepest pool: ' + ctx.dex.chain + '/' + ctx.dex.dex + ' — $' + fmtMoney(ctx.dex.liquidityUsd) + ' locked, $' + fmtMoney(ctx.dex.volume24hUsd) + ' 24h volume across ' + ctx.dex.txns24h + ' txns.');\n  parts.push(ctx.flags.length ? '⚠️ Risk flags: ' + ctx.flags.join('; ') + '.' : 'No standard scam-pattern flags found in the security check.');\n  if (ctx.news.length) parts.push('In the news: ' + ctx.news.map(n => n.title).join(' | '));\n  return { mode: 'template', text: parts.join('\\n') };\n}\n\n// Rich Telegram-HTML report card. %%SUMMARY%% placeholder is swapped by the\n// \"Validate LLM or fall back\" node so the template text ships even if the LLM dies.\nfunction formatReport(ctx) {\n  const L = [];\n  L.push('<b>' + (ctx.degraded ? '🔍 Token research — partial data' : '🔍 Token research') + '</b>');\n  if (ctx.degraded) L.push('<i>Some sources were unreachable — showing what we have.</i>');\n  if (ctx.market) {\n    const arrow = ctx.market.change24h >= 0 ? '▲' : '▼';\n    L.push('');\n    L.push('<b>' + esc(ctx.market.name) + ' (' + esc(ctx.market.symbol) + ')</b>' + (ctx.market.rank ? ' · rank #' + ctx.market.rank : ''));\n    L.push('Price: <b>$' + fmtMoney(ctx.market.price) + '</b>  ' + arrow + ' ' + (ctx.market.change24h >= 0 ? '+' : '') + ctx.market.change24h + '% (24h)');\n    L.push('Cap <b>$' + fmtMoney(ctx.market.marketCap) + '</b> · Vol <b>$' + fmtMoney(ctx.market.volume24h) + '</b> · ATH Δ ' + (ctx.market.athChangePct == null ? '—' : ctx.market.athChangePct + '%'));\n  } else {\n    L.push('<b>' + esc(ctx.symbol) + \"</b> — couldn't match this symbol right now.\");\n  }\n  if (ctx.dex) {\n    L.push('');\n    L.push('💧 Liquidity <b>$' + fmtMoney(ctx.dex.liquidityUsd) + '</b> · 24h vol <b>$' + fmtMoney(ctx.dex.volume24hUsd) + '</b> · ' + ctx.dex.txns24h + ' txns');\n    L.push('Pool: ' + esc(ctx.dex.chain) + '/' + esc(ctx.dex.dex) + (ctx.dex.pairUrl ? ' — ' + ctx.dex.pairUrl : ''));\n    if (ctx.dex.contract) L.push('Contract: <code>' + esc(ctx.dex.contract) + '</code>');\n  }\n  if (ctx.flags.length) L.push('\\n🚨 <b>Risk flags:</b> ' + esc(ctx.flags.join('; ')));\n  else if (ctx.securityChecked) L.push('✅ Security check: no standard scam-pattern flags.');\n  if (ctx.news.length) {\n    L.push('\\n📰 <b>Headlines</b>');\n    ctx.news.forEach(n => L.push('• ' + esc(n.title)));\n  }\n  L.push('\\n🗣 <b>Verdict</b>\\n<i>%%SUMMARY%%</i>');\n  L.push('\\nSources: CoinGecko · DexScreener · GoPlus' + (ctx.isDemo ? '\\n🧪 [DEMO]' : ''));\n  return L.join('\\n');\n}\n\n// Full pipeline over raw API payloads — mirrors the \"Aggregate research\" node.\nfunction buildReport(input) {\n  input = input || {};\n  const symbol = input.symbol || '';\n  const coin = pickCoinId(input.search, symbol);\n  let market = null;\n  if (coin && Array.isArray(input.markets)) {\n    market = normMarket(input.markets.find(m => m.id === coin.id) || input.markets[0]);\n    if (market) market.name = coin.name;\n  }\n  const dex = pickDex(input.dexPairs);\n  const goplusResult = input.goplus && input.goplus.result ? input.goplus.result : null;\n  const flags = riskFlags(goplusResult, dex && dex.contract);\n  const news = topNews(input.news, coin ? coin.name : '', symbol);\n  const degraded = !market;\n\n  const ctx = {\n    symbol, market, dex, flags, news, degraded,\n    securityChecked: !!dex && !!dex.contract,\n    isDemo: !!input.isDemo,\n  };\n  ctx.llmPrompt = buildLlmPrompt(ctx);\n\n  const summary = summarize(ctx, null); // template first — LLM swaps in later\n  let html = formatReport(Object.assign({}, ctx));\n  html = html.replace('%%SUMMARY%%', esc(summary.text));\n\n  return {\n    symbol, isDemo: ctx.isDemo, degraded,\n    market, dex, flags, news,\n    llmPrompt: ctx.llmPrompt,\n    summaryTemplate: summary.text,\n    html,\n  };\n}\n\n// Swap the template verdict for a validated LLM verdict.\nfunction applyLlmSummary(report, llmOut) {\n  const ok = llmOut && typeof llmOut.text === 'string' && llmOut.text.trim().length >= 20 && llmOut.text.length <= 1200;\n  const text = ok ? llmOut.text.trim() : report.summaryTemplate;\n  return {\n    finalHtml: report.html.replace('%%SUMMARY%%', esc(text)),\n    mode: ok ? 'llm' : 'template',\n  };\n}\n\n// ---- glue across sources; every grab is failure-tolerant ----\nconst grab = (name) => { try { return $(name).item.json; } catch (e) { return null; } };\nconst pc = grab('Parse command') || {};\nconst search = grab('Fetch coin search');\nconst mkts = grab('Fetch coin markets');\nconst prep = grab('Prep enrichment refs') || {};\nconst gp = grab('Fetch token security');\nlet newsItems = [];\ntry { newsItems = $('Fetch crypto headlines').all().map(i => i.json); } catch (e) {}\n\nconst report = buildReport({\n  symbol: pc.symbol,\n  isDemo: !!pc.isDemo,\n  search,\n  markets: Array.isArray(mkts) ? mkts : (mkts && Array.isArray(mkts.data) ? mkts.data : null),\n  dexPairs: prep.pairsRaw || [],\n  goplus: gp && gp.result ? gp : null,\n  news: newsItems,\n});\n\nreturn [{ json: Object.assign({}, report, { chatId: pc.chatId || null }) }];"
+      },
+      "id": "n11",
+      "name": "Aggregate research",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1720,
+        180
+      ]
+    },
+    {
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.openai.com/v1/chat/completions",
+        "specifyBody": "json",
+        "jsonBody": "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0.4, max_tokens: 200, messages: [ { role: 'system', content: 'You are a cautious crypto research assistant. Use ONLY the facts provided. Maximum 3 sentences. Never give financial advice.' }, { role: 'user', content: $json.llmPrompt } ] }) }}",
+        "options": {
+          "timeout": 12000
+        }
+      },
+      "name": "Call summary LLM",
+      "position": [
+        1940,
+        180
+      ],
+      "id": "n12",
+      "settings": {
+        "onError": "continueRegularOutput"
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "/* kept in sync with lib/logic.js applyLlmSummary + esc — covered by tests/run.js */\nfunction esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}\nfunction applyLlmSummary(report,llmOut){const ok=llmOut&&typeof llmOut.text==='string'&&llmOut.text.trim().length>=20&&llmOut.text.length<=1200;const text=ok?llmOut.text.trim():report.summaryTemplate;return {finalHtml:report.html.replace('%%SUMMARY%%',esc(text)),mode:ok?'llm':'template'};}\nlet out={ok:false,text:''};\ntry{\n  const r=$('Call summary LLM').item.json;\n  const txt=r&&r.choices&&r.choices[0]&&r.choices[0].message?r.choices[0].message.content:'';\n  out={ok:!!(txt&&txt.trim().length>=20&&txt.length<=1200),text:String(txt||'')};\n}catch(e){}\nconst rep=$('Aggregate research').item.json;\nconst res=applyLlmSummary(rep,out);\nreturn [{json:Object.assign({},rep,{finalHtml:res.finalHtml,verdictMode:res.mode})}];"
+      },
+      "id": "n13",
+      "name": "Validate LLM or fall back",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2160,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "is-demo",
+              "leftValue": "={{ $json.isDemo }}",
+              "rightValue": "",
+              "operator": {
+                "type": "boolean",
+                "operation": "true",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "n14",
+      "name": "Is demo?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        2380,
+        180
+      ]
+    },
+    {
+      "parameters": {
+        "respondWith": "text",
+        "responseBody": "={{ $json.finalHtml }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              {
+                "name": "Content-Type",
+                "value": "text/html; charset=utf-8"
+              }
+            ]
+          }
+        }
+      },
+      "id": "n15",
+      "name": "Reply demo report",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [
+        2620,
+        60
+      ]
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Parse command').item.json.chatId }}",
+        "text": "={{ $json.finalHtml }}",
+        "additionalFields": {
+          "appendAttribution": false,
+          "parse_mode": "HTML",
+          "disable_web_page_preview": true
+        }
+      },
+      "id": "n16",
+      "name": "Send research report",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        2620,
+        300
+      ]
+    }
+  ],
+  "connections": {
+    "Listen for research command": {
+      "main": [
+        [
+          {
+            "node": "Parse command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Demo research request": {
+      "main": [
+        [
+          {
+            "node": "Parse command",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parse command": {
+      "main": [
+        [
+          {
+            "node": "Fetch coin search",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch coin search": {
+      "main": [
+        [
+          {
+            "node": "Pick coin id",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Pick coin id": {
+      "main": [
+        [
+          {
+            "node": "Fetch coin markets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch coin markets": {
+      "main": [
+        [
+          {
+            "node": "Fetch dex pairs",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Fetch crypto headlines",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch dex pairs": {
+      "main": [
+        [
+          {
+            "node": "Prep enrichment refs",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Prep enrichment refs": {
+      "main": [
+        [
+          {
+            "node": "Fetch token security",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch token security": {
+      "main": [
+        [
+          {
+            "node": "Aggregate research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Fetch crypto headlines": {
+      "main": [
+        [
+          {
+            "node": "Aggregate research",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aggregate research": {
+      "main": [
+        [
+          {
+            "node": "Call summary LLM",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Call summary LLM": {
+      "main": [
+        [
+          {
+            "node": "Validate LLM or fall back",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate LLM or fall back": {
+      "main": [
+        [
+          {
+            "node": "Is demo?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Is demo?": {
+      "main": [
+        [
+          {
+            "node": "Reply demo report",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Send research report",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "meta": {
+    "instanceId": "portfolio-build"
+  }
+}

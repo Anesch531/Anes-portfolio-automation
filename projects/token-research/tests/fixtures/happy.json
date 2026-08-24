@@ -1,0 +1,62 @@
+{
+  "name": "happy path — full data, healthy LLM",
+  "input": {
+    "text": "/research PEPE",
+    "isDemo": false,
+    "search": {
+      "coins": [
+        { "id": "pepe", "name": "Pepe", "symbol": "pepe", "market_cap_rank": 26 },
+        { "id": "pepecash", "name": "PepeCash", "symbol": "pepecash" }
+      ]
+    },
+    "markets": [
+      {
+        "id": "pepe", "symbol": "pepe", "name": "Pepe",
+        "current_price": 0.00001123,
+        "market_cap": 4700000000,
+        "market_cap_rank": 26,
+        "total_volume": 900000000,
+        "price_change_percentage_24h": 6.42,
+        "ath": 0.00002803,
+        "ath_change_percentage": -59.9
+      }
+    ],
+    "dexPairs": [
+      {
+        "chainId": "ethereum", "dexId": "uniswap", "pairAddress": "0xa43fe",
+        "baseToken": { "address": "0x6982508145454ce325ddbe47a25d4ec3d2311933", "name": "Pepe" },
+        "priceUsd": "0.00001125",
+        "liquidity": { "usd": 12500000 },
+        "volume": { "h24": 45000000 },
+        "txns": { "h24": { "buys": 1200, "sells": 900 } }
+      },
+      {
+        "chainId": "bsc", "dexId": "pancakeswap", "pairAddress": "0xbbb01",
+        "baseToken": { "address": "0x25d887ce7a35172c62febfd67a1856f20faebb00" },
+        "liquidity": { "usd": 210000 },
+        "volume": { "h24": 800000 },
+        "txns": { "h24": { "buys": 300, "sells": 250 } }
+      }
+    ],
+    "goplus": {
+      "result": {
+        "0x6982508145454ce325ddbe47a25d4ec3d2311933": {
+          "is_honeypot": "0",
+          "is_mintable": "0",
+          "cannot_sell_all": "0",
+          "sell_tax": "0.0",
+          "owner_percentage": "0.0"
+        }
+      }
+    },
+    "news": [
+      { "title": "PEPE whales accumulate as meme season heats up", "link": "https://coindesk.com/a" },
+      { "title": "Bitcoin ETF inflows hit record week", "link": "https://coindesk.com/b" },
+      { "title": "Pepe-themed tokens outperform market", "link": "https://coindesk.com/c" }
+    ],
+    "llm": {
+      "ok": true,
+      "text": "Momentum is strong: price up 6.4% in 24h on heavy volume with deep Uniswap liquidity and a clean security check. Headline flow skews bullish. Size positions carefully — meme volatility cuts both ways."
+    }
+  }
+}

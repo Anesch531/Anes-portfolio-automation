@@ -1,0 +1,216 @@
+#!/usr/bin/env node
+'use strict';
+// Builds workflows/lead-capture.json FROM tested logic in lib/logic.js.
+// Re-run after editing logic:  node build-workflow.js
+
+const fs = require('fs');
+const path = require('path');
+
+const NAME = 'Lead Capture → Enriched CRM';
+
+const validateBody = [
+  '// Paste of lib/logic.js validateLead + emailHash (+ form/webhook origin handling)',
+  'function emailHash(email){const s=String(email||\'\').trim().toLowerCase();let h=5381;for(let i=0;i<s.length;i++)h=((h<<5)+h+s.charCodeAt(i))>>>0;return \'h\'+h.toString(16);}',
+  "function validateLead(raw){raw=raw||{};const errors=[];const name=String(raw.name||'').trim().slice(0,120);const email=String(raw.email||'').trim().toLowerCase().slice(0,200);const company=String(raw.company||'').trim().slice(0,120);const message=String(raw.message||'').trim().slice(0,2000);const consent=raw.consent===true||raw.consent==='true';if(!name)errors.push('name missing');if(!/^[^\\s@]+@[^\\s@]+\\.[^\\s@]{2,}$/.test(email))errors.push('email invalid');if(!consent)errors.push('consent not given');return {ok:errors.length===0,errors,clean:{name,email,company,message,consent}};}",
+  'const src=$input.item.json;',
+  'let raw, isDemo = false;',
+  'if(src.body){ raw=src.body; isDemo=true; }',
+  "else { raw={ name:src['Name'], email:src['Work email'], company:src['Company']||'', message:src['What do you want automated?']||'', consent:(src['I agree to be contacted about my inquiry']===true||src['I agree to be contacted about my inquiry']==='true') }; }",
+  'const v=validateLead(raw);',
+  'return [{json:{valid:v.ok,errors:v.errors,clean:v.clean,emailHash:emailHash(v.clean.email),isDemo}}];',
+].join('\n');
+
+const dedupeBody = [
+  '// Dedupe on email hash via workflow static data; demo requests bypass.',
+  'const it=$json;',
+  'if(!it.valid) return [{json:it}];',
+  "const s=$getWorkflowStaticData('global');",
+  's.seen=s.seen||{};',
+  'if(!it.isDemo){',
+  '  if(s.seen[it.emailHash]) return [];',
+  '  s.seen[it.emailHash]=Date.now();',
+  '  const cutoff=Date.now()-7*24*3600*1000;',
+  '  for(const k of Object.keys(s.seen)){ if(s.seen[k]<cutoff) delete s.seen[k]; }',
+  '}',
+  'return [{json:Object.assign({},it,{isNew:true})}];',
+].join('\n');
+
+const enrichBody = [
+  '// Paste of lib/logic.js enrich (+ LLM prompt builder)',
+  "const FREE_PROVIDERS=['gmail.com','yahoo.com','outlook.com','hotmail.com','icloud.com','proton.me','protonmail.com'];",
+  "function enrich(clean){const domain=clean.email.split('@')[1]||'';const isFreeProvider=FREE_PROVIDERS.indexOf(domain)!==-1;const base=domain.split('.')[0]||'';const companyName=clean.company||(isFreeProvider?'':base.charAt(0).toUpperCase()+base.slice(1));const initials=clean.name.split(/\\s+/).filter(Boolean).slice(0,2).map(w=>w[0].toUpperCase()).join('');return {domain,isFreeProvider,companyName,initials};}",
+  'const it=$json;',
+  'const e=enrich(it.clean);',
+  "const prompt='Name: '+(it.clean.name||'?')+'\\nCompany: '+(e.companyName||'(none given)')+'\\nEmail domain: '+(e.domain||'?')+'\\nMessage: '+(it.clean.message||'(empty)');",
+  'return [{json:Object.assign({},it,{enrichment:e,llmPrompt:prompt})}];',
+].join('\n');
+
+const mergeBody = [
+  '// Paste of lib/logic.js ruleScore + mergeLlmScore — LLM-or-template per docs/llm-fallback-pattern.md',
+  "const BUY_INTENT_WORDS=['budget','quote','proposal','pricing','integrate','integration','automation','automate','team','company','asap','urgent'];",
+  "function ruleScore(clean,enrichment){let score=40;const why=['base 40'];if(!enrichment.isFreeProvider&&enrichment.domain){score+=25;why.push('work domain (+25)');}if(clean.company){score+=10;why.push('company given (+10)');}if(clean.message.length>80){score+=15;why.push('detailed message (+15)');}const lower=clean.message.toLowerCase();const hits=BUY_INTENT_WORDS.filter(w=>lower.includes(w));if(hits.length){score+=Math.min(10,hits.length*5);why.push('buy-intent words ('+hits.slice(0,3).join(',')+')');}return {score:Math.max(0,Math.min(100,score)),reasons:why};}",
+  "function mergeLlmScore(rule,llmOut){let llmScore=null;let llmReason='';try{if(llmOut&&typeof llmOut.text==='string'){const m=llmOut.text.match(/\\{[\\s\\S]*\\}/);if(m){const j=JSON.parse(m[0]);const v=Math.round(Number(j.score));if(v>=0&&v<=100){llmScore=v;llmReason=String(j.reason||'').slice(0,160);}}}}catch(e){}const score=llmScore==null?rule.score:llmScore;const reason=llmReason||rule.reasons.join(', ');const tier=score>=75?'A':score>=50?'B':'C';return {score,reason,tier,mode:llmScore==null?'template':'llm'};}",
+  'const it=$json;',
+  'const rule=ruleScore(it.clean,it.enrichment);',
+  "let llm={ok:false,text:''};",
+  'try{',
+  "  const r=$('Score lead with LLM').item.json;",
+  "  const txt=r&&r.choices&&r.choices[0]&&r.choices[0].message?r.choices[0].message.content:'';",
+  "  llm={ok:true,text:String(txt)};",
+  '}catch(e){}',
+  'const merged=mergeLlmScore(rule,llm);',
+  'return [{json:Object.assign({},it,{scored:merged})}];',
+].join('\n');
+
+const buildRowBody = [
+  '// Paste of lib/logic.js sheetRow + notifyText + esc + SHEET_HEADERS',
+  "const SHEET_HEADERS=['timestamp','name','email','company','message','score','tier','reason','scoreMode','domain'];",
+  "function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}",
+  "function sheetRow(clean,enrichment,merged){const r={timestamp:new Date().toISOString(),name:clean.name,email:clean.email,company:enrichment.companyName,message:clean.message,score:merged.score,tier:merged.tier,reason:merged.reason,scoreMode:merged.mode,domain:enrichment.domain};const out={};SHEET_HEADERS.forEach(h=>{out[h]=r[h]==null?'':r[h];});return out;}",
+  "function notifyText(row,isDemo){const tone=row.tier==='A'?'🔥':row.tier==='B'?'⚡':'🧊';return [tone+' <b>[NEW LEAD · Tier '+esc(row.tier)+' · '+esc(String(row.score))+'/100]</b>'+(isDemo?' 🧪 [DEMO]':''),'<b>'+esc(row.name)+'</b>'+(row.company?' — '+esc(row.company):''),'✉️ '+esc(row.email),row.message?'\\n💬 <i>'+esc(row.message).slice(0,300)+'</i>':'','\\nWhy: '+esc(row.reason)+' <i>('+esc(row.scoreMode)+')</i>'].filter(Boolean).join('\\n');}",
+  'const it=$json;',
+  'const row=sheetRow(it.clean,it.enrichment,it.scored);',
+  'return [{json:Object.assign({},it,{row,notifyHtml:notifyText(row,it.isDemo)})}];',
+].join('\n');
+
+const emitRowBody = [
+  '// Narrow the payload to exact CRM columns for Sheets auto-mapping',
+  'return [{json:$json.row}];',
+].join('\n');
+
+const httpBase = { type: 'n8n-nodes-base.httpRequest', typeVersion: 4.2 };
+
+const nodes = [
+  { parameters: { content: '## 🧲 Lead Capture → Enriched CRM\nn8n Form (consent checkbox required) or POST `/webhook/lead-capture/demo`.\nValidate → dedupe → enrich → LLM score w/ rule fallback → Google Sheet + Telegram alert.', height: 220, width: 380 },
+    name: 'Sticky overview', type: 'n8n-nodes-base.stickyNote', typeVersion: 1, position: [-620, -240], id: 'm00' },
+  { parameters: { content: '### Fallback\nLLM scorer: no retry, 12s timeout, onError=continue.\nIf reply isn\'t strict `{score,reason}` JSON → deterministic rule score ships (mode=template).', height: 170, width: 340 },
+    name: 'Sticky fallback', type: 'n8n-nodes-base.stickyNote', typeVersion: 1, position: [1560, -260], id: 'm001' },
+
+  { parameters: {
+      formTitle: 'Work with me — project inquiry',
+      formDescription: 'Tell me what you want to automate. I reply within one business day.',
+      formFields: { values: [
+        { fieldLabel: 'Name', requiredField: true },
+        { fieldLabel: 'Work email', fieldType: 'email', requiredField: true },
+        { fieldLabel: 'Company', requiredField: false },
+        { fieldLabel: 'What do you want automated?', fieldType: 'textarea', requiredField: false },
+        { fieldLabel: 'I agree to be contacted about my inquiry', fieldType: 'checkbox', requiredField: true },
+      ] },
+      completionMessage: '✅ Got it! Your inquiry is logged — expect a reply within one business day.',
+      options: {},
+    }, id: 'm01',
+    name: 'Apply via form', type: 'n8n-nodes-base.formTrigger', typeVersion: 2.2, position: [-80, 60] },
+
+  { parameters: { httpMethod: 'POST', path: 'lead-capture/demo', responseMode: 'responseNode', options: {} }, id: 'm02',
+    name: 'Demo lead request', type: 'n8n-nodes-base.webhook', typeVersion: 2, position: [-80, 300] },
+
+  { parameters: { jsCode: validateBody }, id: 'm03',
+    name: 'Validate lead', type: 'n8n-nodes-base.code', typeVersion: 2, position: [180, 180] },
+
+  { parameters: {
+      conditions: {
+        options: { caseSensitive: true, leftValue: '', typeValidation: 'loose', version: 2 },
+        conditions: [{ id: 'is-valid', leftValue: '={{ $json.valid }}', rightValue: '',
+          operator: { type: 'boolean', operation: 'true', singleValue: true } }],
+        combinator: 'and',
+      }, options: {},
+    }, id: 'm04',
+    name: 'Is valid?', type: 'n8n-nodes-base.if', typeVersion: 2.2, position: [400, 180] },
+
+  { parameters: {}, id: 'm05', name: 'Drop invalid lead', type: 'n8n-nodes-base.noOp', typeVersion: 1, position: [620, 340] },
+
+  { parameters: { jsCode: dedupeBody }, id: 'm06',
+    name: 'Dedupe by email hash', type: 'n8n-nodes-base.code', typeVersion: 2, position: [620, 120] },
+
+  { parameters: { jsCode: enrichBody }, id: 'm07',
+    name: 'Enrich lead', type: 'n8n-nodes-base.code', typeVersion: 2, position: [840, 120] },
+
+  Object.assign({}, httpBase, {
+    parameters: {
+      method: 'POST',
+      url: 'https://api.openai.com/v1/chat/completions',
+      specifyBody: 'json',
+      jsonBody: "={{ JSON.stringify({ model: 'gpt-4o-mini', temperature: 0.2, max_tokens: 80, messages: [ { role: 'system', content: 'You score inbound leads for an automation freelancer. Reply with STRICT JSON only: {\"score\": <0-100 integer>, \"reason\": \"<=20 words\"}. Higher = more likely a real paying client.' }, { role: 'user', content: $json.llmPrompt } ] }) }}",
+      options: { timeout: 12000 },
+    },
+    // After import: attach Header Auth credential (Authorization: Bearer <key>). Key never lives here.
+    name: 'Score lead with LLM', position: [1060, 120], id: 'm08',
+    settings: { onError: 'continueRegularOutput' } }),
+
+  { parameters: { jsCode: mergeBody }, id: 'm09',
+    name: 'Merge score', type: 'n8n-nodes-base.code', typeVersion: 2, position: [1280, 120] },
+
+  { parameters: { jsCode: buildRowBody }, id: 'm10',
+    name: 'Build row and alert', type: 'n8n-nodes-base.code', typeVersion: 2, position: [1500, 120] },
+
+  { parameters: {
+      conditions: {
+        options: { caseSensitive: true, leftValue: '', typeValidation: 'loose', version: 2 },
+        conditions: [{ id: 'is-demo', leftValue: '={{ $json.isDemo }}', rightValue: '',
+          operator: { type: 'boolean', operation: 'true', singleValue: true } }],
+        combinator: 'and',
+      }, options: {},
+    }, id: 'm11',
+    name: 'Is demo?', type: 'n8n-nodes-base.if', typeVersion: 2.2, position: [1720, 120] },
+
+  { parameters: {
+      respondWith: 'text',
+      responseBody: "={{ '<h3>🧪 [DEMO] Lead processed</h3><p>Tier ' + $json.scored.tier + ' · ' + $json.scored.score + '/100 (' + $json.scored.mode + ' mode)</p><p>Would append CRM row for <b>' + $json.row.name + '</b> and push owner alert. No real state touched.</p>' }}",
+      options: { responseHeaders: { entries: [{ name: 'Content-Type', value: 'text/html; charset=utf-8' }] } },
+    }, id: 'm12',
+    name: 'Reply demo confirmation', type: 'n8n-nodes-base.respondToWebhook', typeVersion: 1.1, position: [1960, 20] },
+
+  { parameters: { jsCode: emitRowBody }, id: 'm13',
+    name: 'Emit CRM row', type: 'n8n-nodes-base.code', typeVersion: 2, position: [1960, 220] },
+
+  { parameters: {
+      operation: 'append',
+      documentId: { __rl: true, mode: 'url', value: 'PASTE_YOUR_GOOGLE_SHEET_URL_HERE' },
+      sheetName: { __rl: true, mode: 'name', value: 'Leads' },
+      columns: { mappingMode: 'autoMapInputData', matchingColumns: [], schema: [] },
+      options: {},
+    }, id: 'm14',
+    name: 'Log lead to CRM sheet', type: 'n8n-nodes-base.googleSheets', typeVersion: 4.5, position: [2180, 220],
+    settings: { onError: 'continueRegularOutput' } },
+
+  { parameters: {
+      chatId: '={{ $env.TELEGRAM_CHAT_ID }}',
+      text: "={{ $('Build row and alert').item.json.notifyHtml }}",
+      additionalFields: { appendAttribution: false, parse_mode: 'HTML', disable_web_page_preview: true },
+    }, id: 'm15',
+    name: 'Notify owner', type: 'n8n-nodes-base.telegram', typeVersion: 1.2, position: [2400, 220],
+    settings: { onError: 'continueRegularOutput' } },
+];
+
+const edge = to => ({ node: to, type: 'main', index: 0 });
+const connections = {
+  'Apply via form': { main: [[edge('Validate lead')]] },
+  'Demo lead request': { main: [[edge('Validate lead')]] },
+  'Validate lead': { main: [[edge('Is valid?')]] },
+  'Is valid?': { main: [[edge('Dedupe by email hash')], [edge('Drop invalid lead')]] },
+  'Dedupe by email hash': { main: [[edge('Enrich lead')]] },
+  'Enrich lead': { main: [[edge('Score lead with LLM')]] },
+  'Score lead with LLM': { main: [[edge('Merge score')]] },
+  'Merge score': { main: [[edge('Build row and alert')]] },
+  'Build row and alert': { main: [[edge('Is demo?')]] },
+  'Is demo?': { main: [[edge('Reply demo confirmation')], [edge('Emit CRM row')]] },
+  'Emit CRM row': { main: [[edge('Log lead to CRM sheet')]] },
+  'Log lead to CRM sheet': { main: [[edge('Notify owner')]] },
+};
+
+const names = new Set(nodes.map(n => n.name));
+for (const [from, outs] of Object.entries(connections)) {
+  if (!names.has(from)) throw new Error('connection source not a node: ' + from);
+  for (const branch of outs.main) for (const e of branch)
+    if (!names.has(e.node)) throw new Error('connection target not a node: ' + e.node);
+}
+
+const wf = { name: NAME, nodes, connections, active: false, settings: { executionOrder: 'v1' }, meta: { instanceId: 'portfolio-build' } };
+JSON.parse(JSON.stringify(wf));
+
+const outPath = path.join(__dirname, 'workflows', 'lead-capture.json');
+fs.mkdirSync(path.dirname(outPath), { recursive: true });
+fs.writeFileSync(outPath, JSON.stringify(wf, null, 2));
+fs.mkdirSync(path.join(__dirname, '..', '..', 'workflows'), { recursive: true });
+fs.writeFileSync(path.join(__dirname, '..', '..', 'workflows', 'lead-capture.json'), JSON.stringify(wf, null, 2));
+console.log('wrote', outPath, '(' + nodes.length + ' nodes)');

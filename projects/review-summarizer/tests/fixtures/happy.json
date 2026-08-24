@@ -1,0 +1,18 @@
+{
+  "name": "happy path — mixed real-world reviews",
+  "input": {
+    "product": "AuroraDesk Pro standing desk",
+    "reviews": [
+      { "rating": 5, "text": "Assembly took twenty minutes and the motor is whisper quiet. Best desk I have owned." },
+      { "rating": 5, "text": "Sturdy surface, no wobble at full height. The assembly instructions were clear." },
+      { "rating": 4, "text": "Great desk overall. Delivery was quick, packaging solid. Cable tray could be bigger." },
+      { "rating": 2, "text": "Arrived with a damaged corner. Customer service replied fast and sent a replacement top." },
+      { "rating": 3, "text": "Desk is fine but the price feels high for what it is. Assembly was easy though." },
+      { "rating": 1, "text": "Motor died after two weeks. Customer service has been slow to respond this time." }
+    ],
+    "llm": {
+      "ok": true,
+      "text": "{\"themes\":[{\"label\":\"Easy assembly\",\"sentiment\":\"positive\"},{\"label\":\"Motor reliability\",\"sentiment\":\"negative\"},{\"label\":\"Customer service\",\"sentiment\":\"mixed\"}],\"verdict\":\"Buyers love the painless assembly and sturdiness; the recurring sore spot is motor failures and slow service follow-up on those cases.\",\"reply\":\"Thanks for flagging the motor issue — every unit carries a 5-year warranty and our team replaces faulty motors within days. DM us your order number and we will prioritize you today.\"}"
+    }
+  }
+}

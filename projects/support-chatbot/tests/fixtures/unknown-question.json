@@ -1,0 +1,12 @@
+{
+  "name": "unknown question — low confidence, goes to LLM grounding",
+  "input": {
+    "text": "can your robots ride a bicycle to my office",
+    "chatId": 4242,
+    "isDemo": false,
+    "llm": {
+      "ok": true,
+      "text": "I can't arrange bicycle deliveries — I help with business automations like lead pipelines and reporting bots. Ask me about pricing or timelines!"
+    }
+  }
+}

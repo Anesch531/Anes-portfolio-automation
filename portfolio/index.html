@@ -1,0 +1,353 @@
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>YOUR_NAME — Automation Builder | n8n Workflows & AI Integrations</title>
+  <meta name="description" content="I build reliable business automations with n8n: trading intelligence bots, lead pipelines, and AI-powered workflows that never die mid-demo." />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: { ink: '#0b0f14', panel: '#11161d', line: '#1e2630', accent: '#5eead4' },
+          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
+        }
+      }
+    }
+  </script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
+  <style>
+    ::selection { background:#5eead4; color:#0b0f14; }
+    .card:hover { transform: translateY(-2px); border-color:#5eead455; }
+    .card { transition: all .18s ease; }
+    .glow { background: radial-gradient(600px circle at 50% -10%, #5eead41a, transparent 60%); }
+  </style>
+</head>
+<body class="bg-ink text-slate-300 font-sans antialiased">
+
+<!-- NAV -->
+<header class="sticky top-0 z-50 backdrop-blur bg-ink/80 border-b border-line">
+  <nav class="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
+    <a href="#top" class="text-slate-100 font-semibold tracking-tight">YOUR_NAME<span class="text-accent">.builds</span></a>
+    <div class="flex items-center gap-5 text-sm">
+      <a href="#work" class="hover:text-accent hidden sm:inline">Work</a>
+      <a href="#skills" class="hover:text-accent hidden sm:inline">Skills</a>
+      <a href="#about" class="hover:text-accent hidden sm:inline">About</a>
+      <a href="#contact" class="px-3 py-1.5 rounded-lg border border-line hover:border-accent hover:text-accent">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<main id="top">
+
+<!-- HERO -->
+<section class="glow">
+  <div class="max-w-5xl mx-auto px-5 pt-20 pb-16">
+    <p class="text-accent text-sm font-medium mb-3">// automation builder · n8n · AI workflows</p>
+    <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-100 leading-[1.05] tracking-tight">
+      I build automations<br class="hidden sm:block" />
+      businesses would pay for.
+    </h1>
+    <p class="mt-5 max-w-2xl text-lg text-slate-400">
+      Trading intelligence bots, lead pipelines, and AI-powered workflows — engineered
+      with retries, dedupe, and fallbacks so they keep working when APIs misbehave.
+      Every project below runs on $0 of infrastructure.
+    </p>
+    <div class="mt-8 flex flex-wrap gap-3">
+      <a href="#work" class="px-5 py-2.5 rounded-xl bg-accent text-ink font-semibold text-sm hover:brightness-110">See the work</a>
+      <a href="TODO_GITHUB_PROFILE_URL" target="_blank" rel="noopener"
+         class="px-5 py-2.5 rounded-xl border border-line text-slate-200 text-sm font-medium hover:border-accent hover:text-accent">
+        GitHub → proof
+      </a>
+    </div>
+    <!-- TODO_OWNER: add a one-liner social proof here when available (e.g. "currently shipping alerts to N traders") -->
+  </div>
+</section>
+
+<!-- PROJECT GRID -->
+<section id="work" class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-2">Selected work</h2>
+    <p class="text-slate-500 mb-8 text-sm">Five production-style automations. Each links to real code + a live demo.</p>
+
+    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+<!-- PROJECT CARDS -->
+<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col">
+  <span class="text-xs text-accent font-medium">TRADING · n8n · LLM+fallback</span>
+  <h3 class="text-slate-100 font-semibold mt-2 mb-1">Token Research Report Bot</h3>
+  <p class="text-sm text-slate-400 flex-1">One command → a research card: live price, deepest DEX pool, GoPlus scam-flag check, filtered headlines, cautious verdict.</p>
+  <div class="mt-4 flex gap-4 text-sm">
+    <a href="#case-token-research" class="text-accent hover:underline">Case study</a>
+    <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/token-research" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+  </div>
+</div>
+
+<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col">
+  <span class="text-xs text-accent font-medium">ECOMMERCE · n8n · Sheets CRM</span>
+  <h3 class="text-slate-100 font-semibold mt-2 mb-1">Lead Capture → Enriched CRM</h3>
+  <p class="text-sm text-slate-400 flex-1">Consent form → dedupe → enrich → LLM-scored intent (rule-score fallback) → Google Sheet row + instant tiered alert.</p>
+  <div class="mt-4 flex gap-4 text-sm">
+    <a href="#case-lead-capture" class="text-accent hover:underline">Case study</a>
+    <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/lead-capture" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+  </div>
+</div>
+
+<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col">
+  <span class="text-xs text-accent font-medium">ECOMMERCE · n8n · AI summary</span>
+  <h3 class="text-slate-100 font-semibold mt-2 mb-1">Review Summarizer</h3>
+  <p class="text-sm text-slate-400 flex-1">Raw reviews in → digest out: rating split, themed ▲▼ polarity, verdict, suggested public reply. Works even with the AI off.</p>
+  <div class="mt-4 flex gap-4 text-sm">
+    <a href="#case-review-summarizer" class="text-accent hover:underline">Case study</a>
+    <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/review-summarizer" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+  </div>
+</div>
+
+<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col">
+  <span class="text-xs text-accent font-medium">SUPPORT · Telegram · RAG-style</span>
+  <h3 class="text-slate-100 font-semibold mt-2 mb-1">Client Support Chatbot</h3>
+  <p class="text-sm text-slate-400 flex-1">FAQ-fast answers at $0; LLM grounding only for the unknowns; honest fallbacks and human escalation built in.</p>
+  <div class="mt-4 flex gap-4 text-sm">
+    <a href="#case-support-chatbot" class="text-accent hover:underline">Case study</a>
+    <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/support-chatbot" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+  </div>
+</div>
+
+<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col sm:col-span-2 lg:col-span-1">
+  <span class="text-xs text-accent font-medium">TRADING · n8n · alerts</span>
+  <h3 class="text-slate-100 font-semibold mt-2 mb-1">Smart Money Alert Bot</h3>
+  <p class="text-sm text-slate-400 flex-1">Push alerts on smart-money token movements — the original bot that set this repo's conventions.</p>
+  <div class="mt-4 flex gap-4 text-sm">
+    <a href="#case-smart-money" class="text-accent hover:underline">Case study</a>
+    <a href="TODO_SMART_MONEY_GITHUB_LINK" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+  </div>
+</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE STUDIES -->
+<!-- 1 · Token Research -->
+<section id="case-token-research" class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
+    <div>
+      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · trading intelligence</p>
+      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Token Research Report Bot</h3>
+      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Checking a token means hopping between five sites and still missing contract risks. Traders want one trustworthy answer in seconds.</p>
+      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> A Telegram command that fuses CoinGecko markets, the deepest DexScreener pool, a GoPlus security check (honeypot, mint rights, taxes, owner holdings) and filtered headlines into one rich report card — then writes a cautious verdict. If any source fails the card ships degraded and says so.</p>
+      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+        <li>LLM verdict is grounded in fetched facts only, validated, with a deterministic template fallback</li>
+        <li>Primary APIs retry ×3; enrichments degrade gracefully — the report never dies mid-demo</li>
+        <li>Isolated demo endpoint answers over HTTP without touching real chats</li>
+      </ul>
+      <div class="flex flex-wrap gap-4 text-sm">
+        <a href="TODO_DEMO_VIDEO_TOKEN_RESEARCH" class="text-accent hover:underline">▶ Watch demo (45s)</a>
+        <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/token-research" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Read the code ↗</a>
+      </div>
+    </div>
+    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
+        <span class="px-2 py-1 rounded-lg border border-line">n8n</span><span class="px-2 py-1 rounded-lg border border-line">Code nodes</span>
+        <span class="px-2 py-1 rounded-lg border border-line">CoinGecko API</span><span class="px-2 py-1 rounded-lg border border-line">DexScreener</span>
+        <span class="px-2 py-1 rounded-lg border border-line">GoPlus Security</span><span class="px-2 py-1 rounded-lg border border-line">LLM + template fallback</span>
+        <span class="px-2 py-1 rounded-lg border border-line">Fixtures & tests</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 2 · Lead Capture -->
+<section id="case-lead-capture" class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
+    <div>
+      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · lead pipeline</p>
+      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Lead Capture → Enriched CRM</h3>
+      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Small businesses lose leads in inbox chaos: no scoring, duplicates, zero instant follow-up.</p>
+      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> Consent-based form → validation → 7-day dedupe on email hash → enrichment (company inferred from work domain) → LLM intent score 0–100 with a deterministic rule-score fallback → exact-schema Google Sheets row + instant tiered Telegram alert (🔥A / ⚡B / 🧊C) explaining the "why".</p>
+      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+        <li>Consent enforced in code — the pipeline refuses to run without it</li>
+        <li>Sheet append failing never blocks the owner alert (error branches everywhere)</li>
+        <li>Demo mode processes a full lead while writing nothing to real state</li>
+      </ul>
+      <div class="flex flex-wrap gap-4 text-sm">
+        <a href="TODO_DEMO_VIDEO_LEAD_CAPTURE" class="text-accent hover:underline">▶ Watch demo (55s)</a>
+        <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/lead-capture" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Read the code ↗</a>
+      </div>
+    </div>
+    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
+        <span class="px-2 py-1 rounded-lg border border-line">n8n Forms</span><span class="px-2 py-1 rounded-lg border border-line">Google Sheets API</span>
+        <span class="px-2 py-1 rounded-lg border border-line">Static-data dedupe</span><span class="px-2 py-1 rounded-lg border border-line">LLM scoring + rule fallback</span>
+        <span class="px-2 py-1 rounded-lg border border-line">Telegram alerts</span><span class="px-2 py-1 rounded-lg border border-line">Consent-first design</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 3 · Review Summarizer -->
+<section id="case-review-summarizer" class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
+    <div>
+      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · AI content ops</p>
+      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Review Summarizer</h3>
+      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Shop owners drown in raw reviews and never extract what matters: recurring complaints and praise worth acting on.</p>
+      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> One webhook: messy reviews in → digest out. Deterministic heuristics compute the rating split and themes first (one vote per review per theme, polarity from average rating of mentions); the LLM only writes the verdict and a suggested public reply, returning strict validated JSON.</p>
+      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+        <li>Runs end-to-end with the AI completely off — mode shown honestly in the footer</li>
+        <li>Junk rows skipped and counted; empty payloads get a friendly usage note</li>
+        <li>The cheapest project here to run: zero external data sources</li>
+      </ul>
+      <div class="flex flex-wrap gap-4 text-sm">
+        <a href="TODO_DEMO_VIDEO_REVIEW_SUMMARIZER" class="text-accent hover:underline">▶ Watch demo (40s)</a>
+        <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/review-summarizer" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Read the code ↗</a>
+      </div>
+    </div>
+    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
+        <span class="px-2 py-1 rounded-lg border border-line">n8n webhooks</span><span class="px-2 py-1 rounded-lg border border-line">Theme heuristics</span>
+        <span class="px-2 py-1 rounded-lg border border-line">Strict JSON validation</span><span class="px-2 py-1 rounded-lg border border-line">Template fallback</span>
+        <span class="px-2 py-1 rounded-lg border border-line">$0 runtime</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 4 · Support Chatbot -->
+<section id="case-support-chatbot" class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
+    <div>
+      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · client support</p>
+      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Client Support Chatbot</h3>
+      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Clients ask the same ten questions; founders burn hours answering them — and chatbots that hallucinate prices make things worse.</p>
+      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> A Telegram bot that answers from an owned knowledge base first (free, instant, deterministic retrieval with tag-boosted scoring). Only unknown questions go to an LLM, grounded with the full KB and strict system rules. Every reply is honestly tagged 📖 FAQ / 🤖 AI-assisted / 📮 human.</p>
+      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+        <li>Escalation detection ("human", "agent") hands off gracefully</li>
+        <li>Channel-agnostic brain — swap to WhatsApp Cloud API by changing trigger nodes only</li>
+        <li>/demo command replays a canned question through the real pipeline</li>
+      </ul>
+      <div class="flex flex-wrap gap-4 text-sm">
+        <a href="TODO_DEMO_VIDEO_SUPPORT_CHATBOT" class="text-accent hover:underline">▶ Watch demo (50s)</a>
+        <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/support-chatbot" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Read the code ↗</a>
+      </div>
+    </div>
+    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
+        <span class="px-2 py-1 rounded-lg border border-line">Telegram Bot API</span><span class="px-2 py-1 rounded-lg border border-line">KB retrieval scoring</span>
+        <span class="px-2 py-1 rounded-lg border border-line">Grounded LLM prompts</span><span class="px-2 py-1 rounded-lg border border-line">Honest fallbacks</span>
+        <span class="px-2 py-1 rounded-lg border border-line">Human escalation</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 5 · Smart Money -->
+<section id="case-smart-money" class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
+    <div>
+      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · the original</p>
+      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Smart Money Alert Bot</h3>
+      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Retail traders see whale moves hours late, after the alpha is gone.</p>
+      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> Push-not-poll alerting on smart-money token movements with dedupe on natural keys, timeouts/retries on every external call, and rich formatted push messages. This bot set the conventions every project in this repo follows.</p>
+      <p class="text-xs text-slate-600 mb-4">TODO_SMART_MONEY_EXTRAS — add your real numbers/sources here (which chain, which signal, latency).</p>
+      <div class="flex flex-wrap gap-4 text-sm">
+        <a href="TODO_DEMO_VIDEO_SMART_MONEY" class="text-accent hover:underline">▶ Demo</a>
+        <a href="TODO_SMART_MONEY_GITHUB_LINK" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Code ↗</a>
+      </div>
+    </div>
+    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
+        <span class="px-2 py-1 rounded-lg border border-line">n8n</span><span class="px-2 py-1 rounded-lg border border-line">Webhooks / push-not-poll</span>
+        <span class="px-2 py-1 rounded-lg border border-line">Dedupe via static data</span><span class="px-2 py-1 rounded-lg border border-line">Telegram push</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills" class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-8">Skills</h2>
+    <div class="grid gap-6 sm:grid-cols-3">
+      <div>
+        <h3 class="text-accent font-semibold mb-3 text-sm uppercase tracking-wider">Automation</h3>
+        <ul class="space-y-1.5 text-sm text-slate-400">
+          <li>n8n workflow design</li><li>Webhooks & push-not-poll</li>
+          <li>Error branches, retries, timeouts</li><li>Dedupe via static data</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-accent font-semibold mb-3 text-sm uppercase tracking-wider">Code</h3>
+        <ul class="space-y-1.5 text-sm text-slate-400">
+          <li>JavaScript / n8n Code nodes</li><li>REST APIs & JSON wrangling</li>
+          <li>Git & clean commit history</li><li>Zero-dep test runners + fixtures</li>
+        </ul>
+      </div>
+      <div>
+        <h3 class="text-accent font-semibold mb-3 text-sm uppercase tracking-wider">AI Integration</h3>
+        <ul class="space-y-1.5 text-sm text-slate-400">
+          <li>LLM summarization & classification</li><li>Template-fallback resilience pattern</li>
+          <li>Prompt design for structured output</li><li>Cost-aware model choice</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about" class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-16 grid md:grid-cols-[1fr,260px] gap-10">
+    <div>
+      <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-4">About</h2>
+      <p class="text-slate-400 leading-relaxed">
+        TODO_ABOUT_PARAGRAPH_1 — who you are, what you do, in first person. Two or three
+        sentences. Mention you build automations end-to-end: data sources, logic, delivery.
+      </p>
+      <p class="text-slate-400 leading-relaxed mt-4">
+        TODO_ABOUT_PARAGRAPH_2 — why reliability is your thing: "the difference between a
+        demo and a product is what happens when an API times out." Something like this, your words.
+      </p>
+    </div>
+    <aside class="panel-card rounded-2xl border border-line p-5 h-fit bg-panel">
+      <h3 class="text-slate-100 font-semibold text-sm mb-3">Quick facts</h3>
+      <ul class="text-sm text-slate-400 space-y-2">
+        <li>📍 TODO_LOCATION</li>
+        <li>💼 TODO_STATUS ("open to team roles")</li>
+        <li>🔗 TODO_LINKEDIN_URL</li>
+        <li>🐦 TODO_X_OR_TELEGRAM_HANDLE</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" class="border-t border-line glow">
+  <div class="max-w-5xl mx-auto px-5 py-16">
+    <h2 class="text-2xl sm:text-3xl font-bold text-slate-100">Get in touch</h2>
+    <p class="text-slate-400 mt-3 max-w-xl">
+      Best way to reach me: <a class="text-accent hover:underline" href="mailto:TODO_EMAIL">TODO_EMAIL</a>.
+      <!-- TODO_OWNER optional consent-based form: embed Tally/Netlify Forms with explicit opt-in checkbox. No harvesting. -->
+    </p>
+    <div class="mt-6 flex flex-wrap gap-3 text-sm">
+      <a href="TODO_GITHUB_PROFILE_URL" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl border border-line hover:border-accent hover:text-accent">GitHub</a>
+      <a href="TODO_LINKEDIN_URL" class="px-4 py-2 rounded-xl border border-line hover:border-accent hover:text-accent">LinkedIn</a>
+      <a href="mailto:TODO_EMAIL" class="px-4 py-2 rounded-xl border border-line hover:border-accent hover:text-accent">Email</a>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-line">
+  <div class="max-w-5xl mx-auto px-5 py-8 flex flex-wrap justify-between gap-2 text-xs text-slate-600">
+    <span>© YOUR_YEAR YOUR_NAME — built by hand, shipped on free tiers.</span>
+    <span>n8n · JavaScript · LLM-with-fallbacks</span>
+  </div>
+</footer>
+
+</main>
+</body>
+</html>

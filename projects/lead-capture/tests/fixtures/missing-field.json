@@ -1,0 +1,12 @@
+{
+  "name": "missing field — no consent, broken email",
+  "input": {
+    "origin": "webhook",
+    "payload": {
+      "name": "",
+      "email": "not-an-email",
+      "consent": false
+    }
+  },
+  "llm": { "ok": false }
+}

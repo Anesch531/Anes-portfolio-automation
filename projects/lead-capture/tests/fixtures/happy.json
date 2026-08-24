@@ -1,0 +1,17 @@
+{
+  "name": "happy path — strong B2B lead, healthy LLM",
+  "input": {
+    "origin": "form",
+    "payload": {
+      "name": "Maya Chen",
+      "email": "maya@northbeam-logistics.com",
+      "company": "NorthBeam Logistics",
+      "message": "We run fulfillment for 40 warehouses and our ops team wastes hours daily on manual status emails. Looking to automate reporting across our WMS and get a quote this month. Budget approved, team of 12 waiting on this.",
+      "consent": true
+    },
+    "llm": {
+      "ok": true,
+      "text": "{\"score\": 88, \"reason\": \"Work domain, detailed ops pain, explicit budget and timeline — high-intent buyer.\"}"
+    }
+  }
+}

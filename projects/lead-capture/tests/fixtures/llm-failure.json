@@ -1,0 +1,13 @@
+{
+  "name": "llm failure — scorer down, rule score must ship",
+  "input": {
+    "origin": "form",
+    "payload": {
+      "name": "Sam Okafor",
+      "email": "sam@gmail.com",
+      "message": "hi curious about prices",
+      "consent": true
+    },
+    "llm": { "ok": false, "error": "429 rate limited" }
+  }
+}

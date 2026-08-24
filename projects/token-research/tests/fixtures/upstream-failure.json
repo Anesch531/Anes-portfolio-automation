@@ -1,0 +1,22 @@
+{
+  "name": "upstream failure — markets endpoint returned garbage/null",
+  "input": {
+    "text": "/research pepe",
+    "isDemo": false,
+    "search": {
+      "coins": [{ "id": "pepe", "name": "Pepe", "symbol": "pepe" }]
+    },
+    "markets": null,
+    "dexPairs": [
+      {
+        "chainId": "ethereum", "dexId": "uniswap", "pairAddress": "0x1193",
+        "baseToken": { "address": "0x6982508145454ce325ddbe47a25d4ec3d2311933" },
+        "liquidity": { "usd": 12500000 }, "volume": { "h24": 45000000 },
+        "txns": { "h24": { "buys": 1200, "sells": 900 } }
+      }
+    ],
+    "goplus": { "result": {} },
+    "news": [],
+    "llm": { "ok": false, "error": "upstream timeout" }
+  }
+}

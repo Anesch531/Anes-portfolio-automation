@@ -1,0 +1,9 @@
+{
+  "name": "escalation — client asks for a human",
+  "input": {
+    "text": "I want to talk to a real person please",
+    "chatId": 4242,
+    "isDemo": false
+  },
+  "llm": { "ok": false }
+}

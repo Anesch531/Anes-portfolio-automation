@@ -1,0 +1,14 @@
+{
+  "name": "duplicate event — same email submitted twice",
+  "input": {
+    "origin": "form",
+    "payload": {
+      "name": "Dana Reeve",
+      "email": "Dana@BrightLoop.io",
+      "message": "second submission, same person",
+      "consent": true
+    },
+    "seenHashOfFirstSubmission": "computed by runner from happy.json email"
+  },
+  "llm": { "ok": false }
+}

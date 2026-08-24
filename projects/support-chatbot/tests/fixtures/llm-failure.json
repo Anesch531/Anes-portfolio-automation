@@ -1,0 +1,9 @@
+{
+  "name": "llm failure — unknown question AND LLM down → honest fallback",
+  "input": {
+    "text": "do you sponsor competitive chess teams",
+    "chatId": 4242,
+    "isDemo": true
+  },
+  "llm": { "ok": false, "error": "connection refused" }
+}
