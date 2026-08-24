@@ -99,6 +99,7 @@ const nodes = [
     parameters: {
       method: 'POST',
       url: 'https://api.nanobridge.net/chat/completions',
+      sendBody: true,
       specifyBody: 'json',
       jsonBody: "={{ JSON.stringify({ model: 'deepseek-v4-flash', temperature: 0.3, max_tokens: 300, messages: [ { role: 'system', content: 'You summarize product reviews for shop owners. Reply with STRICT JSON only — no markdown fences.' }, { role: 'user', content: $json.llmPrompt } ] }) }}",
       options: { timeout: 12000 },
