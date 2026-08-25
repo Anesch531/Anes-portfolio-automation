@@ -1,303 +1,363 @@
 <!doctype html>
 <html lang="en" class="scroll-smooth">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Mohammed Anes — Automation Builder | n8n Workflows & AI Integrations</title>
-  <meta name="description" content="I build reliable business automations with n8n: trading intelligence bots, lead pipelines, and AI-powered workflows that never die mid-demo." />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: { ink: '#0b0f14', panel: '#11161d', line: '#1e2630', accent: '#5eead4' },
-          fontFamily: { sans: ['Inter', 'ui-sans-serif', 'system-ui'] },
-        }
-      }
-    }
-  </script>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&display=swap" rel="stylesheet">
-  <style>
-    ::selection { background:#5eead4; color:#0b0f14; }
-    .card:hover { transform: translateY(-2px); border-color:#5eead455; }
-    .card { transition: all .18s ease; }
-    .glow { background: radial-gradient(600px circle at 50% -10%, #5eead41a, transparent 60%); }
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Mohammed Anes — Automation Builder | n8n Workflows & AI Integrations</title>
+<meta name="description" content="I build reliable business automations with n8n: trading intelligence bots, lead pipelines, and AI-powered workflows that never die mid-demo. Tested, documented, $0 infrastructure." />
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+tailwind.config = {
+  theme: { extend: {
+    colors: { ink:'#05070d', panel:'rgba(255,255,255,0.03)', line:'rgba(255,255,255,0.08)', accent:'#5eead4', violet:'#818cf8', pink:'#e879f9' },
+    fontFamily: { display:['Space Grotesk','ui-sans-serif'], body:['Inter','ui-sans-serif'], mono:['JetBrains Mono','monospace'] },
+  }}
+}
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+  ::selection{background:#5eead4;color:#05070d}
+  html{scrollbar-width:thin;scrollbar-color:#1f2937 #05070d}
+  ::-webkit-scrollbar{width:9px}::-webkit-scrollbar-track{background:#05070d}
+  ::-webkit-scrollbar-thumb{background:#1f2937;border-radius:9px}::-webkit-scrollbar-thumb:hover{background:#374151}
+  body{overflow-x:hidden}
+  /* aurora */
+  .aurora{position:fixed;border-radius:9999px;filter:blur(110px);opacity:.22;pointer-events:none;z-index:0}
+  .aurora-a{width:44rem;height:44rem;background:radial-gradient(circle,#14b8a6aa,transparent 65%);top:-16rem;left:-12rem;animation:drift 26s ease-in-out infinite alternate}
+  .aurora-b{width:40rem;height:40rem;background:radial-gradient(circle,#6366f1aa,transparent 65%);top:30%;right:-14rem;animation:drift 32s ease-in-out infinite alternate-reverse}
+  .aurora-c{width:36rem;height:36rem;background:radial-gradient(circle,#d946ef88,transparent 65%);bottom:-18rem;left:28%;animation:drift 38s ease-in-out infinite alternate}
+  @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(6rem,4rem) scale(1.15)}}
+  /* reveal */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1);transition-delay:calc(var(--i,0)*90ms)}
+  .reveal.in{opacity:1;transform:none}
+  /* gradient text */
+  .grad-text{background:linear-gradient(92deg,#5eead4 0%,#818cf8 48%,#e879f9 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+  /* cards */
+  .glass{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px)}
+  .glass:hover{border-color:rgba(94,234,212,.35)}
+  .card{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
+  .card:hover{transform:translateY(-4px);box-shadow:0 12px 48px -12px rgba(94,234,212,.14)}
+  .tilt{will-change:transform;transition:transform .15s ease-out}
+  /* marquee */
+  .marquee{display:flex;gap:3rem;width:max-content;animation:mq 30s linear infinite}
+  .marquee:hover{animation-play-state:paused}
+  @keyframes mq{to{transform:translateX(-50%)}}
+  .mask-x{mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
+  /* watermark numbers */
+  .wm{position:absolute;top:-1.4rem;right:.4rem;font-family:'Space Grotesk';font-weight:700;font-size:6.5rem;line-height:1;background:linear-gradient(180deg,rgba(94,234,212,.14),transparent);-webkit-background-clip:text;background-clip:text;color:transparent;pointer-events:none;user-select:none}
+  /* buttons */
+  .btn-primary{background:linear-gradient(92deg,#5eead4,#818cf8);color:#05070d;box-shadow:0 0 0 0 rgba(94,234,212,.4);transition:box-shadow .25s,filter .2s}
+  .btn-primary:hover{filter:brightness(1.08);box-shadow:0 0 34px -6px rgba(94,234,212,.45)}
+  .chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
+  .kicker{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#5eead4}
+  @media (prefers-reduced-motion: reduce){
+    .aurora,.marquee{animation:none!important}
+    .reveal{opacity:1!important;transform:none!important;transition:none!important}
+    .card,.tilt{transition:none!important}
+  }
+</style>
 </head>
-<body class="bg-ink text-slate-300 font-sans antialiased">
+<body class="bg-ink text-slate-300 font-body antialiased">
 
-<!-- NAV -->
-<header class="sticky top-0 z-50 backdrop-blur bg-ink/80 border-b border-line">
-  <nav class="max-w-5xl mx-auto px-5 h-14 flex items-center justify-between">
-    <a href="#top" class="text-slate-100 font-semibold tracking-tight">Mohammed Anes</a>
-    <div class="flex items-center gap-5 text-sm">
+<!-- backdrop layers -->
+<div class="aurora aurora-a"></div><div class="aurora aurora-b"></div><div class="aurora aurora-c"></div>
+<canvas id="bg" class="fixed inset-0 z-[1] pointer-events-none"></canvas>
+
+<!-- scroll progress -->
+<div id="progress" class="fixed top-0 left-0 h-[2px] z-[60] bg-gradient-to-r from-accent via-violet to-pink" style="width:0%"></div>
+
+<!-- nav -->
+<header class="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-ink/70 border-b border-line">
+  <nav class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
+    <a href="#top" class="font-display font-bold tracking-tight text-slate-100 text-lg">Mohammed Anes</a>
+    <div class="flex items-center gap-6 text-sm">
       <a href="#work" class="hover:text-accent hidden sm:inline">Work</a>
       <a href="#skills" class="hover:text-accent hidden sm:inline">Skills</a>
       <a href="#about" class="hover:text-accent hidden sm:inline">About</a>
-      <a href="#contact" class="px-3 py-1.5 rounded-lg border border-line hover:border-accent hover:text-accent">Contact</a>
+      <a href="https://github.com/Anesch531" target="_blank" rel="noopener" class="hover:text-accent hidden md:inline">GitHub</a>
+      <a href="#contact" class="px-4 py-1.5 rounded-full border border-line hover:border-accent hover:text-accent transition-colors">Contact</a>
     </div>
   </nav>
 </header>
 
-<main id="top">
+<main id="top" class="relative z-10">
 
 <!-- HERO -->
-<section class="glow">
-  <div class="max-w-5xl mx-auto px-5 pt-20 pb-16">
-    <p class="text-accent text-sm font-medium mb-3">// automation builder · n8n · AI workflows</p>
-    <h1 class="text-4xl sm:text-6xl font-extrabold text-slate-100 leading-[1.05] tracking-tight">
-      I build automations<br class="hidden sm:block" />
-      businesses would pay for.
+<section class="relative min-h-[92vh] flex items-center">
+  <div class="max-w-6xl mx-auto px-5 pt-32 pb-20 w-full">
+    <p class="reveal kicker mb-5">// automation builder · n8n · AI workflows</p>
+    <h1 class="reveal font-display font-bold text-slate-100 leading-[1.02] tracking-tight text-4xl sm:text-6xl lg:text-7xl max-w-4xl" style="--i:1">
+      I build automations<br/>
+      <span class="grad-text">businesses would pay for.</span>
     </h1>
-    <p class="mt-5 max-w-2xl text-lg text-slate-400">
+    <p class="reveal mt-7 max-w-2xl text-lg text-slate-400 leading-relaxed" style="--i:2">
       Trading intelligence bots, lead pipelines, and AI-powered workflows — engineered
       with retries, dedupe, and fallbacks so they keep working when APIs misbehave.
       Every project below runs on $0 of infrastructure.
     </p>
-    <div class="mt-8 flex flex-wrap gap-3">
-      <a href="#work" class="px-5 py-2.5 rounded-xl bg-accent text-ink font-semibold text-sm hover:brightness-110">See the work</a>
+    <div class="reveal mt-10 flex flex-wrap gap-4" style="--i:3">
+      <a href="#work" class="btn-primary px-7 py-3 rounded-2xl font-semibold text-sm">See the work ↓</a>
       <a href="https://github.com/Anesch531" target="_blank" rel="noopener"
-         class="px-5 py-2.5 rounded-xl border border-line text-slate-200 text-sm font-medium hover:border-accent hover:text-accent">
-        GitHub — see the code
-      </a>
+         class="px-7 py-3 rounded-2xl border border-line text-slate-200 text-sm font-medium hover:border-accent hover:text-accent transition-colors">GitHub — see the code</a>
     </div>
+    <!-- stats -->
+    <div class="reveal mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl" style="--i:4">
+      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="5">0</span></div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Automations shipped</div></div>
+      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="41">0</span>+</div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Tests passing</div></div>
+      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="8">0</span>+</div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Wallets tracked live</div></div>
+      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold grad-text">$0</div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Infra cost / month</div></div>
     </div>
+  </div>
 </section>
 
-<!-- PROJECT GRID -->
-<section id="work" class="border-t border-line">
-  <div class="max-w-5xl mx-auto px-5 py-16">
-    <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-2">Selected work</h2>
-    <p class="text-slate-500 mb-8 text-sm">Five production-style automations. Each links to real code, tests, and a full case study.</p>
-
-    <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-<!-- PROJECT CARDS -->
-<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col">
-  <span class="text-xs text-accent font-medium">TRADING · n8n · LLM+fallback</span>
-  <h3 class="text-slate-100 font-semibold mt-2 mb-1">Token Research Report Bot</h3>
-  <p class="text-sm text-slate-400 flex-1">One command → a research card: live price, deepest DEX pool, GoPlus scam-flag check, filtered headlines, cautious verdict.</p>
-  <div class="mt-4 flex gap-4 text-sm">
-    <a href="#case-token-research" class="text-accent hover:underline">Case study</a>
-    <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/token-research" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+<!-- MARQUEE -->
+<section aria-hidden="true" class="border-y border-line py-4 overflow-hidden mask-x relative z-10 bg-ink/40">
+  <div class="marquee font-mono text-sm text-slate-500 whitespace-nowrap">
+    <span>n8n workflows</span><span class="text-accent">✦</span><span>JavaScript</span><span class="text-violet">✦</span><span>HMAC-SHA256</span><span class="text-pink">✦</span><span>Webhooks · push-not-poll</span><span class="text-accent">✦</span><span>REST APIs</span><span class="text-violet">✦</span><span>Google Sheets CRM</span><span class="text-pink">✦</span><span>Telegram Bot API</span><span class="text-accent">✦</span><span>LLM + template fallbacks</span><span class="text-violet">✦</span><span>CoinGecko · GoPlus · DexScreener</span><span class="text-pink">✦</span><span>fixtures-first testing</span><span class="text-accent">✦</span>
+    <span>n8n workflows</span><span class="text-accent">✦</span><span>JavaScript</span><span class="text-violet">✦</span><span>HMAC-SHA256</span><span class="text-pink">✦</span><span>Webhooks · push-not-poll</span><span class="text-accent">✦</span><span>REST APIs</span><span class="text-violet">✦</span><span>Google Sheets CRM</span><span class="text-pink">✦</span><span>Telegram Bot API</span><span class="text-accent">✦</span><span>LLM + template fallbacks</span><span class="text-violet">✦</span><span>CoinGecko · GoPlus · DexScreener</span><span class="text-pink">✦</span><span>fixtures-first testing</span><span class="text-accent">✦</span>
   </div>
-</div>
+</section>
 
-<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col">
-  <span class="text-xs text-accent font-medium">ECOMMERCE · n8n · Sheets CRM</span>
-  <h3 class="text-slate-100 font-semibold mt-2 mb-1">Lead Capture → Enriched CRM</h3>
-  <p class="text-sm text-slate-400 flex-1">Consent form → dedupe → enrich → LLM-scored intent (rule-score fallback) → Google Sheet row + instant tiered alert.</p>
-  <div class="mt-4 flex gap-4 text-sm">
-    <a href="#case-lead-capture" class="text-accent hover:underline">Case study</a>
-    <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/lead-capture" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
-  </div>
-</div>
+<!-- WORK GRID -->
+<section id="work" class="relative">
+  <div class="max-w-6xl mx-auto px-5 py-24">
+    <p class="reveal kicker mb-3">01 — selected work</p>
+    <h2 class="reveal font-display text-3xl sm:text-4xl font-bold text-slate-100 mb-3">Five production-style automations.</h2>
+    <p class="reveal text-slate-500 mb-12 text-sm" style="--i:1">Five production-style automations. Each links to real code, tests, and a full case study.</p>
+    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
-<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col">
-  <span class="text-xs text-accent font-medium">ECOMMERCE · n8n · AI summary</span>
-  <h3 class="text-slate-100 font-semibold mt-2 mb-1">Review Summarizer</h3>
-  <p class="text-sm text-slate-400 flex-1">Raw reviews in → digest out: rating split, themed ▲▼ polarity, verdict, suggested public reply. Works even with the AI off.</p>
-  <div class="mt-4 flex gap-4 text-sm">
-    <a href="#case-review-summarizer" class="text-accent hover:underline">Case study</a>
-    <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/review-summarizer" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
-  </div>
-</div>
-
-<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col">
-  <span class="text-xs text-accent font-medium">SUPPORT · Telegram · RAG-style</span>
-  <h3 class="text-slate-100 font-semibold mt-2 mb-1">Client Support Chatbot</h3>
-  <p class="text-sm text-slate-400 flex-1">FAQ-fast answers at $0; LLM grounding only for the unknowns; honest fallbacks and human escalation built in.</p>
-  <div class="mt-4 flex gap-4 text-sm">
-    <a href="#case-support-chatbot" class="text-accent hover:underline">Case study</a>
-    <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/support-chatbot" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
-  </div>
-</div>
-
-<div class="card rounded-2xl border border-line bg-panel p-5 flex flex-col sm:col-span-2 lg:col-span-1">
-      <span class="text-xs text-accent font-medium">TRADING · n8n · real-time push</span>
-      <h3 class="text-slate-100 font-semibold mt-2 mb-1">Smart Money Alert Bot</h3>
-      <p class="text-sm text-slate-400 flex-1">The original: signed Alchemy webhooks, trade-leg classification, $100K gate, HMAC-verified, AI one-liner with template fallback. Proven under double-failure.</p>
-      <div class="mt-4 flex gap-4 text-sm">
-        <a href="#case-smart-money" class="text-accent hover:underline">Case study</a>
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col" style="--i:0">
+        <span class="text-xs text-accent font-medium">TRADING · n8n · LLM+fallback</span>
+        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Token Research Report Bot</h3>
+        <p class="text-sm text-slate-400 flex-1 leading-relaxed">One command → a research card: live price, deepest DEX pool, GoPlus scam-flag check, filtered headlines, cautious verdict.</p>
+        <div class="mt-6 flex gap-5 text-sm">
+          <a href="#case-token-research" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
+          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/token-research" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+        </div>
       </div>
-    </div>
+
+      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col" style="--i:1">
+        <span class="text-xs text-accent font-medium">ECOMMERCE · n8n · Sheets CRM</span>
+        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Lead Capture → Enriched CRM</h3>
+        <p class="text-sm text-slate-400 flex-1 leading-relaxed">Consent form → dedupe → enrich → LLM-scored intent (rule-score fallback) → Google Sheet row + instant tiered alert.</p>
+        <div class="mt-6 flex gap-5 text-sm">
+          <a href="#case-lead-capture" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
+          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/lead-capture" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col" style="--i:2">
+        <span class="text-xs text-accent font-medium">ECOMMERCE · n8n · AI summary</span>
+        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Review Summarizer</h3>
+        <p class="text-sm text-slate-400 flex-1 leading-relaxed">Raw reviews in → digest out: rating split, themed ▲▼ polarity, verdict, suggested public reply. Works even with the AI off.</p>
+        <div class="mt-6 flex gap-5 text-sm">
+          <a href="#case-review-summarizer" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
+          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/review-summarizer" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col" style="--i:3">
+        <span class="text-xs text-accent font-medium">SUPPORT · Telegram · RAG-style</span>
+        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Client Support Chatbot</h3>
+        <p class="text-sm text-slate-400 flex-1 leading-relaxed">FAQ-fast answers at $0; LLM grounding only for the unknowns; honest fallbacks and human escalation built in.</p>
+        <div class="mt-6 flex gap-5 text-sm">
+          <a href="#case-support-chatbot" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
+          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/support-chatbot" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col sm:col-span-2 lg:col-span-1 border-accent/20" style="--i:4">
+        <span class="text-xs text-accent font-medium">TRADING · n8n · real-time push</span>
+        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Smart Money Alert Bot</h3>
+        <p class="text-sm text-slate-400 flex-1 leading-relaxed">The original: signed Alchemy webhooks, trade-leg classification, $100K gate, HMAC-verified, AI one-liner with template fallback. Proven under double-failure.</p>
+        <div class="mt-6 flex gap-5 text-sm">
+          <a href="#case-smart-money" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
+          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- CASE STUDIES -->
-<!-- 1 · Token Research -->
-<section id="case-token-research" class="border-t border-line">
-  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
-    <div>
-      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · trading intelligence</p>
-      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Token Research Report Bot</h3>
-      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Checking a token means hopping between five sites and still missing contract risks. Traders want one trustworthy answer in seconds.</p>
-      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> A Telegram command that fuses CoinGecko markets, the deepest DexScreener pool, a GoPlus security check (honeypot, mint rights, taxes, owner holdings) and filtered headlines into one rich report card — then writes a cautious verdict. If any source fails the card ships degraded and says so.</p>
-      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+<!-- 02 · Token Research -->
+<section id="case-token-research" class="relative border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
+    <div class="relative">
+      <div class="wm">02</div>
+      <p class="reveal kicker mb-3">case study · trading intelligence</p>
+      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Token Research Report Bot</h3>
+      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Checking a token means hopping between five sites and still missing contract risks. Traders want one trustworthy answer in seconds.</p>
+      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> A Telegram command that fuses CoinGecko markets, the deepest DexScreener pool, a GoPlus security check (honeypot, mint rights, taxes, owner holdings) and filtered headlines into one rich report card — then writes a cautious verdict. If any source fails the card ships degraded and says so.</p>
+      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
         <li>LLM verdict is grounded in fetched facts only, validated, with a deterministic template fallback</li>
         <li>Primary APIs retry ×3; enrichments degrade gracefully — the report never dies mid-demo</li>
         <li>Isolated demo endpoint answers over HTTP without touching real chats</li>
       </ul>
-      <div class="flex flex-wrap gap-4 text-sm">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/token-research" target="_blank" rel="noopener" class="text-accent hover:underline">▶ View project</a>
-        <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/token-research" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Read the code ↗</a>
+      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/token-research" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/token-research/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Tests ↗</a>
       </div>
     </div>
-    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
       <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="px-2 py-1 rounded-lg border border-line">n8n</span><span class="px-2 py-1 rounded-lg border border-line">Code nodes</span>
-        <span class="px-2 py-1 rounded-lg border border-line">CoinGecko API</span><span class="px-2 py-1 rounded-lg border border-line">DexScreener</span>
-        <span class="px-2 py-1 rounded-lg border border-line">GoPlus Security</span><span class="px-2 py-1 rounded-lg border border-line">LLM + template fallback</span>
-        <span class="px-2 py-1 rounded-lg border border-line">Fixtures & tests</span>
+        <span class="chip px-2.5 py-1 rounded-lg">n8n</span><span class="chip px-2.5 py-1 rounded-lg">Code nodes</span>
+        <span class="chip px-2.5 py-1 rounded-lg">CoinGecko API</span><span class="chip px-2.5 py-1 rounded-lg">DexScreener</span>
+        <span class="chip px-2.5 py-1 rounded-lg">GoPlus Security</span><span class="chip px-2.5 py-1 rounded-lg">LLM + template fallback</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Fixtures & tests</span>
       </div>
     </aside>
   </div>
 </section>
 
-<!-- 2 · Lead Capture -->
-<section id="case-lead-capture" class="border-t border-line">
-  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
-    <div>
-      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · lead pipeline</p>
-      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Lead Capture → Enriched CRM</h3>
-      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Small businesses lose leads in inbox chaos: no scoring, duplicates, zero instant follow-up.</p>
-      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> Consent-based form → validation → 7-day dedupe on email hash → enrichment (company inferred from work domain) → LLM intent score 0–100 with a deterministic rule-score fallback → exact-schema Google Sheets row + instant tiered Telegram alert (🔥A / ⚡B / 🧊C) explaining the "why".</p>
-      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+<!-- 03 · Lead Capture -->
+<section id="case-lead-capture" class="relative border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
+    <div class="relative">
+      <div class="wm">03</div>
+      <p class="reveal kicker mb-3">case study · lead pipeline</p>
+      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Lead Capture → Enriched CRM</h3>
+      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Small businesses lose leads in inbox chaos: no scoring, duplicates, zero instant follow-up.</p>
+      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> Consent-based form → validation → 7-day dedupe on email hash → enrichment (company inferred from work domain) → LLM intent score 0–100 with a deterministic rule-score fallback → exact-schema Google Sheets row + instant tiered Telegram alert (🔥A / ⚡B / 🧊C) explaining the "why".</p>
+      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
         <li>Consent enforced in code — the pipeline refuses to run without it</li>
         <li>Sheet append failing never blocks the owner alert (error branches everywhere)</li>
         <li>Demo mode processes a full lead while writing nothing to real state</li>
       </ul>
-      <div class="flex flex-wrap gap-4 text-sm">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/lead-capture" target="_blank" rel="noopener" class="text-accent hover:underline">▶ View project</a>
-        <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/lead-capture" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Read the code ↗</a>
+      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/lead-capture" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/lead-capture/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Tests ↗</a>
       </div>
     </div>
-    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
       <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="px-2 py-1 rounded-lg border border-line">n8n Forms</span><span class="px-2 py-1 rounded-lg border border-line">Google Sheets API</span>
-        <span class="px-2 py-1 rounded-lg border border-line">Static-data dedupe</span><span class="px-2 py-1 rounded-lg border border-line">LLM scoring + rule fallback</span>
-        <span class="px-2 py-1 rounded-lg border border-line">Telegram alerts</span><span class="px-2 py-1 rounded-lg border border-line">Consent-first design</span>
+        <span class="chip px-2.5 py-1 rounded-lg">n8n Forms</span><span class="chip px-2.5 py-1 rounded-lg">Google Sheets API</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Static-data dedupe</span><span class="chip px-2.5 py-1 rounded-lg">LLM scoring + rule fallback</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Telegram alerts</span><span class="chip px-2.5 py-1 rounded-lg">Consent-first design</span>
       </div>
     </aside>
   </div>
 </section>
 
-<!-- 3 · Review Summarizer -->
-<section id="case-review-summarizer" class="border-t border-line">
-  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
-    <div>
-      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · AI content ops</p>
-      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Review Summarizer</h3>
-      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Shop owners drown in raw reviews and never extract what matters: recurring complaints and praise worth acting on.</p>
-      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> One webhook: messy reviews in → digest out. Deterministic heuristics compute the rating split and themes first (one vote per review per theme, polarity from average rating of mentions); the LLM only writes the verdict and a suggested public reply, returning strict validated JSON.</p>
-      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+<!-- 04 · Review Summarizer -->
+<section id="case-review-summarizer" class="relative border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
+    <div class="relative">
+      <div class="wm">04</div>
+      <p class="reveal kicker mb-3">case study · AI content ops</p>
+      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Review Summarizer</h3>
+      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Shop owners drown in raw reviews and never extract what matters: recurring complaints and praise worth acting on.</p>
+      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> One webhook: messy reviews in → digest out. Deterministic heuristics compute the rating split and themes first (one vote per review per theme, polarity from average rating of mentions); the LLM only writes the verdict and a suggested public reply, returning strict validated JSON.</p>
+      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
         <li>Runs end-to-end with the AI completely off — mode shown honestly in the footer</li>
         <li>Junk rows skipped and counted; empty payloads get a friendly usage note</li>
         <li>The cheapest project here to run: zero external data sources</li>
       </ul>
-      <div class="flex flex-wrap gap-4 text-sm">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/review-summarizer" target="_blank" rel="noopener" class="text-accent hover:underline">▶ View project</a>
-        <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/review-summarizer" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Read the code ↗</a>
+      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/review-summarizer" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/review-summarizer/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Tests ↗</a>
       </div>
     </div>
-    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
       <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="px-2 py-1 rounded-lg border border-line">n8n webhooks</span><span class="px-2 py-1 rounded-lg border border-line">Theme heuristics</span>
-        <span class="px-2 py-1 rounded-lg border border-line">Strict JSON validation</span><span class="px-2 py-1 rounded-lg border border-line">Template fallback</span>
-        <span class="px-2 py-1 rounded-lg border border-line">$0 runtime</span>
+        <span class="chip px-2.5 py-1 rounded-lg">n8n webhooks</span><span class="chip px-2.5 py-1 rounded-lg">Theme heuristics</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Strict JSON validation</span><span class="chip px-2.5 py-1 rounded-lg">Template fallback</span>
+        <span class="chip px-2.5 py-1 rounded-lg">$0 runtime</span>
       </div>
     </aside>
   </div>
 </section>
 
-<!-- 4 · Support Chatbot -->
-<section id="case-support-chatbot" class="border-t border-line">
-  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
-    <div>
-      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · client support</p>
-      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Client Support Chatbot</h3>
-      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Clients ask the same ten questions; founders burn hours answering them — and chatbots that hallucinate prices make things worse.</p>
-      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> A Telegram bot that answers from an owned knowledge base first (free, instant, deterministic retrieval with tag-boosted scoring). Only unknown questions go to an LLM, grounded with the full KB and strict system rules. Every reply is honestly tagged 📖 FAQ / 🤖 AI-assisted / 📮 human.</p>
-      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+<!-- 05 · Support Chatbot -->
+<section id="case-support-chatbot" class="relative border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
+    <div class="relative">
+      <div class="wm">05</div>
+      <p class="reveal kicker mb-3">case study · client support</p>
+      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Client Support Chatbot</h3>
+      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Clients ask the same ten questions; founders burn hours answering them — and chatbots that hallucinate prices make things worse.</p>
+      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> A Telegram bot that answers from an owned knowledge base first (free, instant, deterministic retrieval with tag-boosted scoring). Only unknown questions go to an LLM, grounded with the full KB and strict system rules. Every reply is honestly tagged 📖 FAQ / 🤖 AI-assisted / 📮 human.</p>
+      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
         <li>Escalation detection ("human", "agent") hands off gracefully</li>
         <li>Channel-agnostic brain — swap to WhatsApp Cloud API by changing trigger nodes only</li>
         <li>/demo command replays a canned question through the real pipeline</li>
       </ul>
-      <div class="flex flex-wrap gap-4 text-sm">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/support-chatbot" target="_blank" rel="noopener" class="text-accent hover:underline">▶ View project</a>
-        <a href="https://github.com/Anesch531/anes-automation-portfolio/tree/main/projects/support-chatbot" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Read the code ↗</a>
+      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/support-chatbot" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/support-chatbot/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Tests ↗</a>
       </div>
     </div>
-    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
       <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="px-2 py-1 rounded-lg border border-line">Telegram Bot API</span><span class="px-2 py-1 rounded-lg border border-line">KB retrieval scoring</span>
-        <span class="px-2 py-1 rounded-lg border border-line">Grounded LLM prompts</span><span class="px-2 py-1 rounded-lg border border-line">Honest fallbacks</span>
-        <span class="px-2 py-1 rounded-lg border border-line">Human escalation</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Telegram Bot API</span><span class="chip px-2.5 py-1 rounded-lg">KB retrieval scoring</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Grounded LLM prompts</span><span class="chip px-2.5 py-1 rounded-lg">Honest fallbacks</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Human escalation</span>
       </div>
     </aside>
   </div>
 </section>
 
-<!-- 5 · Smart Money -->
-<!-- 5 · Smart Money -->
-<section id="case-smart-money" class="border-t border-line">
-  <div class="max-w-5xl mx-auto px-5 py-14 grid md:grid-cols-[1fr,260px] gap-8">
-    <div>
-      <p class="text-accent text-xs uppercase tracking-wider mb-2">Case study · the original</p>
-      <h3 class="text-xl sm:text-2xl font-bold text-slate-100 mb-3">Smart Money Alert Bot</h3>
-      <p class="text-sm text-slate-500 mb-4"><b class="text-slate-300">Problem.</b> Retail traders see whale moves hours late — after the alpha is gone. Most "whale bots" spam noise: airdrops, wraps, and random transfers all look like trades.</p>
-      <p class="text-sm text-slate-400 mb-4"><b class="text-slate-300">What I built.</b> Real-time Telegram alerts when 8+ hand-vetted smart-money wallets make a ≥$100K trade on Ethereum. Alchemy push webhooks (not polling), HMAC-SHA256 signature verification, leg-pairing trade classification that drops airdrops/self-transfers/stable-swaps, quote-leg valuation that prices unlisted tokens correctly, a $100K gate with 24h dedupe — and an AI one-liner grounded in fetched facts only, with a template fallback.</p>
-      <ul class="text-sm text-slate-400 space-y-1 list-disc list-inside mb-4">
+<!-- 06 · Smart Money -->
+<section id="case-smart-money" class="relative border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
+    <div class="relative">
+      <div class="wm">06</div>
+      <p class="reveal kicker mb-3">case study · the original</p>
+      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Smart Money Alert Bot</h3>
+      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Retail traders see whale moves hours late — after the alpha is gone. Most "whale bots" spam noise: airdrops, wraps, and random transfers all look like trades.</p>
+      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> Real-time Telegram alerts when 8+ hand-vetted smart-money wallets make a ≥$100K trade on Ethereum. Alchemy push webhooks (not polling), HMAC-SHA256 signature verification, leg-pairing trade classification that drops airdrops/self-transfers/stable-swaps, quote-leg valuation that prices unlisted tokens correctly, a $100K gate with 24h dedupe — and an AI one-liner grounded in fetched facts only, with a template fallback.</p>
+      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
         <li>Proven under double-failure: CoinGecko AND the LLM killed simultaneously — the alert still delivered (stale price marked ≈, template sentence)</li>
         <li>6 classification fixtures green: buys, sells, unlisted-token buys valued via quote leg; forgeries silently rejected</li>
         <li>Every alert ships with inline buttons: Dexscreener chart, Etherscan tx, Arkham wallet</li>
         <li>Watchlist is curated evidence: every wallet machine-verified on-chain with public sources</li>
       </ul>
-      <div class="flex flex-wrap gap-4 text-sm">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts" target="_blank" rel="noopener" class="text-accent hover:underline">View project →</a>
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts/tests" target="_blank" rel="noopener" class="text-slate-400 hover:text-slate-200">Test evidence ↗</a>
+      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Test evidence ↗</a>
       </div>
     </div>
-    <aside class="rounded-2xl border border-line bg-panel p-5 h-fit">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-3">Stack & craft</h4>
+    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
       <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="px-2 py-1 rounded-lg border border-line">Alchemy Webhooks</span><span class="px-2 py-1 rounded-lg border border-line">HMAC-SHA256</span>
-        <span class="px-2 py-1 rounded-lg border border-line">Trade classification</span><span class="px-2 py-1 rounded-lg border border-line">Quote-leg valuation</span>
-        <span class="px-2 py-1 rounded-lg border border-line">Telegram MarkdownV2</span><span class="px-2 py-1 rounded-lg border border-line">LLM + template fallback</span>
-        <span class="px-2 py-1 rounded-lg border border-line">$0 infra</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Alchemy Webhooks</span><span class="chip px-2.5 py-1 rounded-lg">HMAC-SHA256</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Trade classification</span><span class="chip px-2.5 py-1 rounded-lg">Quote-leg valuation</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Telegram MarkdownV2</span><span class="chip px-2.5 py-1 rounded-lg">LLM + template fallback</span>
+        <span class="chip px-2.5 py-1 rounded-lg">$0 infra</span>
       </div>
     </aside>
   </div>
 </section>
 
 <!-- SKILLS -->
-<section id="skills" class="border-t border-line">
-  <div class="max-w-5xl mx-auto px-5 py-16">
-    <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-8">Skills</h2>
-    <div class="grid gap-6 sm:grid-cols-3">
-      <div>
-        <h3 class="text-accent font-semibold mb-3 text-sm uppercase tracking-wider">Automation</h3>
-        <ul class="space-y-1.5 text-sm text-slate-400">
+<section id="skills" class="relative border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 py-24">
+    <p class="reveal kicker mb-3">07 — toolkit</p>
+    <h2 class="reveal font-display text-3xl sm:text-4xl font-bold text-slate-100 mb-12">Skills</h2>
+    <div class="grid gap-5 sm:grid-cols-3">
+      <div class="reveal glass card rounded-3xl p-7" style="--i:0">
+        <h3 class="text-accent font-display font-bold mb-4 text-sm uppercase tracking-wider">Automation</h3>
+        <ul class="space-y-2.5 text-sm text-slate-400">
           <li>n8n workflow design</li><li>Webhooks & push-not-poll</li>
           <li>Error branches, retries, timeouts</li><li>Dedupe via static data</li>
         </ul>
       </div>
-      <div>
-        <h3 class="text-accent font-semibold mb-3 text-sm uppercase tracking-wider">Code</h3>
-        <ul class="space-y-1.5 text-sm text-slate-400">
+      <div class="reveal glass card rounded-3xl p-7" style="--i:1">
+        <h3 class="text-accent font-display font-bold mb-4 text-sm uppercase tracking-wider">Code</h3>
+        <ul class="space-y-2.5 text-sm text-slate-400">
           <li>JavaScript / n8n Code nodes</li><li>REST APIs & JSON wrangling</li>
           <li>Git & clean commit history</li><li>Zero-dep test runners + fixtures</li>
         </ul>
       </div>
-      <div>
-        <h3 class="text-accent font-semibold mb-3 text-sm uppercase tracking-wider">AI Integration</h3>
-        <ul class="space-y-1.5 text-sm text-slate-400">
+      <div class="reveal glass card rounded-3xl p-7" style="--i:2">
+        <h3 class="text-accent font-display font-bold mb-4 text-sm uppercase tracking-wider">AI Integration</h3>
+        <ul class="space-y-2.5 text-sm text-slate-400">
           <li>LLM summarization & classification</li><li>Template-fallback resilience pattern</li>
           <li>Prompt design for structured output</li><li>Cost-aware model choice</li>
         </ul>
@@ -307,47 +367,179 @@
 </section>
 
 <!-- ABOUT -->
-<section id="about" class="border-t border-line">
-  <div class="max-w-5xl mx-auto px-5 py-16 grid md:grid-cols-[1fr,260px] gap-10">
+<section id="about" class="relative border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 py-24 grid md:grid-cols-[1fr,300px] gap-12">
     <div>
-      <h2 class="text-2xl sm:text-3xl font-bold text-slate-100 mb-4">About</h2>
-      <p class="text-slate-400 leading-relaxed">
-        I'm Mohammed Anes, an automation builder. I design and ship end-to-end workflows with n8n — data sources in, clean logic in the middle, polished delivery out. Trading intelligence, lead pipelines, AI-powered tools: if a business does it manually and repeatedly, I automate it.</p>
-      <p class="text-slate-400 leading-relaxed mt-4">
-        My obsession is the difference between a demo and a product: what happens when an API times out mid-run. Everything I ship has timeouts, retries, dedupe and an AI fallback path, so the output still lands when a service misbehaves — and the logic is tested against fixtures like production software, because that's what it is.</p>
+      <p class="reveal kicker mb-3">08 — about</p>
+      <h2 class="reveal font-display text-3xl sm:text-4xl font-bold text-slate-100 mb-6">Reliability is the feature.</h2>
+      <p class="reveal text-slate-400 leading-relaxed text-lg" style="--i:1">
+        I'm Mohammed Anes, an automation builder. I design and ship end-to-end workflows with n8n — data sources in, clean logic in the middle, polished delivery out. Trading intelligence, lead pipelines, AI-powered tools: if a business does it manually and repeatedly, I automate it.
+      </p>
+      <p class="reveal text-slate-400 leading-relaxed mt-5" style="--i:2">
+        My obsession is the difference between a demo and a product: what happens when an API times out mid-run. Everything I ship has timeouts, retries, dedupe and an AI fallback path, so the output still lands when a service misbehaves — and the logic is tested against fixtures like production software, because that's what it is.
+      </p>
     </div>
-    <aside class="panel-card rounded-2xl border border-line p-5 h-fit bg-panel">
-      <h3 class="text-slate-100 font-semibold text-sm mb-3">Quick facts</h3>
-      <ul class="text-sm text-slate-400 space-y-2">
+    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:3">
+      <h3 class="text-slate-100 font-display font-bold text-sm mb-4">Quick facts</h3>
+      <ul class="text-sm text-slate-400 space-y-3">
         <li>📍 Available remotely</li>
         <li>💼 Open to automation roles</li>
         <li>🔗 github.com/Anesch531</li>
-        </ul>
+      </ul>
     </aside>
   </div>
 </section>
 
 <!-- CONTACT -->
-<section id="contact" class="border-t border-line glow">
-  <div class="max-w-5xl mx-auto px-5 py-16">
-    <h2 class="text-2xl sm:text-3xl font-bold text-slate-100">Get in touch</h2>
-    <p class="text-slate-400 mt-3 max-w-xl">
-      Best way to reach me: <a class="text-accent hover:underline" href="mailto:anesch829@gmail.com">anesch829@gmail.com</a>.
+<section id="contact" class="relative border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 py-24">
+    <div class="reveal glass rounded-[2rem] p-10 sm:p-14 relative overflow-hidden" style="--i:0">
+      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent/10 blur-3xl"></div>
+      <p class="kicker mb-3">09 — contact</p>
+      <h2 class="font-display text-3xl sm:text-5xl font-bold text-slate-100 max-w-xl leading-tight">Let's build something that <span class="grad-text">never breaks.</span></h2>
+      <p class="text-slate-400 mt-5 max-w-lg">
+        Best way to reach me: <a class="text-accent hover:underline underline-offset-4" href="mailto:anesch829@gmail.com">anesch829@gmail.com</a>.
       </p>
-    <div class="mt-6 flex flex-wrap gap-3 text-sm">
-      <a href="https://github.com/Anesch531" target="_blank" rel="noopener" class="px-4 py-2 rounded-xl border border-line hover:border-accent hover:text-accent">GitHub</a>
-      <a href="mailto:anesch829@gmail.com" class="px-4 py-2 rounded-xl border border-line hover:border-accent hover:text-accent">Email</a>
+      <div class="mt-8 flex flex-wrap gap-4 text-sm">
+        <a href="https://github.com/Anesch531" target="_blank" rel="noopener" class="px-5 py-2.5 rounded-2xl border border-line hover:border-accent hover:text-accent transition-colors">GitHub</a>
+        <a href="mailto:anesch829@gmail.com" class="btn-primary px-5 py-2.5 rounded-2xl font-semibold">Email me</a>
+      </div>
     </div>
   </div>
 </section>
 
-<footer class="border-t border-line">
-  <div class="max-w-5xl mx-auto px-5 py-8 flex flex-wrap justify-between gap-2 text-xs text-slate-600">
+<footer class="border-t border-line relative z-10">
+  <div class="max-w-6xl mx-auto px-5 py-10 flex flex-wrap justify-between gap-3 text-xs text-slate-600">
     <span>© 2026 Mohammed Anes — built by hand, shipped on free tiers.</span>
     <span>n8n · JavaScript · LLM-with-fallbacks</span>
   </div>
 </footer>
 
 </main>
+
+<script>
+(function () {
+  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- particle constellation backdrop ---- */
+  var canvas = document.getElementById('bg');
+  if (canvas && !reduced) {
+    var ctx = canvas.getContext('2d');
+    var W, H, pts = [], mouse = { x: -9999, y: -9999 };
+    var COLORS = ['94,234,212', '129,140,248', '232,121,249'];
+    function resize() {
+      W = canvas.width = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    function seed() {
+      pts = [];
+      var n = Math.min(110, Math.floor(W * H / 16000));
+      for (var i = 0; i < n; i++) {
+        pts.push({
+          x: Math.random() * W, y: Math.random() * H,
+          vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
+          r: Math.random() * 1.6 + .6,
+          c: COLORS[(Math.random() * COLORS.length) | 0]
+        });
+      }
+    }
+    window.addEventListener('resize', function () { resize(); seed(); });
+    window.addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
+    window.addEventListener('pointerleave', function () { mouse.x = -9999; });
+    resize(); seed();
+    var LINK = 130;
+    function frame() {
+      ctx.clearRect(0, 0, W, H);
+      for (var i = 0; i < pts.length; i++) {
+        var p = pts[i];
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0 || p.x > W) p.vx *= -1;
+        if (p.y < 0 || p.y > H) p.vy *= -1;
+        var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
+        if (d2 < 150 * 150) {                       /* cursor magnetism */
+          var d = Math.sqrt(d2) || 1, f = (150 - d) / 150 * .6;
+          p.x += dx / d * f; p.y += dy / d * f;
+        }
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, 6.2832);
+        ctx.fillStyle = 'rgba(' + p.c + ',.75)';
+        ctx.fill();
+        for (var j = i + 1; j < pts.length; j++) {
+          var q = pts[j], lx = p.x - q.x, ly = p.y - q.y, ld = lx * lx + ly * ly;
+          if (ld < LINK * LINK) {
+            ctx.beginPath();
+            ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
+            ctx.strokeStyle = 'rgba(148,163,184,' + (0.09 * (1 - ld / (LINK * LINK))) + ')';
+            ctx.lineWidth = 1;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(frame);
+    }
+    document.addEventListener('visibilitychange', function () {
+      if (document.hidden) { cancelAnimationFrame(raf); raf = null; }
+      else if (!raf) { raf = requestAnimationFrame(frame); }
+    });
+    var raf = requestAnimationFrame(frame);
+  }
+
+  /* ---- scroll progress ---- */
+  var bar = document.getElementById('progress');
+  window.addEventListener('scroll', function () {
+    var h = document.documentElement;
+    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }, { passive: true });
+
+  /* ---- reveal on scroll ---- */
+  var els = document.querySelectorAll('.reveal');
+  if ('IntersectionObserver' in window && !reduced) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+      });
+    }, { threshold: .12 });
+    els.forEach(function (e) { io.observe(e); });
+  } else {
+    els.forEach(function (e) { e.classList.add('in'); });
+  }
+
+  /* ---- counters ---- */
+  function animateCount(el) {
+    var target = parseInt(el.getAttribute('data-count'), 10), t0 = null;
+    function step(t) {
+      if (!t0) t0 = t;
+      var k = Math.min((t - t0) / 900, 1);
+      el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3)));
+      if (k < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var counters = document.querySelectorAll('[data-count]');
+  if ('IntersectionObserver' in window && !reduced) {
+    var cio = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { animateCount(en.target); cio.unobserve(en.target); }
+      });
+    }, { threshold: .5 });
+    counters.forEach(function (c) { cio.observe(c); });
+  } else {
+    counters.forEach(function (c) { c.textContent = c.getAttribute('data-count'); });
+  }
+
+  /* ---- card tilt (desktop only) ---- */
+  if (window.matchMedia('(pointer:fine)').matches && !reduced) {
+    document.querySelectorAll('.tilt').forEach(function (card) {
+      card.addEventListener('pointermove', function (e) {
+        var r = card.getBoundingClientRect();
+        var rx = ((e.clientY - r.top) / r.height - .5) * -7;
+        var ry = ((e.clientX - r.left) / r.width - .5) * 7;
+        card.style.transform = 'perspective(800px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-4px)';
+      });
+      card.addEventListener('pointerleave', function () { card.style.transform = ''; });
+    });
+  }
+})();
+</script>
 </body>
 </html>
