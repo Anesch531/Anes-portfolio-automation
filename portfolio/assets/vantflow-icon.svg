@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
+  <title id="title">VANTFLOW icon</title>
+  <desc id="desc">A forward-flowing V mark.</desc>
+  <rect width="512" height="512" rx="112" fill="#0B0D10"/>
+  <path d="M83 110h92l88 217 111-217h94L307 414h-91L83 110Z" fill="#B8FF3D"/>
+  <path d="M374 110h94l-31 60h-94l31-60Z" fill="#F4F7F0"/>
+  <circle cx="259" cy="358" r="16" fill="#0B0D10"/>
+</svg>

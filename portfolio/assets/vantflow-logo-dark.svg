@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="480" viewBox="0 0 1600 480" role="img" aria-labelledby="title desc">
+  <title id="title">VANTFLOW logo</title>
+  <desc id="desc">A forward-flowing V symbol followed by the VANTFLOW wordmark.</desc>
+  <rect width="1600" height="480" rx="40" fill="#0B0D10"/>
+  <g transform="translate(96 72)">
+    <path d="M20 38h75l76 184L267 38h77L205 306h-74L20 38Z" fill="#B8FF3D"/>
+    <path d="M267 38h77l-25 49h-77l25-49Z" fill="#F4F7F0"/>
+    <circle cx="168" cy="258" r="13" fill="#0B0D10"/>
+  </g>
+  <text x="500" y="292" fill="#F4F7F0" font-family="Segoe UI, Arial, sans-serif" font-size="142" font-weight="700" letter-spacing="6">VANT</text>
+  <text x="930" y="292" fill="#B8FF3D" font-family="Segoe UI, Arial, sans-serif" font-size="142" font-weight="700" letter-spacing="6">FLOW</text>
+</svg>

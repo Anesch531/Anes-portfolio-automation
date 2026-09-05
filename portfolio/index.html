@@ -1,683 +1,81 @@
 <!doctype html>
 <html lang="en" class="scroll-smooth">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Mohammed Anes — n8n Automation Builder | Fixed-Price Workflows That Don't Fail Silently</title>
-<meta name="description" content="I build business automations in n8n — lead pipelines, support bots, reporting and alerting — with retries, dedupe and fallbacks, tested against fixtures. Reliability audit $69, first workflow $149 for my first three clients. You watch it run before you pay." />
-<meta property="og:title" content="Mohammed Anes — n8n Automation Builder" />
-<meta property="og:description" content="Fixed-price n8n automations built with retries, dedupe and fallbacks. Reliability audit $69. First workflow $149. Launch pricing, first three clients. You watch it run before you pay." />
-<meta property="og:type" content="website" />
-<meta property="og:url" content="https://anesch531.github.io/Anes-portfolio-automation/" />
-<meta name="twitter:card" content="summary_large_image" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VANTFLOW — AI Automation & AI Agents for Growing Businesses</title>
+<meta name="description" content="VANTFLOW builds reliable AI automation and AI agents for lead follow-up, reporting, customer support, renewals, and operations. Start with a fixed-scope $200 pilot.">
+<meta property="og:title" content="VANTFLOW — AI Automation That Keeps Work Moving">
+<meta property="og:description" content="Reliable AI agents and business automations, built around your current tools. Fixed-scope pilots from $200.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://anesch531.github.io/Anes-portfolio-automation/">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="assets/vantflow-icon.svg" type="image/svg+xml">
 <script src="https://cdn.tailwindcss.com"></script>
 <script>
-tailwind.config = {
-  theme: { extend: {
-    colors: { ink:'#05070d', panel:'rgba(255,255,255,0.03)', line:'rgba(255,255,255,0.08)', accent:'#5eead4', violet:'#818cf8', pink:'#e879f9' },
-    fontFamily: { display:['Space Grotesk','ui-sans-serif'], body:['IBM Plex Sans','Inter','ui-sans-serif'], mono:['JetBrains Mono','monospace'] },
-  }}
-}
+tailwind.config={theme:{extend:{colors:{ink:'#0B0D10',paper:'#F4F7F0',acid:'#B8FF3D',muted:'#9CA3AF',line:'rgba(244,247,240,.12)'},fontFamily:{display:['Space Grotesk','ui-sans-serif'],body:['IBM Plex Sans','ui-sans-serif'],mono:['JetBrains Mono','monospace']}}}}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=Space+Grotesk:wght@500;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
 <style>
-  ::selection{background:#5eead4;color:#05070d}
-  /* ui-ux-pro-max: pointer affordance + visible keyboard focus */
-  a,button,[role="button"]{cursor:pointer}
-  :focus-visible{outline:2px solid #5eead4;outline-offset:3px;border-radius:6px}
-  html{scrollbar-width:thin;scrollbar-color:#1f2937 #05070d}
-  ::-webkit-scrollbar{width:9px}::-webkit-scrollbar-track{background:#05070d}
-  ::-webkit-scrollbar-thumb{background:#1f2937;border-radius:9px}::-webkit-scrollbar-thumb:hover{background:#374151}
-  body{overflow-x:hidden}
-  /* aurora */
-  .aurora{position:fixed;border-radius:9999px;filter:blur(110px);opacity:.22;pointer-events:none;z-index:0}
-  .aurora-a{width:44rem;height:44rem;background:radial-gradient(circle,#14b8a6aa,transparent 65%);top:-16rem;left:-12rem;animation:drift 26s ease-in-out infinite alternate}
-  .aurora-b{width:40rem;height:40rem;background:radial-gradient(circle,#6366f1aa,transparent 65%);top:30%;right:-14rem;animation:drift 32s ease-in-out infinite alternate-reverse}
-  .aurora-c{width:36rem;height:36rem;background:radial-gradient(circle,#d946ef88,transparent 65%);bottom:-18rem;left:28%;animation:drift 38s ease-in-out infinite alternate}
-  @keyframes drift{from{transform:translate(0,0) scale(1)}to{transform:translate(6rem,4rem) scale(1.15)}}
-  /* reveal */
-  .reveal{opacity:0;transform:translateY(26px);transition:opacity .7s cubic-bezier(.2,.7,.3,1),transform .7s cubic-bezier(.2,.7,.3,1);transition-delay:calc(var(--i,0)*90ms)}
-  .reveal.in{opacity:1;transform:none}
-  /* gradient text — minimal glow per design system */
-  .grad-text{background:linear-gradient(92deg,#5eead4 0%,#818cf8 48%,#e879f9 100%);-webkit-background-clip:text;background-clip:text;color:transparent;text-shadow:0 0 26px rgba(94,234,212,.22)}
-  /* cards */
-  .glass{background:rgba(255,255,255,.035);border:1px solid rgba(255,255,255,.08);backdrop-filter:blur(12px)}
-  .glass:hover{border-color:rgba(94,234,212,.35)}
-  .card{transition:transform .25s ease,border-color .25s ease,box-shadow .25s ease}
-  .card:hover{transform:translateY(-4px);box-shadow:0 12px 48px -12px rgba(94,234,212,.14)}
-  .tilt{will-change:transform;transition:transform .15s ease-out}
-  /* marquee */
-  .marquee{display:flex;gap:3rem;width:max-content;animation:mq 30s linear infinite}
-  .marquee:hover{animation-play-state:paused}
-  @keyframes mq{to{transform:translateX(-50%)}}
-  .mask-x{mask-image:linear-gradient(90deg,transparent,#000 12%,#000 88%,transparent)}
-  /* watermark numbers */
-  .wm{position:absolute;top:-1.4rem;right:.4rem;font-family:'Space Grotesk';font-weight:700;font-size:6.5rem;line-height:1;background:linear-gradient(180deg,rgba(94,234,212,.14),transparent);-webkit-background-clip:text;background-clip:text;color:transparent;pointer-events:none;user-select:none}
-  /* buttons */
-  .btn-primary{background:linear-gradient(92deg,#5eead4,#818cf8);color:#05070d;box-shadow:0 0 0 0 rgba(94,234,212,.4);transition:box-shadow .25s,filter .2s}
-  .btn-primary:hover{filter:brightness(1.08);box-shadow:0 0 34px -6px rgba(94,234,212,.45)}
-  .chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04)}
-  .kicker{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#5eead4}
-  @media (prefers-reduced-motion: reduce){
-    .aurora,.marquee{animation:none!important}
-    .reveal{opacity:1!important;transform:none!important;transition:none!important}
-    .card,.tilt{transition:none!important}
-  }
+:root{color-scheme:dark}::selection{background:#B8FF3D;color:#0B0D10}html{scrollbar-width:thin;scrollbar-color:#3b4148 #0B0D10}body{overflow-x:hidden;background:#0B0D10}.grid-bg{background-image:linear-gradient(rgba(244,247,240,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(244,247,240,.04) 1px,transparent 1px);background-size:52px 52px;mask-image:linear-gradient(to bottom,#000,transparent 90%)}.noise{background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E");opacity:.025}.kicker{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#B8FF3D}.panel{background:#111419;border:1px solid rgba(244,247,240,.12)}.panel-hover{transition:border-color .2s ease,transform .2s ease}.panel-hover:hover{border-color:rgba(184,255,61,.5);transform:translateY(-3px)}.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:.75rem 1.25rem;border-radius:.75rem;font-weight:600;transition:background .2s,color .2s,border-color .2s,transform .2s}.btn-primary{background:#B8FF3D;color:#0B0D10}.btn-primary:hover{background:#d0ff82;transform:translateY(-1px)}.btn-secondary{border:1px solid rgba(244,247,240,.18);color:#F4F7F0}.btn-secondary:hover{border-color:#B8FF3D;color:#B8FF3D}.flow-line{height:1px;background:linear-gradient(90deg,#B8FF3D,rgba(184,255,61,0))}.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}.reveal.in{opacity:1;transform:none}:focus-visible{outline:2px solid #B8FF3D;outline-offset:3px;border-radius:6px}a,button{cursor:pointer}.logo-lockup{width:172px;height:auto}.step-num{font-family:'Space Grotesk';font-size:4rem;font-weight:700;line-height:1;color:rgba(184,255,61,.18)}@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.panel-hover,.btn{transition:none}}
 </style>
 </head>
-<body class="bg-ink text-slate-300 font-body antialiased">
-
-<!-- backdrop layers -->
-<div class="aurora aurora-a"></div><div class="aurora aurora-b"></div><div class="aurora aurora-c"></div>
-<canvas id="bg" class="fixed inset-0 z-[1] pointer-events-none"></canvas>
-
-<!-- scroll progress -->
-<div id="progress" class="fixed top-0 left-0 h-[2px] z-[60] bg-gradient-to-r from-accent via-violet to-pink" style="width:0%"></div>
-
-<!-- nav -->
-<header class="fixed top-0 inset-x-0 z-50 backdrop-blur-xl bg-ink/70 border-b border-line">
-  <nav class="max-w-6xl mx-auto px-5 h-16 flex items-center justify-between">
-    <a href="#top" class="font-display font-bold tracking-tight text-slate-100 text-lg">Mohammed Anes</a>
-    <div class="flex items-center gap-6 text-sm">
-      <a href="#work" class="hover:text-accent hidden sm:inline">Work</a>
-      <a href="#offer" class="hover:text-accent hidden sm:inline">Hire me</a>
-      <a href="#skills" class="hover:text-accent hidden sm:inline">Skills</a>
-      <a href="#about" class="hover:text-accent hidden md:inline">About</a>
-      <a href="https://github.com/Anesch531" target="_blank" rel="noopener" class="hover:text-accent hidden md:inline">GitHub</a>
-      <a href="#contact" class="px-4 py-1.5 rounded-full border border-line hover:border-accent hover:text-accent transition-colors hidden sm:inline">Contact</a>
-      <a href="https://wa.me/213791192350?text=Hi%20Anes%2C%20I%20saw%20your%20portfolio.%20The%20manual%20job%20I%20want%20automated%3A%20"
-         target="_blank" rel="noopener"
-         aria-label="Message me on WhatsApp"
-         class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#25D366] text-ink font-semibold hover:brightness-110 transition-all">
-        <svg viewBox="0 0 24 24" class="w-4 h-4 shrink-0" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.174-.297-.019-.458.13-.606.134-.133.347-.347.52-.52.174-.174.232-.298.347-.497.109-.198.049-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.375a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-        WhatsApp
-      </a>
-    </div>
-  </nav>
-</header>
-
+<body class="text-paper font-body antialiased">
+<div class="fixed inset-0 grid-bg pointer-events-none"></div><div class="fixed inset-0 noise pointer-events-none"></div>
+<div id="progress" class="fixed top-0 left-0 h-[2px] bg-acid z-[70]" style="width:0"></div>
+<header class="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink/90 backdrop-blur-xl">
+<nav class="max-w-6xl mx-auto h-20 px-5 flex items-center justify-between">
+<a href="#top" aria-label="VANTFLOW home"><img src="assets/vantflow-logo-dark.svg" alt="VANTFLOW" class="logo-lockup"></a>
+<div class="flex items-center gap-6 text-sm">
+<a href="#services" class="hidden sm:inline text-muted hover:text-acid">Services</a><a href="#work" class="hidden sm:inline text-muted hover:text-acid">Proof</a><a href="#process" class="hidden md:inline text-muted hover:text-acid">Process</a><a href="#offer" class="hidden sm:inline text-muted hover:text-acid">Pilot</a>
+<a href="#contact" class="btn btn-primary !min-h-0 !py-2.5">Map my workflow</a>
+</div></nav></header>
 <main id="top" class="relative z-10">
-
-<!-- HERO -->
-<section class="relative min-h-[92vh] flex items-center">
-  <div class="max-w-6xl mx-auto px-5 pt-32 pb-20 w-full">
-    <p class="reveal kicker mb-5">// n8n automation · reliability engineering · remote</p>
-    <h1 class="reveal font-display font-bold text-slate-100 leading-[1.02] tracking-tight text-4xl sm:text-6xl lg:text-7xl max-w-4xl" style="--i:1">
-      I build automations that<br/>
-      <span class="grad-text">keep working when the APIs don't.</span>
-    </h1>
-    <p class="reveal mt-7 max-w-2xl text-lg text-slate-400 leading-relaxed" style="--i:2">
-      Lead pipelines, support bots, review digests and alerting — built in n8n with
-      retries, dedupe and fallbacks, then tested against fixtures so they never fail
-      silently. Fixed price. You watch it run before you pay.
-    </p>
-    <div class="reveal mt-10 flex flex-wrap gap-4" style="--i:3">
-      <a href="#offer" class="btn-primary px-7 py-3 rounded-2xl font-semibold text-sm">What I'll build for you →</a>
-      <a href="#work"
-         class="px-7 py-3 rounded-2xl border border-line text-slate-200 text-sm font-medium hover:border-accent hover:text-accent transition-colors">See the work ↓</a>
-    </div>
-    <!-- stats -->
-    <div class="reveal mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl" style="--i:4">
-      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="6">6</span></div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Automations built</div></div>
-      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="80">80</span>+</div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Tests passing</div></div>
-      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="6">6</span></div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Workflows open-sourced</div></div>
-      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold grad-text">$0</div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Infra cost / month</div></div>
-    </div>
-  </div>
-</section>
-
-<!-- MARQUEE -->
-<section aria-hidden="true" class="border-y border-line py-4 overflow-hidden mask-x relative z-10 bg-ink/40">
-  <div class="marquee font-mono text-sm text-slate-500 whitespace-nowrap">
-    <span>n8n workflows</span><span class="text-accent">✦</span><span>JavaScript</span><span class="text-violet">✦</span><span>HMAC-SHA256</span><span class="text-pink">✦</span><span>Webhooks · push-not-poll</span><span class="text-accent">✦</span><span>REST APIs</span><span class="text-violet">✦</span><span>Google Sheets CRM</span><span class="text-pink">✦</span><span>Telegram Bot API</span><span class="text-accent">✦</span><span>LLM + template fallbacks</span><span class="text-violet">✦</span><span>CoinGecko · GoPlus · DexScreener</span><span class="text-pink">✦</span><span>fixtures-first testing</span><span class="text-accent">✦</span>
-    <span>n8n workflows</span><span class="text-accent">✦</span><span>JavaScript</span><span class="text-violet">✦</span><span>HMAC-SHA256</span><span class="text-pink">✦</span><span>Webhooks · push-not-poll</span><span class="text-accent">✦</span><span>REST APIs</span><span class="text-violet">✦</span><span>Google Sheets CRM</span><span class="text-pink">✦</span><span>Telegram Bot API</span><span class="text-accent">✦</span><span>LLM + template fallbacks</span><span class="text-violet">✦</span><span>CoinGecko · GoPlus · DexScreener</span><span class="text-pink">✦</span><span>fixtures-first testing</span><span class="text-accent">✦</span>
-  </div>
-</section>
-
-<!-- WORK GRID -->
-<section id="work" class="relative">
-  <div class="max-w-6xl mx-auto px-5 py-24">
-    <p class="reveal kicker mb-3">01 — selected work</p>
-    <h2 class="reveal font-display text-3xl sm:text-4xl font-bold text-slate-100 mb-3">Six automations, built end to end.</h2>
-    <p class="reveal text-slate-500 mb-12 text-sm" style="--i:1">Every one links to the real code, the tests, and a full write-up of what breaks it.</p>
-    <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-
-      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col" style="--i:0">
-        <span class="text-xs text-accent font-medium">LEADS · n8n · Sheets CRM</span>
-        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Lead Capture → Enriched CRM</h3>
-        <p class="text-sm text-slate-400 flex-1 leading-relaxed">Consent form → dedupe → enrich → LLM-scored intent (rule-score fallback) → Google Sheet row + instant tiered alert.</p>
-        <div class="mt-6 flex gap-5 text-sm">
-          <a href="#case-lead-capture" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
-          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/lead-capture" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
-        </div>
-      </div>
-
-      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col" style="--i:1">
-        <span class="text-xs text-accent font-medium">ECOMMERCE · n8n · AI summary</span>
-        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Review Summarizer</h3>
-        <p class="text-sm text-slate-400 flex-1 leading-relaxed">Raw reviews in → digest out: rating split, themed ▲▼ polarity, verdict, suggested public reply. Works even with the AI off.</p>
-        <div class="mt-6 flex gap-5 text-sm">
-          <a href="#case-review-summarizer" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
-          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/review-summarizer" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
-        </div>
-      </div>
-
-      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col" style="--i:2">
-        <span class="text-xs text-accent font-medium">SUPPORT · Telegram · RAG-style</span>
-        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Client Support Chatbot</h3>
-        <p class="text-sm text-slate-400 flex-1 leading-relaxed">FAQ-fast answers at $0; LLM grounding only for the unknowns; honest fallbacks and human escalation built in.</p>
-        <div class="mt-6 flex gap-5 text-sm">
-          <a href="#case-support-chatbot" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
-          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/support-chatbot" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
-        </div>
-      </div>
-
-      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col" style="--i:3">
-        <span class="text-xs text-accent font-medium">RESEARCH · n8n · LLM+fallback</span>
-        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Token Research Report Bot</h3>
-        <p class="text-sm text-slate-400 flex-1 leading-relaxed">One command → a research card: live price, deepest DEX pool, GoPlus scam-flag check, filtered headlines, cautious verdict.</p>
-        <div class="mt-6 flex gap-5 text-sm">
-          <a href="#case-token-research" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
-          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/token-research" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
-        </div>
-      </div>
-
-      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col border-accent/20" style="--i:4">
-        <span class="text-xs text-accent font-medium">REAL-TIME · n8n · webhook push</span>
-        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Smart Money Alert Bot</h3>
-        <p class="text-sm text-slate-400 flex-1 leading-relaxed">Signed webhooks in, Arabic alert out in under 4s: HMAC verification, trade-leg classification, a $1,000,000 gate, 24h dedupe, AI one-liner with template fallback. Proven under double-failure.</p>
-        <div class="mt-6 flex gap-5 text-sm">
-          <a href="#case-smart-money" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
-          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
-        </div>
-      </div>
-
-      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col border-accent/20" style="--i:5">
-        <span class="text-xs text-accent font-medium">COD LOGISTICS · Shopify · Telegram</span>
-        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Shopify Order → Courier Dispatch</h3>
-        <p class="text-sm text-slate-400 flex-1 leading-relaxed">Cash-on-delivery order in, parcel booked and tracking number out in 30s. Arabic phone and city normalization, all 58 Algerian wilayas, hard stop on anything ambiguous instead of a guess.</p>
-        <div class="mt-6 flex gap-5 text-sm">
-          <a href="#case-order-courier" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
-          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/order-to-courier" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- OFFER -->
-<section id="offer" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-24">
-    <p class="reveal kicker mb-3">// work with me</p>
-    <h2 class="reveal font-display text-3xl sm:text-4xl font-bold text-slate-100 mb-3">Two ways to start. Both fixed price.</h2>
-    <p class="reveal text-slate-500 mb-12 text-sm max-w-2xl" style="--i:1">No hourly billing, no discovery calls before you know the number. You see it run first.</p>
-
-    <div class="grid gap-5 md:grid-cols-2">
-
-      <div class="reveal card glass rounded-3xl p-8 flex flex-col" style="--i:0">
-        <span class="text-xs text-accent font-medium uppercase tracking-wider">Start here</span>
-        <h3 class="font-display text-slate-100 font-bold text-2xl mt-3">Reliability audit</h3>
-        <div class="font-display text-4xl font-bold grad-text mt-4 mb-1">$69</div>
-        <p class="text-xs text-slate-500 mb-6">3 days · one existing workflow · launch price, first 3 clients</p>
-        <p class="text-sm text-slate-400 leading-relaxed mb-5">You send me one n8n workflow you already run. I tell you exactly where it fails quietly — the nodes that report success while returning nothing, the missing retries, the duplicate sends, the branch nobody has ever executed. You get a written report and the fixes as a diff.</p>
-        <ul class="text-sm text-slate-400 space-y-2 mb-7 list-disc list-inside">
-          <li>Every finding shown as a concrete failure scenario, not a style note</li>
-          <li>Fixes applied to a copy, never to your live workflow</li>
-          <li>A screen recording of me reproducing at least one real failure</li>
-        </ul>
-        <p class="text-sm text-accent font-medium mt-auto mb-6">If I don't find a failure mode worth fixing, you don't pay.</p>
-        <a href="mailto:anesch829@gmail.com?subject=Reliability%20audit%20-%20%2469&body=Workflow%20(paste%20JSON%20or%20describe%20it)%3A%0A%0AWhat%20it%20touches%20(which%20apps%2C%20how%20often)%3A%0A%0AWhat%20went%20wrong%20last%20time%3A%0A"
-           class="btn-primary px-6 py-3 rounded-2xl font-semibold text-sm text-center">Send me a workflow →</a>
-        <a href="https://wa.me/213791192350?text=Hi%20Anes%20-%20I%20want%20the%20%2469%20reliability%20audit.%20My%20workflow%3A%20"
-           target="_blank" rel="noopener"
-           class="mt-3 text-xs text-center text-slate-500 hover:text-[#25D366] transition-colors">or WhatsApp me on +213 791 19 23 50</a>
-      </div>
-
-      <div class="reveal card glass rounded-3xl p-8 flex flex-col border-accent/20" style="--i:1">
-        <span class="text-xs text-accent font-medium uppercase tracking-wider">Build</span>
-        <h3 class="font-display text-slate-100 font-bold text-2xl mt-3">Your first workflow</h3>
-        <div class="font-display text-4xl font-bold grad-text mt-4 mb-1">$149</div>
-        <p class="text-xs text-slate-500 mb-6">5 days · one automation, end to end · launch price, first 3 clients</p>
-        <p class="text-sm text-slate-400 leading-relaxed mb-5">One job off your team's hands: form or inbox → clean, deduped record in your CRM or sheet → the right person alerted. Or reviews/tickets in, a readable digest out. Built the way the six projects above are built.</p>
-        <ul class="text-sm text-slate-400 space-y-2 mb-7 list-disc list-inside">
-          <li>Retries, deduplication and a fallback path on every external call</li>
-          <li>Test fixtures included, so you can prove it still works after you change it</li>
-          <li>It runs on your n8n and your accounts — no lock-in to me, no monthly fee</li>
-          <li>A recorded walkthrough so your team can run it without me</li>
-        </ul>
-        <p class="text-sm text-accent font-medium mt-auto mb-6">You watch it run on your own data before you pay a cent.</p>
-        <a href="mailto:anesch829@gmail.com?subject=First%20workflow%20-%20%24149&body=The%20manual%20job%20I%20want%20gone%3A%0A%0AApps%20involved%3A%0A%0AHow%20many%20times%20a%20day%20it%20happens%3A%0A"
-           class="btn-primary px-6 py-3 rounded-2xl font-semibold text-sm text-center">Describe the job →</a>
-        <a href="https://wa.me/213791192350?text=Hi%20Anes%20-%20I%20want%20the%20%24149%20first%20workflow.%20The%20manual%20job%3A%20"
-           target="_blank" rel="noopener"
-           class="mt-3 text-xs text-center text-slate-500 hover:text-[#25D366] transition-colors">or WhatsApp me on +213 791 19 23 50</a>
-      </div>
-
-    </div>
-
-    <p class="reveal text-xs text-slate-500 mt-8 max-w-2xl" style="--i:2">These are launch prices for my first three clients, in exchange for a public reference once it works. After that they go up. Bigger or ongoing work is quoted after the first build, hourly or monthly. I reply to every message within 24 hours.</p>
-  </div>
-</section>
-<section id="case-token-research" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
-    <div class="relative">
-      <div class="wm">02</div>
-      <p class="reveal kicker mb-3">case study · trading intelligence</p>
-      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Token Research Report Bot</h3>
-      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Checking a token means hopping between five sites and still missing contract risks. Traders want one trustworthy answer in seconds.</p>
-      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> A Telegram command that fuses CoinGecko markets, the deepest DexScreener pool, a GoPlus security check (honeypot, mint rights, taxes, owner holdings) and filtered headlines into one rich report card — then writes a cautious verdict. If any source fails the card ships degraded and says so.</p>
-      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
-        <li>LLM verdict is grounded in fetched facts only, validated, with a deterministic template fallback</li>
-        <li>Primary APIs retry ×3; enrichments degrade gracefully — the report never dies mid-demo</li>
-        <li>Isolated demo endpoint answers over HTTP without touching real chats</li>
-      </ul>
-      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/token-research" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/token-research/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Tests ↗</a>
-      </div>
-    </div>
-    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
-      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="chip px-2.5 py-1 rounded-lg">n8n</span><span class="chip px-2.5 py-1 rounded-lg">Code nodes</span>
-        <span class="chip px-2.5 py-1 rounded-lg">CoinGecko API</span><span class="chip px-2.5 py-1 rounded-lg">DexScreener</span>
-        <span class="chip px-2.5 py-1 rounded-lg">GoPlus Security</span><span class="chip px-2.5 py-1 rounded-lg">LLM + template fallback</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Fixtures & tests</span>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<!-- 03 · Lead Capture -->
-<section id="case-lead-capture" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
-    <div class="relative">
-      <div class="wm">03</div>
-      <p class="reveal kicker mb-3">case study · lead pipeline</p>
-      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Lead Capture → Enriched CRM</h3>
-      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Small businesses lose leads in inbox chaos: no scoring, duplicates, zero instant follow-up.</p>
-      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> Consent-based form → validation → 7-day dedupe on email hash → enrichment (company inferred from work domain) → LLM intent score 0–100 with a deterministic rule-score fallback → exact-schema Google Sheets row + instant tiered Telegram alert (🔥A / ⚡B / 🧊C) explaining the "why".</p>
-      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
-        <li>Consent enforced in code — the pipeline refuses to run without it</li>
-        <li>Sheet append failing never blocks the owner alert (error branches everywhere)</li>
-        <li>Demo mode processes a full lead while writing nothing to real state</li>
-      </ul>
-      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/lead-capture" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/lead-capture/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Tests ↗</a>
-      </div>
-    </div>
-    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
-      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="chip px-2.5 py-1 rounded-lg">n8n Forms</span><span class="chip px-2.5 py-1 rounded-lg">Google Sheets API</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Static-data dedupe</span><span class="chip px-2.5 py-1 rounded-lg">LLM scoring + rule fallback</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Telegram alerts</span><span class="chip px-2.5 py-1 rounded-lg">Consent-first design</span>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<!-- 04 · Review Summarizer -->
-<section id="case-review-summarizer" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
-    <div class="relative">
-      <div class="wm">04</div>
-      <p class="reveal kicker mb-3">case study · AI content ops</p>
-      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Review Summarizer</h3>
-      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Shop owners drown in raw reviews and never extract what matters: recurring complaints and praise worth acting on.</p>
-      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> One webhook: messy reviews in → digest out. Deterministic heuristics compute the rating split and themes first (one vote per review per theme, polarity from average rating of mentions); the LLM only writes the verdict and a suggested public reply, returning strict validated JSON.</p>
-      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
-        <li>Runs end-to-end with the AI completely off — mode shown honestly in the footer</li>
-        <li>Junk rows skipped and counted; empty payloads get a friendly usage note</li>
-        <li>The cheapest project here to run: zero external data sources</li>
-      </ul>
-      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/review-summarizer" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/review-summarizer/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Tests ↗</a>
-      </div>
-    </div>
-    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
-      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="chip px-2.5 py-1 rounded-lg">n8n webhooks</span><span class="chip px-2.5 py-1 rounded-lg">Theme heuristics</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Strict JSON validation</span><span class="chip px-2.5 py-1 rounded-lg">Template fallback</span>
-        <span class="chip px-2.5 py-1 rounded-lg">$0 runtime</span>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<!-- 05 · Support Chatbot -->
-<section id="case-support-chatbot" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
-    <div class="relative">
-      <div class="wm">05</div>
-      <p class="reveal kicker mb-3">case study · client support</p>
-      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Client Support Chatbot</h3>
-      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Clients ask the same ten questions; founders burn hours answering them — and chatbots that hallucinate prices make things worse.</p>
-      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> A Telegram bot that answers from an owned knowledge base first (free, instant, deterministic retrieval with tag-boosted scoring). Only unknown questions go to an LLM, grounded with the full KB and strict system rules. Every reply is honestly tagged 📖 FAQ / 🤖 AI-assisted / 📮 human.</p>
-      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
-        <li>Escalation detection ("human", "agent") hands off gracefully</li>
-        <li>Channel-agnostic brain — swap to WhatsApp Cloud API by changing trigger nodes only</li>
-        <li>/demo command replays a canned question through the real pipeline</li>
-      </ul>
-      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/support-chatbot" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/support-chatbot/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Tests ↗</a>
-      </div>
-    </div>
-    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
-      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="chip px-2.5 py-1 rounded-lg">Telegram Bot API</span><span class="chip px-2.5 py-1 rounded-lg">KB retrieval scoring</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Grounded LLM prompts</span><span class="chip px-2.5 py-1 rounded-lg">Honest fallbacks</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Human escalation</span>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<!-- 06 · Smart Money -->
-<section id="case-smart-money" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
-    <div class="relative">
-      <div class="wm">06</div>
-      <p class="reveal kicker mb-3">case study · the original</p>
-      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Smart Money Alert Bot</h3>
-      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> Retail traders see whale moves hours late — after the alpha is gone. Most "whale bots" spam noise: airdrops, wraps, and random transfers all look like trades.</p>
-      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> Real-time Telegram alerts when one of 5 hand-vetted wallets makes a ≥$1,000,000 trade on Ethereum. Alchemy push webhooks (not polling), HMAC-SHA256 signature verification, leg-pairing trade classification that drops airdrops/self-transfers/stable-swaps, quote-leg valuation that prices unlisted tokens correctly, a $1,000,000 gate with 24h dedupe — and an AI one-liner grounded in fetched facts only, with a template fallback.</p>
-      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
-        <li>Proven under double-failure: CoinGecko AND the LLM killed simultaneously — the alert still delivered (stale price marked ≈, template sentence)</li>
-        <li>6 classification fixtures green: buys, sells, unlisted-token buys valued via quote leg; forgeries silently rejected</li>
-        <li>Two legs of the same trade are cross-checked against each other and dropped if they disagree by more than 20% — a price feed cannot publish a wrong number alone</li>
-        <li>A failed send is never recorded as delivered: dedupe commits <i>after</i> the message is confirmed, so nothing is silently swallowed</li>
-        <li>Watchlist is curated evidence: every wallet machine-verified on-chain with public sources</li>
-      </ul>
-      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Test evidence ↗</a>
-      </div>
-    </div>
-    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack & craft</h4>
-      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="chip px-2.5 py-1 rounded-lg">Alchemy Webhooks</span><span class="chip px-2.5 py-1 rounded-lg">HMAC-SHA256</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Trade classification</span><span class="chip px-2.5 py-1 rounded-lg">Quote-leg valuation</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Telegram MarkdownV2</span><span class="chip px-2.5 py-1 rounded-lg">LLM + template fallback</span>
-        <span class="chip px-2.5 py-1 rounded-lg">$0 infra</span>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<!-- 07 · Order → Courier -->
-<section id="case-order-courier" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
-    <div class="relative">
-      <div class="wm">07</div>
-      <p class="reveal kicker mb-3">case study · COD logistics</p>
-      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Shopify Order → Courier Dispatch</h3>
-      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> An Algerian store owner re-types every cash-on-delivery order into the courier's dashboard by hand. The checkout form is filled in Arabic, the wilaya is typed in one of six spellings, and a single wrong wilaya code sends the parcel to the wrong depot — the store pays the return.</p>
-      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> Order lands in Shopify, parcel is booked, tracking number is written back to the order, owner gets an Arabic Telegram message — 30 seconds, nobody touches it. Arabic-Indic digits folded to ASCII, phones normalised to E.164, city names matched through tashkeel / tatweel / hamza forms / French accents across all 58 wilayas. Anything ambiguous is a hard stop with a reason in Arabic, never a guess.</p>
-      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
-        <li>39 assertions over the rule library, and the workflow runs that exact file — a build script inlines it into the n8n Code nodes, so tests and production cannot drift apart</li>
-        <li>Unpaid <i>and</i> the gateway is a bank transfer → it stops. Guessing prepaid tells the courier to collect nothing; guessing COD bills someone who may have already paid</li>
-        <li>The merchant's own tags and the customer's checkout note survive the write-back — Shopify replaces both fields wholesale, so they are merged back in</li>
-        <li>The order is marked dispatched only after Telegram confirms the message: a parcel booked but never announced stays retryable instead of being lost</li>
-        <li>A courier that 502s, answers 200 with an empty body, or returns a junk tracking number is caught as data — the run does not die, and the courier's own refusal text reaches the owner instead of a generic guess</li>
-        <li>A defect found before the courier is called is blamed on the order, never on the courier that was never contacted</li>
-        <li>Honest limit, stated in the write-up: the courier endpoint is a mock, because Algerian couriers do not issue sandbox keys without a registered business. Swapping in the real one is one URL plus a field mapping, and the README names the exact fields that will need remapping</li>
-      </ul>
-      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/order-to-courier" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
-        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/order-to-courier/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Test evidence ↗</a>
-      </div>
-    </div>
-    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
-      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack &amp; craft</h4>
-      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
-        <span class="chip px-2.5 py-1 rounded-lg">Shopify webhooks</span><span class="chip px-2.5 py-1 rounded-lg">Arabic text normalization</span>
-        <span class="chip px-2.5 py-1 rounded-lg">58 wilayas</span><span class="chip px-2.5 py-1 rounded-lg">COD payment classification</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Telegram HTML</span><span class="chip px-2.5 py-1 rounded-lg">Commit-after-send dedupe</span>
-        <span class="chip px-2.5 py-1 rounded-lg">Code inlined from tests</span>
-      </div>
-    </aside>
-  </div>
-</section>
-
-<!-- SKILLS -->
-<section id="skills" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-24">
-    <p class="reveal kicker mb-3">07 — toolkit</p>
-    <h2 class="reveal font-display text-3xl sm:text-4xl font-bold text-slate-100 mb-12">Skills</h2>
-    <div class="grid gap-5 sm:grid-cols-3">
-      <div class="reveal glass card rounded-3xl p-7" style="--i:0">
-        <h3 class="text-accent font-display font-bold mb-4 text-sm uppercase tracking-wider">Automation</h3>
-        <ul class="space-y-2.5 text-sm text-slate-400">
-          <li>n8n workflow design</li><li>Webhooks & push-not-poll</li>
-          <li>Error branches, retries, timeouts</li><li>Dedupe via static data</li>
-        </ul>
-      </div>
-      <div class="reveal glass card rounded-3xl p-7" style="--i:1">
-        <h3 class="text-accent font-display font-bold mb-4 text-sm uppercase tracking-wider">Code</h3>
-        <ul class="space-y-2.5 text-sm text-slate-400">
-          <li>JavaScript / n8n Code nodes</li><li>REST APIs & JSON wrangling</li>
-          <li>Git & clean commit history</li><li>Zero-dep test runners + fixtures</li>
-        </ul>
-      </div>
-      <div class="reveal glass card rounded-3xl p-7" style="--i:2">
-        <h3 class="text-accent font-display font-bold mb-4 text-sm uppercase tracking-wider">AI Integration</h3>
-        <ul class="space-y-2.5 text-sm text-slate-400">
-          <li>LLM summarization & classification</li><li>Template-fallback resilience pattern</li>
-          <li>Prompt design for structured output</li><li>Cost-aware model choice</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ABOUT -->
-<section id="about" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-24 grid md:grid-cols-[1fr,300px] gap-12">
-    <div>
-      <p class="reveal kicker mb-3">08 — about</p>
-      <h2 class="reveal font-display text-3xl sm:text-4xl font-bold text-slate-100 mb-6">Reliability is the feature.</h2>
-      <p class="reveal text-slate-400 leading-relaxed text-lg" style="--i:1">
-        I'm Mohammed Anes, an automation builder. I design and ship end-to-end workflows with n8n — data sources in, clean logic in the middle, polished delivery out. Lead pipelines, support bots, reporting, alerting: if a business does it manually and repeatedly, I automate it.
-      </p>
-      <p class="reveal text-slate-400 leading-relaxed mt-5" style="--i:2">
-        My obsession is the difference between a demo and a product: what happens when an API times out mid-run. Everything I ship has timeouts, retries, dedupe and a fallback path, so the output still lands when a service misbehaves — and the logic is tested against fixtures like production software, because that's what it is.
-      </p>
-      <p class="reveal text-slate-400 leading-relaxed mt-5" style="--i:3">
-        I learned that the hard way, not from a course. On my own alerting pipeline a signature check silently discarded every real event for days while every run reported success — because a node that returns nothing still reports success. Finding that is the skill I sell. It is why nothing I hand over is trusted just because it went green.
-      </p>
-    </div>
-    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:3">
-      <h3 class="text-slate-100 font-display font-bold text-sm mb-4">Quick facts</h3>
-      <ul class="text-sm text-slate-400 space-y-3">
-        <li>📍 Remote · UTC+1 · overlaps EU mornings and US mornings</li>
-        <li>💼 Taking fixed-price builds now</li>
-        <li>⏱ Replies within 24 hours</li>
-        <li>🗣 English, French, Arabic (incl. MSA copywriting)</li>
-        <li>🔗 github.com/Anesch531</li>
-      </ul>
-    </aside>
-  </div>
-</section>
-
-<!-- CONTACT -->
-<section id="contact" class="relative border-t border-line">
-  <div class="max-w-6xl mx-auto px-5 py-24">
-    <div class="reveal glass rounded-[2rem] p-10 sm:p-14 relative overflow-hidden" style="--i:0">
-      <div class="absolute -top-24 -right-24 w-72 h-72 rounded-full bg-accent/10 blur-3xl"></div>
-      <p class="kicker mb-3">09 — contact</p>
-      <h2 class="font-display text-3xl sm:text-5xl font-bold text-slate-100 max-w-xl leading-tight">Send me the boring job <span class="grad-text">you keep doing by hand.</span></h2>
-      <p class="text-slate-400 mt-5 max-w-lg">
-        Three lines is enough to get a real answer from me:
-      </p>
-      <ol class="text-slate-400 mt-4 max-w-lg text-sm space-y-2 list-decimal list-inside">
-        <li>What the manual job is, in one sentence.</li>
-        <li>Which apps it touches (CRM, sheet, inbox, WhatsApp, shop…).</li>
-        <li>How many times a day it happens.</li>
-      </ol>
-      <p class="text-slate-500 mt-5 max-w-lg text-sm">
-        I reply within 24 hours with a yes/no, a fixed price and what I'd need from you — or I tell you it isn't worth automating. WhatsApp gets the fastest answer.
-      </p>
-      <div class="mt-8 flex flex-wrap gap-4 text-sm">
-        <a href="https://wa.me/213791192350?text=Hi%20Anes%2C%20I%20saw%20your%20portfolio.%0A1)%20The%20manual%20job%3A%20%0A2)%20Apps%20it%20touches%3A%20%0A3)%20Times%20per%20day%3A%20"
-           target="_blank" rel="noopener"
-           class="inline-flex items-center gap-2 px-5 py-2.5 rounded-2xl bg-[#25D366] text-ink font-semibold hover:brightness-110 transition-all">
-          <svg viewBox="0 0 24 24" class="w-[18px] h-[18px] shrink-0" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.174-.297-.019-.458.13-.606.134-.133.347-.347.52-.52.174-.174.232-.298.347-.497.109-.198.049-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.375a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.885-9.885 9.885m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
-          WhatsApp me →
-        </a>
-        <a href="mailto:anesch829@gmail.com?subject=Automation%20request&body=1)%20The%20manual%20job%3A%0A%0A2)%20Apps%20it%20touches%3A%0A%0A3)%20Times%20per%20day%3A%0A" class="px-5 py-2.5 rounded-2xl border border-line hover:border-accent hover:text-accent transition-colors">Email me</a>
-        <a href="#offer" class="px-5 py-2.5 rounded-2xl border border-line hover:border-accent hover:text-accent transition-colors">See prices</a>
-        <a href="https://github.com/Anesch531" target="_blank" rel="noopener" class="px-5 py-2.5 rounded-2xl border border-line hover:border-accent hover:text-accent transition-colors">GitHub</a>
-      </div>
-      <p class="text-xs text-slate-500 mt-5">
-        WhatsApp <a href="https://wa.me/213791192350" target="_blank" rel="noopener" class="text-slate-300 hover:text-accent">+213 791 19 23 50</a>
-        · <a href="mailto:anesch829@gmail.com" class="text-slate-300 hover:text-accent">anesch829@gmail.com</a>
-      </p>
-    </div>
-  </div>
-</section>
-
-<footer class="border-t border-line relative z-10">
-  <div class="max-w-6xl mx-auto px-5 py-10 flex flex-wrap justify-between gap-3 text-xs text-slate-500">
-    <span>© 2026 Mohammed Anes — built by hand, shipped on free tiers.</span>
-    <span>n8n · JavaScript · LLM-with-fallbacks · <a href="https://wa.me/213791192350" target="_blank" rel="noopener" class="hover:text-[#25D366] transition-colors">WhatsApp +213 791 19 23 50</a></span>
-  </div>
-</footer>
-
+<section class="min-h-[92vh] flex items-center pt-28">
+<div class="max-w-6xl mx-auto px-5 py-20 w-full grid lg:grid-cols-[1.15fr,.85fr] gap-14 items-center">
+<div><p class="kicker reveal">AI automation · AI agents · reliable operations</p>
+<h1 class="reveal font-display font-bold text-5xl sm:text-6xl lg:text-7xl leading-[.98] tracking-[-.045em] mt-6 max-w-4xl">Stop losing work between <span class="text-acid">tools, inboxes and people.</span></h1>
+<p class="reveal mt-7 text-lg sm:text-xl leading-relaxed text-muted max-w-2xl">VANTFLOW builds AI agents and automations that capture leads, follow up, update your systems, prepare reports, and alert your team—without replacing the tools you already use.</p>
+<div class="reveal mt-9 flex flex-wrap gap-3"><a href="#offer" class="btn btn-primary">Start with a $200 pilot →</a><a href="#work" class="btn btn-secondary">See working systems</a></div>
+<div class="reveal mt-8 flex flex-wrap gap-x-7 gap-y-2 text-sm text-muted"><span>✓ Fixed scope</span><span>✓ Human approval</span><span>✓ No silent failures</span><span>✓ You own the workflow</span></div></div>
+<div class="reveal panel rounded-3xl p-6 sm:p-8 relative overflow-hidden"><div class="absolute top-0 right-0 w-36 h-36 bg-acid/10 blur-3xl"></div><p class="kicker">Example · lead response system</p>
+<div class="mt-8 space-y-4 font-mono text-sm">
+<div class="flex gap-4 items-center"><span class="w-8 h-8 rounded-lg bg-acid text-ink grid place-items-center font-bold">1</span><div><b>Lead arrives</b><p class="text-muted mt-1">Website, email, ad form, or WhatsApp</p></div></div><div class="ml-4 h-6 border-l border-acid/30"></div>
+<div class="flex gap-4 items-center"><span class="w-8 h-8 rounded-lg border border-acid text-acid grid place-items-center font-bold">2</span><div><b>Agent qualifies</b><p class="text-muted mt-1">Intent, budget, urgency, next action</p></div></div><div class="ml-4 h-6 border-l border-acid/30"></div>
+<div class="flex gap-4 items-center"><span class="w-8 h-8 rounded-lg border border-acid text-acid grid place-items-center font-bold">3</span><div><b>Systems update</b><p class="text-muted mt-1">CRM or sheet, owner alert, assignment</p></div></div><div class="ml-4 h-6 border-l border-acid/30"></div>
+<div class="flex gap-4 items-center"><span class="w-8 h-8 rounded-lg border border-acid text-acid grid place-items-center font-bold">4</span><div><b>Follow-up stays visible</b><p class="text-muted mt-1">Reminder, retry, escalation, audit log</p></div></div>
+</div><div class="flow-line mt-8"></div><p class="text-xs text-muted mt-4">Built around your process. Risky actions stay behind human approval.</p></div>
+</div></section>
+<section class="border-y border-line bg-paper text-ink"><div class="max-w-6xl mx-auto px-5 py-6 flex flex-wrap justify-between gap-4 font-mono text-xs uppercase tracking-wider"><span>n8n</span><span>Claude & LLM APIs</span><span>CRM & Google Sheets</span><span>WhatsApp & Telegram</span><span>REST APIs</span><span>JavaScript</span></div></section>
+<section id="services"><div class="max-w-6xl mx-auto px-5 py-24"><p class="kicker reveal">01 · what we automate</p><div class="mt-4 grid lg:grid-cols-[.8fr,1.2fr] gap-10"><h2 class="reveal font-display text-4xl sm:text-5xl font-bold tracking-tight">Systems tied to outcomes, not AI hype.</h2><p class="reveal text-muted text-lg leading-relaxed max-w-2xl">Start with one costly, repeated process. VANTFLOW maps it, builds it, tests failure paths, and hands it back with clear controls.</p></div>
+<div class="mt-14 grid md:grid-cols-2 gap-5">
+<article class="reveal panel panel-hover rounded-2xl p-7"><span class="kicker">01 / revenue</span><h3 class="font-display text-2xl font-semibold mt-4">Lead response & follow-up</h3><p class="text-muted mt-3 leading-relaxed">Capture inquiries, qualify intent, update CRM records, assign owners, and surface untouched leads before they go cold.</p></article>
+<article class="reveal panel panel-hover rounded-2xl p-7"><span class="kicker">02 / service</span><h3 class="font-display text-2xl font-semibold mt-4">Customer-support agents</h3><p class="text-muted mt-3 leading-relaxed">Answer from approved knowledge, collect context, and hand uncertain or sensitive cases to a human.</p></article>
+<article class="reveal panel panel-hover rounded-2xl p-7"><span class="kicker">03 / visibility</span><h3 class="font-display text-2xl font-semibold mt-4">Reporting & owner digests</h3><p class="text-muted mt-3 leading-relaxed">Pull trusted data, compute changes in code, draft plain-language commentary, then request approval before delivery.</p></article>
+<article class="reveal panel panel-hover rounded-2xl p-7"><span class="kicker">04 / retention</span><h3 class="font-display text-2xl font-semibold mt-4">Renewals & operations</h3><p class="text-muted mt-3 leading-relaxed">Monitor dates in existing sheets, send controlled reminders, flag overdue records, and show value at risk.</p></article>
+</div></div></section>
+<section id="work" class="border-y border-line bg-[#0E1115]"><div class="max-w-6xl mx-auto px-5 py-24"><p class="kicker reveal">02 · working proof</p><h2 class="reveal font-display text-4xl sm:text-5xl font-bold mt-4">Built systems. Real failure handling.</h2><p class="reveal text-muted mt-5 max-w-2xl">Portfolio code stays public. These are working foundations we adapt to client processes—not screenshots pretending to be products.</p>
+<div class="grid lg:grid-cols-3 gap-5 mt-12">
+<article class="reveal panel rounded-2xl p-7 flex flex-col"><p class="kicker">Lead operations</p><h3 class="font-display text-2xl font-semibold mt-4">Lead Capture → CRM</h3><p class="text-muted mt-3 flex-1">Validation, consent, deduplication, intent scoring, CRM/sheet update, and owner alerts.</p><a class="text-acid mt-8 text-sm" target="_blank" rel="noopener" href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/lead-capture">View code ↗</a></article>
+<article class="reveal panel rounded-2xl p-7 flex flex-col"><p class="kicker">AI support</p><h3 class="font-display text-2xl font-semibold mt-4">Grounded Support Agent</h3><p class="text-muted mt-3 flex-1">Approved answers first, grounded AI for unknowns, honest fallback, and human escalation.</p><a class="text-acid mt-8 text-sm" target="_blank" rel="noopener" href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/support-chatbot">View code ↗</a></article>
+<article class="reveal panel rounded-2xl p-7 flex flex-col"><p class="kicker">COD operations</p><h3 class="font-display text-2xl font-semibold mt-4">Order → Courier Dispatch</h3><p class="text-muted mt-3 flex-1">Normalizes Algerian customer data, books parcels, writes tracking, and stops ambiguous orders.</p><a class="text-acid mt-8 text-sm" target="_blank" rel="noopener" href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/order-to-courier">View code ↗</a></article>
+</div><div class="reveal mt-8 panel rounded-2xl px-7 py-6 flex flex-wrap items-center justify-between gap-4"><div><b class="font-display text-xl">80+ automated checks across portfolio systems</b><p class="text-muted text-sm mt-1">Dates, duplicates, bad API responses, invalid data, fallback behavior, and delivery state.</p></div><a href="https://github.com/Anesch531" target="_blank" rel="noopener" class="btn btn-secondary">Open GitHub</a></div></div></section>
+<section id="process"><div class="max-w-6xl mx-auto px-5 py-24"><p class="kicker reveal">03 · process</p><h2 class="reveal font-display text-4xl sm:text-5xl font-bold mt-4 max-w-3xl">Small first build. Evidence before expansion.</h2><div class="mt-14 grid md:grid-cols-4 gap-5">
+<div class="reveal"><div class="step-num">01</div><h3 class="font-display text-xl font-semibold mt-4">Map</h3><p class="text-muted text-sm mt-2">Find trigger, decisions, tools, volume, and cost of failure.</p></div>
+<div class="reveal"><div class="step-num">02</div><h3 class="font-display text-xl font-semibold mt-4">Build</h3><p class="text-muted text-sm mt-2">One workflow, one outcome, existing systems where possible.</p></div>
+<div class="reveal"><div class="step-num">03</div><h3 class="font-display text-xl font-semibold mt-4">Break</h3><p class="text-muted text-sm mt-2">Test bad data, timeouts, duplicates, and empty API responses.</p></div>
+<div class="reveal"><div class="step-num">04</div><h3 class="font-display text-xl font-semibold mt-4">Hand over</h3><p class="text-muted text-sm mt-2">Walkthrough, controls, documentation, and ownership transferred.</p></div>
+</div></div></section>
+<section id="offer" class="border-y border-line bg-paper text-ink"><div class="max-w-6xl mx-auto px-5 py-24 grid lg:grid-cols-[1fr,.85fr] gap-14 items-start"><div><p class="font-mono text-xs uppercase tracking-[.14em] font-medium">04 · first-client pilot</p><h2 class="font-display text-5xl sm:text-6xl font-bold tracking-tight mt-5">One painful workflow.<br>Fixed $200.</h2><p class="text-zinc-600 text-lg leading-relaxed mt-6 max-w-xl">Launch offer for first three VANTFLOW clients. Enough scope to create a useful result—not an unpaid full-system rebuild.</p></div>
+<div class="border-2 border-ink rounded-2xl p-8"><p class="font-mono text-xs uppercase tracking-wider">7-day pilot</p><ul class="mt-6 space-y-4 text-zinc-700"><li>✓ One workflow and one primary outcome</li><li>✓ Existing tools connected where practical</li><li>✓ Human approval for risky outbound actions</li><li>✓ Error alerts, retry logic, and duplicate protection</li><li>✓ Testing session and recorded handover</li><li>✓ 50% to start, 50% after acceptance testing</li></ul><a href="#contact" class="btn btn-primary mt-8 w-full !bg-ink !text-paper hover:!bg-zinc-800">Discuss the pilot →</a><p class="text-xs text-zinc-500 mt-4">No guaranteed-revenue claims. If automation is not worth building, we say so.</p></div></div></section>
+<section class="border-b border-line"><div class="max-w-6xl mx-auto px-5 py-20"><p class="kicker reveal">What clients keep</p><div class="mt-8 grid sm:grid-cols-2 lg:grid-cols-4 gap-8"><div><b>Your accounts</b><p class="text-muted text-sm mt-2">Built on your n8n and service accounts.</p></div><div><b>Your data</b><p class="text-muted text-sm mt-2">No unnecessary migration or hidden platform.</p></div><div><b>Your controls</b><p class="text-muted text-sm mt-2">Approvals, stop conditions, and visible failures.</p></div><div><b>Your workflow</b><p class="text-muted text-sm mt-2">No lock-in to VANTFLOW after handover.</p></div></div></div></section>
+<section id="contact"><div class="max-w-6xl mx-auto px-5 py-24"><div class="panel rounded-3xl p-8 sm:p-14 grid lg:grid-cols-[1fr,.8fr] gap-12"><div><p class="kicker">05 · contact</p><h2 class="font-display text-4xl sm:text-5xl font-bold tracking-tight mt-5">Show us the work your team keeps doing by hand.</h2><p class="text-muted text-lg mt-6 max-w-xl">Send three things: repeated job, tools involved, and how often it happens. Get a direct answer: automate it, simplify it, or leave it alone.</p></div><div class="flex flex-col justify-center gap-3"><a href="https://wa.me/213791192350?text=Hi%20VANTFLOW%2C%0A1)%20Repeated%20job%3A%20%0A2)%20Tools%20involved%3A%20%0A3)%20How%20often%3A%20" target="_blank" rel="noopener" class="btn btn-primary">Message VANTFLOW on WhatsApp →</a><a href="mailto:anesch829@gmail.com?subject=VANTFLOW%20automation%20request&body=1)%20Repeated%20job%3A%0A%0A2)%20Tools%20involved%3A%0A%0A3)%20How%20often%3A%0A" class="btn btn-secondary">Email the brief</a><p class="text-center text-xs text-muted mt-2">English · French · Arabic · Remote worldwide</p></div></div></div></section>
 </main>
-
+<footer class="relative z-10 border-t border-line"><div class="max-w-6xl mx-auto px-5 py-8 flex flex-wrap justify-between gap-4 text-xs text-muted"><span>© 2026 VANTFLOW. AI systems that keep work moving.</span><span>Built by Mohammed Anes · <a class="hover:text-acid" href="mailto:anesch829@gmail.com">anesch829@gmail.com</a></span></div></footer>
 <script>
-(function () {
-  var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-  /* ---- particle constellation backdrop ---- */
-  var canvas = document.getElementById('bg');
-  if (canvas && !reduced) {
-    var ctx = canvas.getContext('2d');
-    var W, H, pts = [], mouse = { x: -9999, y: -9999 };
-    var COLORS = ['94,234,212', '129,140,248', '232,121,249'];
-    function resize() {
-      W = canvas.width = window.innerWidth;
-      H = canvas.height = window.innerHeight;
-    }
-    function seed() {
-      pts = [];
-      var n = Math.min(110, Math.floor(W * H / 16000));
-      for (var i = 0; i < n; i++) {
-        pts.push({
-          x: Math.random() * W, y: Math.random() * H,
-          vx: (Math.random() - .5) * .35, vy: (Math.random() - .5) * .35,
-          r: Math.random() * 1.6 + .6,
-          c: COLORS[(Math.random() * COLORS.length) | 0]
-        });
-      }
-    }
-    window.addEventListener('resize', function () { resize(); seed(); });
-    window.addEventListener('pointermove', function (e) { mouse.x = e.clientX; mouse.y = e.clientY; });
-    window.addEventListener('pointerleave', function () { mouse.x = -9999; });
-    resize(); seed();
-    var LINK = 130;
-    function frame() {
-      ctx.clearRect(0, 0, W, H);
-      for (var i = 0; i < pts.length; i++) {
-        var p = pts[i];
-        p.x += p.vx; p.y += p.vy;
-        if (p.x < 0 || p.x > W) p.vx *= -1;
-        if (p.y < 0 || p.y > H) p.vy *= -1;
-        var dx = p.x - mouse.x, dy = p.y - mouse.y, d2 = dx * dx + dy * dy;
-        if (d2 < 150 * 150) {                       /* cursor magnetism */
-          var d = Math.sqrt(d2) || 1, f = (150 - d) / 150 * .6;
-          p.x += dx / d * f; p.y += dy / d * f;
-        }
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, 6.2832);
-        ctx.fillStyle = 'rgba(' + p.c + ',.75)';
-        ctx.fill();
-        for (var j = i + 1; j < pts.length; j++) {
-          var q = pts[j], lx = p.x - q.x, ly = p.y - q.y, ld = lx * lx + ly * ly;
-          if (ld < LINK * LINK) {
-            ctx.beginPath();
-            ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
-            ctx.strokeStyle = 'rgba(148,163,184,' + (0.09 * (1 - ld / (LINK * LINK))) + ')';
-            ctx.lineWidth = 1;
-            ctx.stroke();
-          }
-        }
-      }
-      requestAnimationFrame(frame);
-    }
-    document.addEventListener('visibilitychange', function () {
-      if (document.hidden) { cancelAnimationFrame(raf); raf = null; }
-      else if (!raf) { raf = requestAnimationFrame(frame); }
-    });
-    var raf = requestAnimationFrame(frame);
-  }
-
-  /* ---- scroll progress ---- */
-  var bar = document.getElementById('progress');
-  window.addEventListener('scroll', function () {
-    var h = document.documentElement;
-    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
-  }, { passive: true });
-
-  /* ---- reveal on scroll ---- */
-  var els = document.querySelectorAll('.reveal');
-  if ('IntersectionObserver' in window && !reduced) {
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
-      });
-    }, { threshold: .12 });
-    els.forEach(function (e) { io.observe(e); });
-  } else {
-    els.forEach(function (e) { e.classList.add('in'); });
-  }
-
-  /* ---- counters ---- */
-  function animateCount(el) {
-    var target = parseInt(el.getAttribute('data-count'), 10), t0 = null;
-    function step(t) {
-      if (!t0) t0 = t;
-      var k = Math.min((t - t0) / 900, 1);
-      el.textContent = Math.round(target * (1 - Math.pow(1 - k, 3)));
-      if (k < 1) requestAnimationFrame(step);
-    }
-    requestAnimationFrame(step);
-  }
-  var counters = document.querySelectorAll('[data-count]');
-  if ('IntersectionObserver' in window && !reduced) {
-    var cio = new IntersectionObserver(function (entries) {
-      entries.forEach(function (en) {
-        if (en.isIntersecting) { animateCount(en.target); cio.unobserve(en.target); }
-      });
-    }, { threshold: .5 });
-    counters.forEach(function (c) { cio.observe(c); });
-  } else {
-    counters.forEach(function (c) { c.textContent = c.getAttribute('data-count'); });
-  }
-
-  /* ---- card tilt (desktop only) ---- */
-  if (window.matchMedia('(pointer:fine)').matches && !reduced) {
-    document.querySelectorAll('.tilt').forEach(function (card) {
-      card.addEventListener('pointermove', function (e) {
-        var r = card.getBoundingClientRect();
-        var rx = ((e.clientY - r.top) / r.height - .5) * -7;
-        var ry = ((e.clientX - r.left) / r.width - .5) * 7;
-        card.style.transform = 'perspective(800px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-4px)';
-      });
-      card.addEventListener('pointerleave', function () { card.style.transform = ''; });
-    });
-  }
-})();
+(function(){var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches,els=document.querySelectorAll('.reveal');if('IntersectionObserver'in window&&!reduced){var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{threshold:.1});els.forEach(function(e){io.observe(e)})}else{els.forEach(function(e){e.classList.add('in')})}var bar=document.getElementById('progress');addEventListener('scroll',function(){var h=document.documentElement,d=h.scrollHeight-h.clientHeight;bar.style.width=(d?h.scrollTop/d*100:0)+'%'},{passive:true})})();
 </script>
 </body>
 </html>
