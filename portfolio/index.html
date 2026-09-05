@@ -120,9 +120,9 @@ tailwind.config = {
     </div>
     <!-- stats -->
     <div class="reveal mt-16 grid grid-cols-2 sm:grid-cols-4 gap-4 max-w-3xl" style="--i:4">
-      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="5">5</span></div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Automations built</div></div>
-      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="41">41</span>+</div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Tests passing</div></div>
-      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="5">5</span></div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Workflows open-sourced</div></div>
+      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="6">6</span></div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Automations built</div></div>
+      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="80">80</span>+</div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Tests passing</div></div>
+      <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold text-slate-100"><span data-count="6">6</span></div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Workflows open-sourced</div></div>
       <div class="glass rounded-2xl p-5"><div class="font-display text-3xl font-bold grad-text">$0</div><div class="text-xs text-slate-500 mt-1 uppercase tracking-wider">Infra cost / month</div></div>
     </div>
   </div>
@@ -140,7 +140,7 @@ tailwind.config = {
 <section id="work" class="relative">
   <div class="max-w-6xl mx-auto px-5 py-24">
     <p class="reveal kicker mb-3">01 — selected work</p>
-    <h2 class="reveal font-display text-3xl sm:text-4xl font-bold text-slate-100 mb-3">Five automations, built end to end.</h2>
+    <h2 class="reveal font-display text-3xl sm:text-4xl font-bold text-slate-100 mb-3">Six automations, built end to end.</h2>
     <p class="reveal text-slate-500 mb-12 text-sm" style="--i:1">Every one links to the real code, the tests, and a full write-up of what breaks it.</p>
     <div class="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
 
@@ -184,13 +184,23 @@ tailwind.config = {
         </div>
       </div>
 
-      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col sm:col-span-2 lg:col-span-1 border-accent/20" style="--i:4">
+      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col border-accent/20" style="--i:4">
         <span class="text-xs text-accent font-medium">REAL-TIME · n8n · webhook push</span>
         <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Smart Money Alert Bot</h3>
         <p class="text-sm text-slate-400 flex-1 leading-relaxed">Signed webhooks in, Arabic alert out in under 4s: HMAC verification, trade-leg classification, a $1,000,000 gate, 24h dedupe, AI one-liner with template fallback. Proven under double-failure.</p>
         <div class="mt-6 flex gap-5 text-sm">
           <a href="#case-smart-money" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
           <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/smart-money-alerts" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
+        </div>
+      </div>
+
+      <div class="reveal card tilt glass rounded-3xl p-6 flex flex-col border-accent/20" style="--i:5">
+        <span class="text-xs text-accent font-medium">COD LOGISTICS · Shopify · Telegram</span>
+        <h3 class="font-display text-slate-100 font-bold text-lg mt-3 mb-2">Shopify Order → Courier Dispatch</h3>
+        <p class="text-sm text-slate-400 flex-1 leading-relaxed">Cash-on-delivery order in, parcel booked and tracking number out in 30s. Arabic phone and city normalization, all 58 Algerian wilayas, hard stop on anything ambiguous instead of a guess.</p>
+        <div class="mt-6 flex gap-5 text-sm">
+          <a href="#case-order-courier" class="text-accent hover:underline underline-offset-4">Case study ↓</a>
+          <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/order-to-courier" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Code ↗</a>
         </div>
       </div>
 
@@ -231,7 +241,7 @@ tailwind.config = {
         <h3 class="font-display text-slate-100 font-bold text-2xl mt-3">Your first workflow</h3>
         <div class="font-display text-4xl font-bold grad-text mt-4 mb-1">$149</div>
         <p class="text-xs text-slate-500 mb-6">5 days · one automation, end to end · launch price, first 3 clients</p>
-        <p class="text-sm text-slate-400 leading-relaxed mb-5">One job off your team's hands: form or inbox → clean, deduped record in your CRM or sheet → the right person alerted. Or reviews/tickets in, a readable digest out. Built the way the five projects above are built.</p>
+        <p class="text-sm text-slate-400 leading-relaxed mb-5">One job off your team's hands: form or inbox → clean, deduped record in your CRM or sheet → the right person alerted. Or reviews/tickets in, a readable digest out. Built the way the six projects above are built.</p>
         <ul class="text-sm text-slate-400 space-y-2 mb-7 list-disc list-inside">
           <li>Retries, deduplication and a fallback path on every external call</li>
           <li>Test fixtures included, so you can prove it still works after you change it</li>
@@ -399,6 +409,41 @@ tailwind.config = {
         <span class="chip px-2.5 py-1 rounded-lg">Trade classification</span><span class="chip px-2.5 py-1 rounded-lg">Quote-leg valuation</span>
         <span class="chip px-2.5 py-1 rounded-lg">Telegram MarkdownV2</span><span class="chip px-2.5 py-1 rounded-lg">LLM + template fallback</span>
         <span class="chip px-2.5 py-1 rounded-lg">$0 infra</span>
+      </div>
+    </aside>
+  </div>
+</section>
+
+<!-- 07 · Order → Courier -->
+<section id="case-order-courier" class="relative border-t border-line">
+  <div class="max-w-6xl mx-auto px-5 py-20 grid md:grid-cols-[1fr,280px] gap-10">
+    <div class="relative">
+      <div class="wm">07</div>
+      <p class="reveal kicker mb-3">case study · COD logistics</p>
+      <h3 class="reveal font-display text-2xl sm:text-3xl font-bold text-slate-100 mb-5" style="--i:1">Shopify Order → Courier Dispatch</h3>
+      <p class="reveal text-sm text-slate-500 mb-4" style="--i:2"><b class="text-slate-300">Problem.</b> An Algerian store owner re-types every cash-on-delivery order into the courier's dashboard by hand. The checkout form is filled in Arabic, the wilaya is typed in one of six spellings, and a single wrong wilaya code sends the parcel to the wrong depot — the store pays the return.</p>
+      <p class="reveal text-sm text-slate-400 mb-4 leading-relaxed" style="--i:3"><b class="text-slate-300">What I built.</b> Order lands in Shopify, parcel is booked, tracking number is written back to the order, owner gets an Arabic Telegram message — 30 seconds, nobody touches it. Arabic-Indic digits folded to ASCII, phones normalised to E.164, city names matched through tashkeel / tatweel / hamza forms / French accents across all 58 wilayas. Anything ambiguous is a hard stop with a reason in Arabic, never a guess.</p>
+      <ul class="reveal text-sm text-slate-400 space-y-1.5 list-disc list-inside mb-6" style="--i:4">
+        <li>39 assertions over the rule library, and the workflow runs that exact file — a build script inlines it into the n8n Code nodes, so tests and production cannot drift apart</li>
+        <li>Unpaid <i>and</i> the gateway is a bank transfer → it stops. Guessing prepaid tells the courier to collect nothing; guessing COD bills someone who may have already paid</li>
+        <li>The merchant's own tags and the customer's checkout note survive the write-back — Shopify replaces both fields wholesale, so they are merged back in</li>
+        <li>The order is marked dispatched only after Telegram confirms the message: a parcel booked but never announced stays retryable instead of being lost</li>
+        <li>A courier that 502s, answers 200 with an empty body, or returns a junk tracking number is caught as data — the run does not die, and the courier's own refusal text reaches the owner instead of a generic guess</li>
+        <li>A defect found before the courier is called is blamed on the order, never on the courier that was never contacted</li>
+        <li>Honest limit, stated in the write-up: the courier endpoint is a mock, because Algerian couriers do not issue sandbox keys without a registered business. Swapping in the real one is one URL plus a field mapping, and the README names the exact fields that will need remapping</li>
+      </ul>
+      <div class="reveal flex flex-wrap gap-5 text-sm" style="--i:5">
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/order-to-courier" target="_blank" rel="noopener" class="text-accent hover:underline underline-offset-4">View project →</a>
+        <a href="https://github.com/Anesch531/Anes-portfolio-automation/tree/main/projects/order-to-courier/tests" target="_blank" rel="noopener" class="text-slate-500 hover:text-slate-300">Test evidence ↗</a>
+      </div>
+    </div>
+    <aside class="reveal glass rounded-3xl border border-line p-6 h-fit md:sticky md:top-24" style="--i:2">
+      <h4 class="text-xs uppercase tracking-wider text-slate-500 mb-4 font-mono">Stack &amp; craft</h4>
+      <div class="flex flex-wrap gap-2 text-xs text-slate-300">
+        <span class="chip px-2.5 py-1 rounded-lg">Shopify webhooks</span><span class="chip px-2.5 py-1 rounded-lg">Arabic text normalization</span>
+        <span class="chip px-2.5 py-1 rounded-lg">58 wilayas</span><span class="chip px-2.5 py-1 rounded-lg">COD payment classification</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Telegram HTML</span><span class="chip px-2.5 py-1 rounded-lg">Commit-after-send dedupe</span>
+        <span class="chip px-2.5 py-1 rounded-lg">Code inlined from tests</span>
       </div>
     </aside>
   </div>

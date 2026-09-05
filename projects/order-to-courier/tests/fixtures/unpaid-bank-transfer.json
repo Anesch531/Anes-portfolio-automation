@@ -1,0 +1,22 @@
+{
+  "note": "The order that used to ship as PREPAID. Unpaid, but the gateway is a bank transfer — neither cash-on-delivery nor blank/manual. Everything else about it is valid, so `payment_unclear` must be the only error. Guessing 'prepaid' here tells the courier to collect nothing and hand the goods over; guessing 'COD' bills a customer who may already have transferred. Neither is allowed to be a guess.",
+  "input": {
+    "order": {
+      "id": 5238104920005,
+      "name": "#1045",
+      "order_number": 1045,
+      "financial_status": "pending",
+      "payment_gateway_names": ["Virement bancaire (CCP)"],
+      "total_price": "45600.00",
+      "currency": "DZD",
+      "tags": "",
+      "line_items": [{ "title": "دراجة كهربائية", "quantity": 1 }],
+      "shipping_address": {
+        "name": "كريم بوعلام",
+        "phone": "0770 11 22 33",
+        "address1": "حي النصر، عمارة 7",
+        "city": "وهران"
+      }
+    }
+  }
+}

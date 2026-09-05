@@ -1,0 +1,26 @@
+{
+  "order": {
+    "id": 5238104920005,
+    "name": "#1045",
+    "order_number": 1045,
+    "financial_status": "pending",
+    "payment_gateway_names": [
+      "Virement bancaire (CCP)"
+    ],
+    "total_price": "45600.00",
+    "currency": "DZD",
+    "tags": "",
+    "line_items": [
+      {
+        "title": "دراجة كهربائية",
+        "quantity": 1
+      }
+    ],
+    "shipping_address": {
+      "name": "كريم بوعلام",
+      "phone": "0770 11 22 33",
+      "address1": "حي النصر، عمارة 7",
+      "city": "وهران"
+    }
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "note": "Real Shopify orders/create shape, trimmed to the fields the workflow reads. Phone typed in Arabic-Indic digits, city written with the definite article, one tag already placed by the merchant, and a note the customer typed at checkout — all three must survive the write.",
+  "input": {
+    "order": {
+      "id": 5238104920001,
+      "name": "#1042",
+      "order_number": 1042,
+      "financial_status": "pending",
+      "payment_gateway_names": ["Cash on Delivery (COD)"],
+      "gateway": "",
+      "total_price": "12400.00",
+      "currency": "DZD",
+      "tags": "instagram",
+      "note": "التوصيل بعد الخامسة مساءً",
+      "line_items": [
+        { "title": "سماعة بلوتوث JBL", "quantity": 1 },
+        { "title": "غطاء هاتف", "quantity": 2 }
+      ],
+      "shipping_address": {
+        "first_name": "أمين",
+        "last_name": "بلقاسم",
+        "phone": "٠٥٥٥ ١٢ ٣٤ ٥٦",
+        "address1": "حي 200 مسكن، عمارة ب",
+        "address2": "الطابق 3",
+        "city": "الجزائر العاصمة"
+      }
+    },
+    "courier": {
+      "statusCode": 201,
+      "body": { "success": true, "tracking": "CMX-7F3K9021" }
+    }
+  }
+}

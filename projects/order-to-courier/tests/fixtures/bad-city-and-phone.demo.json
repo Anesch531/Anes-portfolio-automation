@@ -1,0 +1,27 @@
+{
+  "order": {
+    "id": 5238104920002,
+    "name": "#1043",
+    "order_number": 1043,
+    "financial_status": "pending",
+    "payment_gateway_names": [
+      "Cash on Delivery (COD)"
+    ],
+    "total_price": "3200.00",
+    "currency": "DZD",
+    "tags": "",
+    "note": "الرجاء الاتصال قبل التوصيل",
+    "line_items": [
+      {
+        "title": "ساعة ذكية",
+        "quantity": 1
+      }
+    ],
+    "shipping_address": {
+      "name": "سارة حمداوي",
+      "phone": "023 45 67 89",
+      "address1": "شارع الأمير عبد القادر 12",
+      "city": "الدار البيضاء"
+    }
+  }
+}

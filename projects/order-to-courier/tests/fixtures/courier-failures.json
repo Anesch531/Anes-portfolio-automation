@@ -1,0 +1,32 @@
+{
+  "note": "Five courier replies. Four are failures that a naive integration treats as success, including the worst one: HTTP 200 with an empty body.",
+  "input": {
+    "responses": [
+      {
+        "label": "upstream 502",
+        "res": { "statusCode": 502, "body": { "message": "bad gateway" } },
+        "expect": "courier_http"
+      },
+      {
+        "label": "explicit rejection, still HTTP 200",
+        "res": { "statusCode": 200, "body": { "success": false, "error": "wilaya not served" } },
+        "expect": "courier_rejected"
+      },
+      {
+        "label": "HTTP 200 with an empty body",
+        "res": { "statusCode": 200, "body": {} },
+        "expect": "tracking_missing"
+      },
+      {
+        "label": "tracking is junk",
+        "res": { "statusCode": 200, "body": { "tracking": "!! nope !!" } },
+        "expect": "tracking_format"
+      },
+      {
+        "label": "nested data envelope",
+        "res": { "statusCode": 200, "body": { "data": { "tracking_number": "ZR-88120394" } } },
+        "expect": "ok"
+      }
+    ]
+  }
+}

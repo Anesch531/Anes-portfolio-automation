@@ -1,0 +1,26 @@
+{
+  "note": "Already paid through the dev store's Bogus Gateway, city in French, phone in full international form. A prepaid parcel must still dispatch, with cod_amount 0 — collecting money twice is worse than not dispatching.",
+  "input": {
+    "order": {
+      "id": 5238104920003,
+      "name": "#1044",
+      "order_number": 1044,
+      "financial_status": "paid",
+      "payment_gateway_names": ["bogus"],
+      "total_price": "8900.00",
+      "currency": "DZD",
+      "tags": "returning-customer, whatsapp",
+      "line_items": [{ "title": "Casque JBL Tune 520", "quantity": 1 }],
+      "shipping_address": {
+        "name": "Yacine Meddah",
+        "phone": "+213 661 99 88 77",
+        "address1": "Rue Larbi Ben M'hidi 45",
+        "city": "Oran"
+      }
+    },
+    "courier": {
+      "statusCode": 200,
+      "body": { "success": true, "tracking": "CMX-4A1B7C22" }
+    }
+  }
+}

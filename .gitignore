@@ -39,3 +39,7 @@ build/
 
 # --- incoming staging (may contain local-only files) ---
 _incoming/
+
+# --- scratch payloads used when firing demo webhooks ---
+.tmp/
+**/.tmp/
