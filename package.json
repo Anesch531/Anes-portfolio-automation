@@ -1,0 +1,14 @@
+{
+  "name": "vantflow-site",
+  "private": true,
+  "version": "1.0.0",
+  "description": "Build tooling for the VANTFLOW site in portfolio/. Output is committed; CI does not build.",
+  "scripts": {
+    "build:css": "tailwindcss -i ./src/input.css -o ./portfolio/assets/site.css --minify",
+    "watch:css": "tailwindcss -i ./src/input.css -o ./portfolio/assets/site.css --watch",
+    "test:site": "python tools/test_site.py"
+  },
+  "devDependencies": {
+    "tailwindcss": "3.4.17"
+  }
+}

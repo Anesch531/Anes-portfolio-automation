@@ -43,3 +43,6 @@ _incoming/
 # --- scratch payloads used when firing demo webhooks ---
 .tmp/
 **/.tmp/
+
+# --- local pre-edit snapshots of tracked files (git history is the real backup) ---
+.backup/

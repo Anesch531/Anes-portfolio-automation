@@ -1,0 +1,56 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ---------------------------------------------------------------
+   VANTFLOW site CSS. Everything below was previously an inline
+   <style> block in portfolio/index.html. Build with:
+     npm run build:css   ->  portfolio/assets/site.css
+   --------------------------------------------------------------- */
+
+:root{color-scheme:dark}
+::selection{background:#B8FF3D;color:#0B0D10}
+html{scrollbar-width:thin;scrollbar-color:#3b4148 #0B0D10}
+body{overflow-x:hidden;background:#0B0D10}
+
+.grid-bg{background-image:linear-gradient(rgba(244,247,240,.04) 1px,transparent 1px),linear-gradient(90deg,rgba(244,247,240,.04) 1px,transparent 1px);background-size:52px 52px;-webkit-mask-image:linear-gradient(to bottom,#000,transparent 90%);mask-image:linear-gradient(to bottom,#000,transparent 90%)}
+.noise{background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.3'/%3E%3C/svg%3E");opacity:.025}
+
+.kicker{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:#B8FF3D}
+.panel{background:#111419;border:1px solid rgba(244,247,240,.12)}
+.panel-hover{transition:border-color .2s ease,transform .2s ease}
+.panel-hover:hover{border-color:rgba(184,255,61,.5);transform:translateY(-3px)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.5rem;min-height:44px;padding:.75rem 1.25rem;border-radius:.75rem;font-weight:600;transition:background .2s,color .2s,border-color .2s,transform .2s}
+.btn-primary{background:#B8FF3D;color:#0B0D10}
+.btn-primary:hover{background:#d0ff82;transform:translateY(-1px)}
+.btn-secondary{border:1px solid rgba(244,247,240,.18);color:#F4F7F0}
+.btn-secondary:hover{border-color:#B8FF3D;color:#B8FF3D}
+
+.flow-line{height:1px;background:linear-gradient(90deg,#B8FF3D,rgba(184,255,61,0))}
+.reveal{opacity:0;transform:translateY(18px);transition:opacity .55s ease,transform .55s ease}
+.reveal.in{opacity:1;transform:none}
+:focus-visible{outline:2px solid #B8FF3D;outline-offset:3px;border-radius:6px}
+a,button{cursor:pointer}
+.logo-lockup{width:172px;height:auto}
+.step-num{font-family:'Space Grotesk';font-size:4rem;font-weight:700;line-height:1;color:rgba(184,255,61,.18)}
+
+/* Inline SVG icons replace the dingbat characters that used to sit in the copy. */
+.ico{flex:none;width:1em;height:1em;stroke:currentColor;fill:none;stroke-width:2.25;stroke-linecap:round;stroke-linejoin:round}
+.tick-list{list-style:none;padding:0}
+.tick{display:flex;align-items:flex-start;gap:.6rem}
+.tick .ico{margin-top:.28em;color:#B8FF3D}
+.tick-dark .ico{color:#0B0D10}
+
+/* Long-form pages: privacy.html, terms.html */
+.doc h2{font-family:'Space Grotesk',ui-sans-serif;font-size:1.375rem;font-weight:600;color:#F4F7F0;margin-top:2.75rem}
+.doc h2:first-child{margin-top:0}
+.doc p,.doc li{color:#9CA3AF;line-height:1.75;margin-top:.85rem}
+.doc ul{list-style:disc;padding-left:1.35rem;margin-top:.5rem}
+.doc li{margin-top:.5rem}
+.doc a{color:#B8FF3D;text-decoration:underline;text-underline-offset:3px}
+.doc strong{color:#F4F7F0;font-weight:600}
+.doc dt{color:#F4F7F0;font-weight:600;margin-top:1.25rem}
+.doc dd{color:#9CA3AF;line-height:1.75;margin-top:.35rem}
+
+@media(prefers-reduced-motion:reduce){.reveal{opacity:1;transform:none;transition:none}.panel-hover,.btn{transition:none}}
