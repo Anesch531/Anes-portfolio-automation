@@ -391,6 +391,49 @@ for cls in sorted(used):
           'class %r is used in the HTML but has no rule in site.css' % cls)
 
 
+# =====================================================================
+# 7. Contact details: one number everywhere, and the retired one gone.
+#     A partial edit here is invisible on the page but sends the owner's
+#     leads to a dead handset, so pin every published form of it.
+# =====================================================================
+WHATSAPP_DIGITS = '213549484089'
+WHATSAPP_DISPLAY = '+213 549 484 089'
+EMAIL = 'anesch829@gmail.com'
+# Every grouping the retired number was ever written in.
+RETIRED = ['213791192350', '791192350', '791 192 350', '791-192-350']
+
+for page in PAGES:
+    flat = HTML[page].replace(' ', '')
+    for old in RETIRED:
+        check(old.replace(' ', '') not in flat,
+              '%s still publishes the retired number %r' % (page, old))
+    for digits in re.findall(r'wa\.me/(\d+)', HTML[page]):
+        check(digits == WHATSAPP_DIGITS,
+              '%s links wa.me/%s, not the current number' % (page, digits))
+    for tel in re.findall(r'"telephone":"([^"]*)"', HTML[page]):
+        check(tel == '+' + WHATSAPP_DIGITS,
+              '%s JSON-LD telephone is %r, not the current number' % (page, tel))
+    for tel in re.findall(r'href="tel:([^"]*)"', HTML[page]):
+        check(tel.replace(' ', '') == '+' + WHATSAPP_DIGITS,
+              '%s has tel: link %r, not the current number' % (page, tel))
+
+check('https://wa.me/%s?text=' % WHATSAPP_DIGITS in HTML['index.html'],
+      'index.html lost the WhatsApp CTA deep link')
+check('"telephone":"+%s"' % WHATSAPP_DIGITS in HTML['index.html'],
+      'index.html JSON-LD does not carry the current telephone')
+check(HTML['privacy.html'].count(WHATSAPP_DISPLAY) == 1,
+      'privacy.html should state the current number exactly once, found %d'
+      % HTML['privacy.html'].count(WHATSAPP_DISPLAY))
+check(HTML['terms.html'].count(WHATSAPP_DISPLAY) == 2,
+      'terms.html should state the current number twice, found %d'
+      % HTML['terms.html'].count(WHATSAPP_DISPLAY))
+# The display form must be the same digits as the link, just spaced.
+check(WHATSAPP_DISPLAY.replace(' ', '') == '+' + WHATSAPP_DIGITS,
+      'the display number and the wa.me digits have drifted apart')
+for page in ['index.html', 'privacy.html', 'terms.html']:
+    check(EMAIL in HTML[page], '%s no longer shows the contact email' % page)
+
+
 if __name__ == '__main__':
     print('%d checks, %d failed' % (count, len(failures)))
     for f in failures:
